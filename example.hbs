@@ -1,0 +1,17 @@
+---
+title: This is a heading
+desc: this is a paragraph
+names:
+  - bob
+  - jane
+  - mark
+---
+{{!< mainlayout}}
+
+<h1>{{title}}</h1>
+<p>{{desc}}</p>
+<ul>
+{{#each names}}
+  <li>{{this}}</li>
+{{/each}}
+</ul>

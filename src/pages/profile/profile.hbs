@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="/profile.scss">
+        <link rel="stylesheet" href="../../components/title.scss">
+    </head>
+    <body>
+      <div class="profile">
+        <div class="profile__container">
+          <div>
+            <img src="../../../static/defaultAvatar.png" class="profile__container_image"/>
+            <h1 class="profile__container_title">Иван</h1>
+          </div>
+          <form class="profile__form">
+          {{!------- ПОЧТА -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label">Почта</label>
+              <p class="profile__form__field__value">pochta@yandex.ru</p>
+            </div>
+
+          {{!------- ЛОГИН -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label">Логин</label>
+              <p class="profile__form__field__value">ivanivanov</p>
+            </div>
+
+          {{!------- ИМЯ -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label">Имя</label>
+              <p class="profile__form__field__value">Иван</p>
+            </div>
+
+          {{!------- ФАМИЛИЯ -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label">Фамилия</label>
+              <p class="profile__form__field__value">Иванов</p>
+            </div>
+          
+          {{!------- ИМЯ В ЧАТЕ -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label">Имя в чате</label>
+              <p class="profile__form__field__value">Иван</p>
+            </div>
+
+          {{!------- ТЕЛЕФОН -------}}
+            <div class="profile__form__field" style="border: none">
+              <label class="profile__form__field__label">Телефон</label>
+              <p class="profile__form__field__value" style="font-weight:600;font-family: 'Arial';">+7 (909) 967 30 30</p>
+            </div>
+          </form>
+
+          <div>
+          {{!------- ИЗМЕНИТЬ ДАННЫЕ -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label" style="color:#3369F3">Изменить данные</label>
+            </div>
+          
+          {{!------- ИЗМЕНИТЬ ПАРОЛЬ -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label" style="color:#3369F3">Изменить пароль</label>
+            </div>
+
+          {{!------- ВЫЙТИ -------}}
+            <div class="profile__form__field" style="border: none">
+              <label class="profile__form__field__label" style="color:#FF0000">Выйти</label>
+            </div> 
+          </div>
+        </div>
+      </div>
+    </body>
+</html> 

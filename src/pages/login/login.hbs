@@ -1,0 +1,25 @@
+---
+title: Привет!
+subtitle: Давно тебя не видели!
+---
+
+<html>
+    <head>
+        <link rel="stylesheet" href="/login.scss">
+        <link rel="stylesheet" href="../../components/title.scss">
+    </head>
+    <body>
+      <div class="login">
+        <div class="login__container">
+            {{>title}}
+            {{!-- Я сомневаюсь насчет правильности моего решения не делать input и кнопку как отдельный компонент, но мне кажется, что так проще будет понимать логику.Да и вычленять инпут или кнопку из формы для меня, пока что, странно.Если и с помощью шаблонов можно сделать понятно ( а главное - работоспособно ), то поправьте, пожалуйста.Заранее спасибо :) --}}
+            <form class="login__form">
+              <input class="custom-input" name="login" type="text" placeholder="Ваш логин"/>
+              <input class="custom-input" name="password" type="text" placeholder="Пароль"/>
+              <button class="custom-button">Войти</button>
+            </form>
+            <a href="#">Нет аккаунта?</a>
+        </div>
+      </div>
+    </body>
+</html> 

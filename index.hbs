@@ -1,11 +1,26 @@
 ---
-id: "root" 
+
+id: root
+title: Привет!
+subtitle: Давно тебя не видели!
+
 ---
 <html>
     <head>
-        <script src="src/index.js" type="module"></script>
+        <link rel="stylesheet" href="/index.scss">
     </head>
     <body>
-        <div id="{{ id }}"></div>
+        <div id="{{ id }}">
+            <div class="login">
+                <div class="login__container">
+                    <h1>Привет!</h1>
+                    <h2>Давно тебя не видели!</h2>
+                    {{>title}}
+                </div>
+                
+          
+
+            </div>
+        </div>
     </body>
 </html> 
