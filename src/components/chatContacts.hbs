@@ -1,0 +1,25 @@
+<aside class="contacts">
+  <a href="./src/pages/profile/profile.hbs" class="contacts__link">Профиль ></a>
+  {{>searchInput}}
+  <div class="contacts__list">
+
+    {{#each contacts}}
+        <div class="contacts__list__item">
+          <img src='{{this.avatar}}' class="item__image"/>
+          <div class="item__text">
+            <span class="item__text__name">{{this.name}}</span>
+            <span class="item__text__last-message">{{this.lastMessage}}</span>
+          </div>
+          <div class="item__info">
+            <span class="item__info__time">{{this.time}}</span>
+            {{#if this.missedMessages}}
+            <span class="item__info__missed-messages">{{this.missedMessages}}</span>
+            {{else}}
+            <span class="item__info__missed-messages_empty">1</span>
+            {{/if}}
+          </div>
+        </div>
+    {{/each}}
+
+  </div>
+</aside>

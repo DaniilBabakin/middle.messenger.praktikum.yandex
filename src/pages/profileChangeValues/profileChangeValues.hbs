@@ -1,6 +1,7 @@
 <html>
     <head>
-        <link rel="stylesheet" href="./profile.scss">
+        <link rel="stylesheet" href="../profile/profile.scss">
+        <link rel="stylesheet" href="../login/login.scss">
         <link rel="stylesheet" href="../../components/title.scss">
     </head>
     <body>
@@ -14,58 +15,43 @@
           {{!------- ПОЧТА -------}}
             <div class="profile__form__field">
               <label class="profile__form__field__label">Почта</label>
-              <p class="profile__form__field__value">rrdreaming@yandex.ru</p>
+              <input type="text" name="email" class="profile__form__field__input" placeholder="rrdreaming@yandex.ru"/>
             </div>
 
           {{!------- ЛОГИН -------}}
             <div class="profile__form__field">
               <label class="profile__form__field__label">Логин</label>
-              <p class="profile__form__field__value">daniilbabakin</p>
+              <input type="text" name="login" class="profile__form__field__input" placeholder="daniilbabakin"/>
             </div>
 
           {{!------- ИМЯ -------}}
             <div class="profile__form__field">
               <label class="profile__form__field__label">Имя</label>
-              <p class="profile__form__field__value">Даниил</p>
+              <input type="text" name="first_name" class="profile__form__field__input" placeholder="Даниил"/>
             </div>
 
           {{!------- ФАМИЛИЯ -------}}
             <div class="profile__form__field">
               <label class="profile__form__field__label">Фамилия</label>
-              <p class="profile__form__field__value">Бабакин</p>
+              <input type="text" name="second_name" class="profile__form__field__input" placeholder="Бабакин"/>
             </div>
           
           {{!------- ИМЯ В ЧАТЕ -------}}
             <div class="profile__form__field">
               <label class="profile__form__field__label">Имя в чате</label>
-              <p class="profile__form__field__value">Даня</p>
+              <input type="text" name="display_name" class="profile__form__field__input" placeholder="Даня"/>
             </div>
 
           {{!------- ТЕЛЕФОН -------}}
             <div class="profile__form__field" style="border: none">
               <label class="profile__form__field__label">Телефон</label>
-              <p class="profile__form__field__value" style="font-weight:600;font-family: 'Arial';">+7 (916) 563 19 58</p>
+              <input type="text" name="phone" class="profile__form__field__input" style="font-weight:600;font-family: 'Arial';" placeholder="+7 (916) 563 19 58"/>
             </div>
+          {{!------- LINK BACK TO PROFILE -------}}
+            <a class="back-to-chats" href="../profile/profile.hbs"></a>
+            <a style="margin-top:75px" class="custom-button blue" href="../profile/profile.hbs">Сохранить</a>
           </form>
 
-          <div>
-          {{!------- ИЗМЕНИТЬ ДАННЫЕ -------}}
-            <div class="profile__form__field">
-              <a class="profile__form__field__label" href="../profileChangeValues/profileChangeValues.hbs" style="color:#3369F3">Изменить данные</a>
-            </div>
-          
-          {{!------- ИЗМЕНИТЬ ПАРОЛЬ -------}}
-            <div class="profile__form__field">
-              <a class="profile__form__field__label" href="../profileChangePassword/profileChangePassword.hbs"  style="color:#3369F3">Изменить пароль</a>
-            </div>
-
-          {{!------- ВЫЙТИ -------}}
-            <div class="profile__form__field" style="border: none">
-              <a class="profile__form__field__label" href="../login/login.hbs" style="color:#FF0000">Выйти</a>
-            </div> 
-          {{!------- LINK BACK TO CHATS -------}}
-            <a class="back-to-chats" href="../../../index.hbs"></a>
-          </div>
         </div>
       </main>
     </body>

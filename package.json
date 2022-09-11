@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel src/pages/signUp/signUp.hbs",
+    "dev": "parcel index.hbs --no-cache",
     "login": "parcel src/pages/login/login.hbs",
     "signUp": "parcel src/pages/signUp/signUp.hbs",
     "notFound": "parcel src/pages/notFound/notFound.hbs",
     "serverError": "parcel src/pages/serverError/serverError.hbs",
     "profile": "parcel src/pages/profile/profile.hbs",
     "profileChangePassword": "parcel src/pages/profileChangePassword/profileChangePassword.hbs",
-    "build": "parcel build index.hbs"
+    "profileChangeValues": "parcel src/pages/profileChangeValues/profileChangeValues.hbs",
+    "main": "parcel src/pages/main/main.hbs --no-cache",
+    "all": "parcel src/pages/*/*.hbs",
+    "build": "parcel build"
   },
   "keywords": [],
   "author": "",

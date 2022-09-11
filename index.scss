@@ -4,18 +4,21 @@ html,body{
   padding:0;
   margin:0;
 }
-#root{
-  height:100vh;
-  width:100vw;
+a{
+  text-decoration: none;
+  color:white;
+  font-size: 20px;
 }
-.login{
+.main{
   display:flex;
   justify-content: center;
   align-items: center;
   height:100vh;
   width:100vw;
-  background: center / cover no-repeat url("./static/Background.png");
-  &__container{
-    color:white;
-  } 
+  gap:25px;
+  background: center / cover no-repeat url("./src/assets/Background.png");
+  &__form{
+    display: flex;
+    flex-direction: column;
+  }
 }
