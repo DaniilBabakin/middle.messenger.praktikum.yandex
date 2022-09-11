@@ -1,0 +1,240 @@
+.messages__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 65vw;
+  height: 8vh;
+}
+.messages__header__person {
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.messages__header__person__image {
+  width: 45px;
+  height: 45px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.messages__header__options {
+  cursor: pointer;
+  padding: 10px;
+}
+
+.messages__footer {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  align-items: center;
+  width: 65vw;
+  height: 8vh;
+}
+.messages__footer__input {
+  font-family: "Raleway";
+  font-size: 15px;
+  width: 58vw;
+  height: 50%;
+  padding: 0 15px;
+  outline: none;
+  border: none;
+  border-radius: 30px;
+  background-color: #EFEFEF;
+}
+.messages__footer__send-message {
+  width: 42px;
+  height: 42px;
+  background: center/cover no-repeat url("/BackArrow.d1ea79c2.png");
+  border: none;
+  transform: scale(-1);
+  cursor: pointer;
+  transition: 0.2s ease all;
+}
+.messages__footer__send-message:hover {
+  transform: translateY(-2px) scale(-1);
+  filter: contrast(151%);
+}
+.messages__footer__import-files {
+  width: 42px;
+  height: 42px;
+  background: center/cover no-repeat url("/ImportFileButton.7a61e112.png");
+  border: none;
+  transform: scale(-1);
+  cursor: pointer;
+  transition: 0.2s ease all;
+}
+.messages__footer__import-files:hover {
+  transform: translateY(-2px);
+}
+
+p {
+  margin: 0;
+}
+
+.messages__main-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 74vh;
+  width: 70vw;
+  background-color: #DBDBDB;
+  padding: 0 30px;
+  box-sizing: border-box;
+}
+.messages__main-block__time {
+  color: #999999;
+  margin-bottom: 50px;
+}
+
+.message {
+  background-color: #E4EDFD;
+  border-radius: 25px;
+  border-top-right-radius: 0;
+  max-width: 23vw;
+  min-width: 5vw;
+  padding: 20px 30px;
+  margin-bottom: 20px;
+  margin-left: auto;
+}
+.message__time {
+  float: right;
+  color: #999999;
+  font-size: 14px;
+  margin-top: 5px;
+}
+.message.friend__message {
+  margin-left: 0;
+  margin-right: auto;
+  background-color: white;
+  border-top-right-radius: 25px;
+  border-top-left-radius: 0;
+}
+
+.contacts {
+  height: 90vh;
+  border-radius: 25px;
+  background-color: #FCFCFC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 20vw;
+  justify-content: space-between;
+  flex-direction: column;
+}
+.contacts__link {
+  color: #999999;
+  font-size: 15px;
+  padding-top: 15px;
+  margin-left: auto;
+  margin-right: 25px;
+  transition: 0.2s ease all;
+}
+.contacts__link:hover {
+  transform: translateY(-2px);
+}
+.contacts__list {
+  overflow-y: scroll;
+  height: 80vh;
+  width: 100%;
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
+.contacts__list__item {
+  min-height: 60px;
+  padding: 15px 20px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  border-bottom: 2px solid #EAEAEA;
+  cursor: pointer;
+}
+.contacts__list__item:hover {
+  background-color: #E4EDFD;
+}
+.contacts__list__item .item__image {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.contacts__list__item .item__text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.contacts__list__item .item__text__name {
+  font-size: 16px;
+  font-weight: 600;
+}
+.contacts__list__item .item__text__last-message {
+  color: #999999;
+  font-size: 14px;
+  font-weight: 500;
+}
+.contacts__list__item .item__info {
+  font-family: "Arial";
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 18px;
+  margin-left: auto;
+}
+.contacts__list__item .item__info__time {
+  font-size: 13px;
+  color: #999999;
+}
+.contacts__list__item .item__info__missed-messages {
+  font-size: 14px;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  background-color: #3369F3;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.contacts__list__item .item__info__missed-messages_empty {
+  visibility: hidden;
+}
+.contacts__list::-webkit-scrollbar {
+  display: none;
+}
+
+.messages {
+  height: 90vh;
+  border-radius: 25px;
+  background-color: #FCFCFC;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 70vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.messages__main-block {
+  height: 74vh;
+  width: 100%;
+  background-color: #DBDBDB;
+}
+
+.search-input {
+  border: none;
+  background-color: #EFEFEF;
+  border-radius: 10px;
+  padding: 10px 20px;
+  outline: none;
+}
+.search-input::placeholder {
+  text-align: center;
+  margin-right: 7px;
+}
+.search-input:-ms-input-placeholder {
+  text-align: center;
+}
+
+/*# sourceMappingURL=/chat.d74ba100.css.map */
