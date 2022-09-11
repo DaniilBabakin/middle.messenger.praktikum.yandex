@@ -1,10 +1,10 @@
 <aside class="contacts">
   <a href="./src/pages/profile/profile.hbs" class="contacts__link">Профиль ></a>
   {{>searchInput}}
-  <div class="contacts__list">
+  <ul class="contacts__list">
 
     {{#each contacts}}
-        <div class="contacts__list__item">
+        <li class="contacts__list__item">
           <img src='{{this.avatar}}' class="item__image"/>
           <div class="item__text">
             <span class="item__text__name">{{this.name}}</span>
@@ -18,8 +18,8 @@
             <span class="item__info__missed-messages_empty">1</span>
             {{/if}}
           </div>
-        </div>
+        </li>
     {{/each}}
 
-  </div>
+  </ul>
 </aside>

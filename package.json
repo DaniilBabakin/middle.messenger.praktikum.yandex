@@ -4,10 +4,14 @@
   "description": "",
   "scripts": {
     "dev": "parcel index.hbs --no-cache",
-    "build": "parcel build index.hbs"
+    "build": "parcel build index.hbs",
+    "start": "parcel build index.hbs --no-minify && node server.js --no-minify"
   },
   "keywords": [],
   "author": "",
+  "engines": {
+    "node": ">=13"
+  },
   "license": "ISC",
   "devDependencies": {
     "@parcel/transformer-sass": "^2.7.0",
