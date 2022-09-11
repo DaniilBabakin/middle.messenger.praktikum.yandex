@@ -5,9 +5,6 @@
   "transformers": {
     "*.hbs": [
       "@anikin/parcel-transformer-handlebars"
-    ],
-    "*.scss": [
-      "@parcel/transformer-sass"
     ]
   }
 }
