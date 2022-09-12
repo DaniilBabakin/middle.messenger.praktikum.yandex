@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "parcel index.hbs --no-cache",
     "build": "parcel build index.hbs",
-    "start": "parcel build index.hbs --no-minify && node server.js"
+    "start": "parcel build index.hbs && node server.js"
   },
   "keywords": [],
   "author": "",
