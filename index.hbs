@@ -1,26 +1,17 @@
----
-
-id: root
-title: Привет!
-subtitle: Давно тебя не видели!
-
----
-<html>
-    <head>
-        <link rel="stylesheet" href="/index.scss">
-    </head>
-    <body>
-        <div id="{{ id }}">
-            <div class="login">
-                <div class="login__container">
-                    <h1>Привет!</h1>
-                    <h2>Давно тебя не видели!</h2>
-                    {{>title}}
-                </div>
-                
-          
-
-            </div>
-        </div>
-    </body>
-</html> 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Веб-мессенджер</title>
+  <link rel="stylesheet" href="./index.scss">
+  <link rel="stylesheet" href="./src/components/chat/chat.scss">
+</head>
+<body>
+   <main class="main">
+      {{>'chat/chatContacts'}}
+      {{>'chat/chatMessages'}}
+    </main>
+</body>
+</html>
