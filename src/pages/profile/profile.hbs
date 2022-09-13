@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="./profile.scss">
+    </head>
+    <body>
+      <main class="profile">
+        <div class="profile__container">
+          <div>
+            <img src="../../assets/defaultAvatarBig.png" class="profile__container_image"/>
+            <h1 class="profile__container_title">Даня</h1>
+          </div>
+          <form class="profile__form">
+          {{!------- ПОЧТА -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label">Почта</label>
+              <p class="profile__form__field__value">rrdreaming@yandex.ru</p>
+            </div>
+
+          {{!------- ЛОГИН -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label">Логин</label>
+              <p class="profile__form__field__value">daniilbabakin</p>
+            </div>
+
+          {{!------- ИМЯ -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label">Имя</label>
+              <p class="profile__form__field__value">Даниил</p>
+            </div>
+
+          {{!------- ФАМИЛИЯ -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label">Фамилия</label>
+              <p class="profile__form__field__value">Бабакин</p>
+            </div>
+          
+          {{!------- ИМЯ В ЧАТЕ -------}}
+            <div class="profile__form__field">
+              <label class="profile__form__field__label">Имя в чате</label>
+              <p class="profile__form__field__value">Даня</p>
+            </div>
+
+          {{!------- ТЕЛЕФОН -------}}
+            <div class="profile__form__field" style="border: none">
+              <label class="profile__form__field__label">Телефон</label>
+              <p class="profile__form__field__value" style="font-weight:600;font-family: 'Arial';">+7 (916) 563 19 58</p>
+            </div>
+          </form>
+
+          <div>
+          {{!------- ИЗМЕНИТЬ ДАННЫЕ -------}}
+            <div class="profile__form__field">
+              <a class="profile__form__field__label" href="../profileChangeValues/profileChangeValues.hbs" style="color:#3369F3">Изменить данные</a>
+            </div>
+          
+          {{!------- ИЗМЕНИТЬ ПАРОЛЬ -------}}
+            <div class="profile__form__field">
+              <a class="profile__form__field__label" href="../profileChangePassword/profileChangePassword.hbs"  style="color:#3369F3">Изменить пароль</a>
+            </div>
+
+          {{!------- ВЫЙТИ -------}}
+            <div class="profile__form__field" style="border: none">
+              <a class="profile__form__field__label" href="../login/login.hbs" style="color:#FF0000">Выйти</a>
+            </div> 
+          {{!------- LINK BACK TO CHATS -------}}
+            <a class="back-to-chats" href="../../../index.hbs"></a>
+          </div>
+        </div>
+      </main>
+    </body>
+</html> 
