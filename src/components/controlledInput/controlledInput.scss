@@ -1,0 +1,14 @@
+.input {
+  position: relative;
+
+  width: 100%;
+  margin-bottom: 30px;
+
+  &.first {
+    margin-top: 65px;
+  }
+
+  &.last {
+    margin-bottom: 160px;
+  }
+}

@@ -1,71 +1,79 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="./profile.scss">
-    </head>
-    <body>
-      <main class="profile">
-        <div class="profile__container">
-          <div>
-            <img src="../../assets/defaultAvatarBig.png" class="profile__container_image"/>
-            <h1 class="profile__container_title">Даня</h1>
-          </div>
-          <form class="profile__form">
-          {{!------- ПОЧТА -------}}
-            <div class="profile__form__field">
-              <label class="profile__form__field__label">Почта</label>
-              <p class="profile__form__field__value">rrdreaming@yandex.ru</p>
-            </div>
-
-          {{!------- ЛОГИН -------}}
-            <div class="profile__form__field">
-              <label class="profile__form__field__label">Логин</label>
-              <p class="profile__form__field__value">daniilbabakin</p>
-            </div>
-
-          {{!------- ИМЯ -------}}
-            <div class="profile__form__field">
-              <label class="profile__form__field__label">Имя</label>
-              <p class="profile__form__field__value">Даниил</p>
-            </div>
-
-          {{!------- ФАМИЛИЯ -------}}
-            <div class="profile__form__field">
-              <label class="profile__form__field__label">Фамилия</label>
-              <p class="profile__form__field__value">Бабакин</p>
-            </div>
-          
-          {{!------- ИМЯ В ЧАТЕ -------}}
-            <div class="profile__form__field">
-              <label class="profile__form__field__label">Имя в чате</label>
-              <p class="profile__form__field__value">Даня</p>
-            </div>
-
-          {{!------- ТЕЛЕФОН -------}}
-            <div class="profile__form__field" style="border: none">
-              <label class="profile__form__field__label">Телефон</label>
-              <p class="profile__form__field__value" style="font-weight:600;font-family: 'Arial';">+7 (916) 563 19 58</p>
-            </div>
-          </form>
-
-          <div>
-          {{!------- ИЗМЕНИТЬ ДАННЫЕ -------}}
-            <div class="profile__form__field">
-              <a class="profile__form__field__label" href="../profileChangeValues/profileChangeValues.hbs" style="color:#3369F3">Изменить данные</a>
-            </div>
-          
-          {{!------- ИЗМЕНИТЬ ПАРОЛЬ -------}}
-            <div class="profile__form__field">
-              <a class="profile__form__field__label" href="../profileChangePassword/profileChangePassword.hbs"  style="color:#3369F3">Изменить пароль</a>
-            </div>
-
-          {{!------- ВЫЙТИ -------}}
-            <div class="profile__form__field" style="border: none">
-              <a class="profile__form__field__label" href="../login/login.hbs" style="color:#FF0000">Выйти</a>
-            </div> 
-          {{!------- LINK BACK TO CHATS -------}}
-            <a class="back-to-chats" href="../../../index.hbs"></a>
-          </div>
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./profile.scss">
+    <title>Профиль</title>
+  </head>
+  <body>
+    <main class="profile">
+      <div class="profile__container">
+        <div>
+          <img src="../../assets/defaultAvatarBig.png" class="profile__container_image" alt="Моя фотография"/>
+          <h1 class="profile__container_title">Даня</h1>
         </div>
-      </main>
-    </body>
-</html> 
+        <form class="profile__form">
+        {{!------- ПОЧТА -------}}
+          <div class="profile__form__field">
+            <label class="profile__form__field__label">Почта</label>
+            <p class="profile__form__field__value">rrdreaming@yandex.ru</p>
+          </div>
+
+        {{!------- ЛОГИН -------}}
+          <div class="profile__form__field">
+            <label class="profile__form__field__label">Логин</label>
+            <p class="profile__form__field__value">daniilbabakin</p>
+          </div>
+
+        {{!------- ИМЯ -------}}
+          <div class="profile__form__field">
+            <label class="profile__form__field__label">Имя</label>
+            <p class="profile__form__field__value">Даниил</p>
+          </div>
+
+        {{!------- ФАМИЛИЯ -------}}
+          <div class="profile__form__field">
+            <label class="profile__form__field__label">Фамилия</label>
+            <p class="profile__form__field__value">Бабакин</p>
+          </div>
+        
+        {{!------- ИМЯ В ЧАТЕ -------}}
+          <div class="profile__form__field">
+            <label class="profile__form__field__label">Имя в чате</label>
+            <p class="profile__form__field__value">Даня</p>
+          </div>
+
+        {{!------- ТЕЛЕФОН -------}}
+          <div class="profile__form__field no-border">
+            <label class="profile__form__field__label">Телефон</label>
+            <p class="profile__form__field__value default-font">+7 (916) 563 19 58</p>
+          </div>
+        </form>
+
+        <div>
+        {{!------- ИЗМЕНИТЬ ДАННЫЕ -------}}
+          <div class="profile__form__field">
+            <a class="profile__form__field__label blue" href="../profileChangeValues/profileChangeValues.hbs">Изменить данные</a>
+          </div>
+        
+        {{!------- ИЗМЕНИТЬ ПАРОЛЬ -------}}
+          <div class="profile__form__field">
+            <a class="profile__form__field__label blue" href="../profileChangePassword/profileChangePassword.hbs">Изменить пароль</a>
+          </div>
+
+        {{!------- ВЫЙТИ -------}}
+          <div class="profile__form__field no-border">
+            <a class="profile__form__field__label red" href="../login/login.hbs">Выйти</a>
+          </div> 
+        {{!------- LINK BACK TO CHATS -------}}
+          <a class="back-to-chats" href="../../../index.hbs"></a>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

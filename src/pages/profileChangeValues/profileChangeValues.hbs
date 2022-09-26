@@ -1,57 +1,65 @@
-<html>
-    <head>
-        <link rel="stylesheet" href="../profile/profile.scss">
-        <link rel="stylesheet" href="../login/login.scss">
-    </head>
-    <body>
-      <main class="profile">
-        <div class="profile__container">
-          <div>
-            <img src="../../assets/defaultAvatarBig.png" class="profile__container_image"/>
-            <h1 class="profile__container_title">Даня</h1>
-          </div>
-          <form class="profile__form">
-          {{!------- ПОЧТА -------}}
-            <div class="profile__form__field">
-              <label class="profile__form__field__label">Почта</label>
-              <input type="text" name="email" class="profile__form__field__input" placeholder="rrdreaming@yandex.ru"/>
-            </div>
-
-          {{!------- ЛОГИН -------}}
-            <div class="profile__form__field">
-              <label class="profile__form__field__label">Логин</label>
-              <input type="text" name="login" class="profile__form__field__input" placeholder="daniilbabakin"/>
-            </div>
-
-          {{!------- ИМЯ -------}}
-            <div class="profile__form__field">
-              <label class="profile__form__field__label">Имя</label>
-              <input type="text" name="first_name" class="profile__form__field__input" placeholder="Даниил"/>
-            </div>
-
-          {{!------- ФАМИЛИЯ -------}}
-            <div class="profile__form__field">
-              <label class="profile__form__field__label">Фамилия</label>
-              <input type="text" name="second_name" class="profile__form__field__input" placeholder="Бабакин"/>
-            </div>
-          
-          {{!------- ИМЯ В ЧАТЕ -------}}
-            <div class="profile__form__field">
-              <label class="profile__form__field__label">Имя в чате</label>
-              <input type="text" name="display_name" class="profile__form__field__input" placeholder="Даня"/>
-            </div>
-
-          {{!------- ТЕЛЕФОН -------}}
-            <div class="profile__form__field" style="border: none">
-              <label class="profile__form__field__label">Телефон</label>
-              <input type="text" name="phone" class="profile__form__field__input" style="font-weight:600;font-family: 'Arial';" placeholder="+7 (916) 563 19 58"/>
-            </div>
-          {{!------- LINK BACK TO PROFILE -------}}
-            <a class="back-to-chats" href="../profile/profile.hbs"></a>
-            <a style="margin-top:75px" class="custom-button blue" href="../profile/profile.hbs">Сохранить</a>
-          </form>
-
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../profile/profile.scss">
+    <link rel="stylesheet" href="../login/login.scss">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Поменять данные в профиле</title>
+  </head>
+  <body>
+    <main class="profile">
+      <div class="profile__container">
+        <div>
+          <img src="../../assets/defaultAvatarBig.png" class="profile__container_image" alt="Моя фотография"/>
+          <h1 class="profile__container_title">Даня</h1>
         </div>
-      </main>
-    </body>
-</html> 
+        <form class="profile__form">
+        {{!------- ПОЧТА -------}}
+          <div class="profile__form__field">
+            <label class="profile__form__field__label">Почта</label>
+            <input type="text" name="email" class="profile__form__field__input" placeholder="rrdreaming@yandex.ru"/>
+          </div>
+
+        {{!------- ЛОГИН -------}}
+          <div class="profile__form__field">
+            <label class="profile__form__field__label">Логин</label>
+            <input type="text" name="login" class="profile__form__field__input" placeholder="daniilbabakin"/>
+          </div>
+
+        {{!------- ИМЯ -------}}
+          <div class="profile__form__field">
+            <label class="profile__form__field__label">Имя</label>
+            <input type="text" name="first_name" class="profile__form__field__input" placeholder="Даниил"/>
+          </div>
+
+        {{!------- ФАМИЛИЯ -------}}
+          <div class="profile__form__field">
+            <label class="profile__form__field__label">Фамилия</label>
+            <input type="text" name="second_name" class="profile__form__field__input" placeholder="Бабакин"/>
+          </div>
+        
+        {{!------- ИМЯ В ЧАТЕ -------}}
+          <div class="profile__form__field">
+            <label class="profile__form__field__label">Имя в чате</label>
+            <input type="text" name="display_name" class="profile__form__field__input" placeholder="Даня"/>
+          </div>
+
+        {{!------- ТЕЛЕФОН -------}}
+          <div class="profile__form__field no-border">
+            <label class="profile__form__field__label">Телефон</label>
+            <input type="text" name="phone" class="profile__form__field__input default-font" placeholder="+7 (916) 563 19 58"/>
+          </div>
+        {{!------- LINK BACK TO PROFILE -------}}
+          <a class="back-to-chats" href="../profile/profile.hbs"></a>
+          <a style="margin-top:75px" class="custom-button blue" href="../profile/profile.hbs">Сохранить</a>
+        </form>
+
+      </div>
+    </main>
+  </body>
+</html>

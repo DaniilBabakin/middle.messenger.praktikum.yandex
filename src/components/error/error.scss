@@ -1,0 +1,41 @@
+.error {
+  position: absolute;
+  z-index: 1;
+  bottom: -50px;
+
+  display: none;
+
+  height: 30px;
+  padding: 15px 30px;
+
+  font-size: 15px;
+  color: rgb(241 0 0 / 80%);
+  text-align: center;
+
+  background-color: rgb(255 201 201);
+  border-radius: 15px;
+
+  &.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.error::after {
+  pointer-events: none;
+  content: '';
+
+  position: absolute;
+  bottom: 100%;
+  left: 60px;
+
+  width: 0;
+  height: 0;
+  margin-left: -17px;
+
+  border: solid transparent;
+  border-color: rgb(136 183 213 / 0%);
+  border-width: 19px;
+  border-bottom-color: rgb(255 201 201);
+}
