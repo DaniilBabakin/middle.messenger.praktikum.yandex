@@ -12,17 +12,12 @@ export class LoginPage extends Block {
       loginValue: '',
       passwordValue: '',
       onInput: (e: FocusEvent) => {
-        const inputEl = e.target
-        const type = inputEl.name === 'login' ? ValidateType.Login : ValidateType.Password
-        const inputRef = inputEl.name + 'InputRef' //Чтобы найти нужный объект в this.refs
-        const errorRef = inputEl.name + 'ErrorRef' //Чтобы найти нужный объект в this.refs[inputRef]
+        const inputEl = e.target as HTMLInputElement
+        const inputRef = inputEl.name + 'InputRef' //Чтобы найти нужный объект в this.refs. Получается, например loginInputRef
+        const errorRef = inputEl.name + 'ErrorRef' //Чтобы найти нужный объект в this.refs[inputRef] Получается, например loginErrorRef
 
-        const errorMessage = validateForm([{ type: type, value: inputEl.value }])
-        console.log(e.path[1].lastElementChild, this.refs[inputRef].refs[errorRef])
-        // const errorReference = props.errorRef as string
-        // this.refs[errorReference].setProps({
-        //   text: errorMessage,
-        // })
+        const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }]) //Две константы выше сделаны как раз для того, чтобы не нужно было через условия отслеживать, какой тип отправлять. Результат функции - {text:сообщение об ошибке, inputName:имя элемента}
+
         this.refs[inputRef].refs[errorRef].setProps({
           text: errorMessage.text,
         })
@@ -33,8 +28,10 @@ export class LoginPage extends Block {
       onBlur: () => {
         console.log('blur')
       },
+      onRedirectToSignUp: () => {
+        window.currentPage.page = SignUpPage
+      },
       onSubmit: (e) => {
-        console.log(this.refs)
         const loginEl = this.element?.querySelector('input[name="login"]') as HTMLInputElement
         const passwordEl = this.element?.querySelector('input[name="password"]') as HTMLInputElement
 
@@ -42,20 +39,16 @@ export class LoginPage extends Block {
           { type: ValidateType.Login, value: loginEl.value },
           { type: ValidateType.Password, value: passwordEl.value },
         ])
-        console.log(errorMessage)
-        if (errorMessage) {
-          this.setProps({
-            error: errorMessage,
-            loginValue: loginEl.value,
-            passwordValue: passwordEl.value,
+
+        if (errorMessage.text) {
+          this.refs[errorMessage.inputName].refs[errorMessage.inputName.replace('Input', 'Error')].setProps({
+            text: errorMessage.text,
           })
         } else {
           this.setProps({
             error: '',
-            loginValue: loginEl.value,
-            passwordValue: passwordEl.value,
           })
-          console.log('Форма готова к отправке')
+          console.log({ Login: loginEl.value, Password: passwordEl.value })
         }
         // console.log(errorMessage)
         // window.currentPage.page = SignUpPage
@@ -74,7 +67,7 @@ export class LoginPage extends Block {
             onInput=onInput 
             onFocus=onFocus
             type="text" 
-            name="login" 
+            name="login"
             inputClassName="custom-input"
             divClassName="first"
             placeholder="Ваш логин"
@@ -87,6 +80,7 @@ export class LoginPage extends Block {
             type="text" 
             name="password" 
             inputClassName="custom-input"
+            divClassName="last"
             placeholder="Пароль"
             ref="passwordInputRef"
             errorRef="passwordErrorRef"
@@ -94,7 +88,7 @@ export class LoginPage extends Block {
             {{{Button text="Войти" className="custom-button" onClick=onSubmit }}}
 
           </form>
-          <a href="../notFound/notFound.html">Нет аккаунта?</a>
+          {{{Link text="Нет аккаунта?" className="redirect-button" onClick=onRedirectToSignUp}}}
       </div>
     </main>
     `

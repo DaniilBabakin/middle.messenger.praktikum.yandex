@@ -1,15 +1,15 @@
 import Block from 'core/Block';
 
-import './button.scss';
+import './link.scss';
 
-interface ButtonProps {
+interface LinkProps {
   text: string;
   className:string;
   onClick: () => void;
 }
 
-export class Button extends Block {
-  constructor({text,className, onClick}: ButtonProps) {
+export class Link extends Block {
+  constructor({text,className, onClick}: LinkProps) {
     super({text,className, events: {click: onClick}});
   }
 

@@ -9,7 +9,7 @@ interface ControlledInputProps {
   onBlur?: () => void
   type?: 'text' | 'password' | 'email'
   placeholder?: string
-  value?: string
+  value: string
   error?: string
   name?: string
   inputClassName?: string
@@ -23,8 +23,7 @@ export class ControlledInput extends Block {
       ...props,
       onBlur: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
-        const type = inputEl.name === 'login' ? ValidateType.Login : ValidateType.Password
-        const errorMessage = validateForm([{ type: type, value: inputEl.value }])
+        const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }])
         const errorReference = props.errorRef as string
         this.refs[errorReference].setProps({
           text: errorMessage.text,
@@ -34,15 +33,12 @@ export class ControlledInput extends Block {
   }
 
   protected render(): string {
-    console.log(this)
-
     // language=hbs
     return `
       <div class="input {{divClassName}}">
         {{{Input 
             name="{{name}}" 
-            type="{{type}}" 
-            value="{{value}}"
+            type="{{type}}"
             inputClassName="{{inputClassName}}"
             placeholder="{{placeholder}}" 
             onInput=onInput 

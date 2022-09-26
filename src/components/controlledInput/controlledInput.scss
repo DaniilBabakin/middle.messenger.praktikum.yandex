@@ -4,11 +4,23 @@
   width: 100%;
   margin-bottom: 30px;
 
+  &.short {
+    margin-bottom: 20px;
+  }
+
   &.first {
     margin-top: 65px;
   }
 
+  &.first-short {
+    margin-top: 25px;
+  }
+
   &.last {
     margin-bottom: 160px;
+  }
+
+  &.last-short {
+    margin-bottom: 40px;
   }
 }

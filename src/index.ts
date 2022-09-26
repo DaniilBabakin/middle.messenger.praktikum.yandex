@@ -6,7 +6,7 @@ import './app.scss';
 import { LoginPage } from './pages/login/login'
 import Title from './components/title/'
 import Button from './components/button';
-// import Link from './components/link';
+import Link from './components/link';
 import Input from './components/input';
 import ErrorComponent from './components/error';
 import ControlledInput from './components/controlledInput';
@@ -14,10 +14,10 @@ import ControlledInput from './components/controlledInput';
 
 registerComponent(Title)
 registerComponent(Button)
+registerComponent(Link);
 registerComponent(Input);
 registerComponent(ErrorComponent);
 registerComponent(ControlledInput);
-// registerComponent(Layout);
 
 document.addEventListener('DOMContentLoaded', () => {
   renderDOM(new LoginPage())
