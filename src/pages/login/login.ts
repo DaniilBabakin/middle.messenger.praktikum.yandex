@@ -1,4 +1,5 @@
 import { SignUpPage } from '../signUp/signUp'
+import { MainPage } from '../main/main'
 import Block from 'core/Block'
 import './login.scss'
 import { validateForm, ValidateType } from 'helpers/validateForm'
@@ -31,7 +32,7 @@ export class LoginPage extends Block {
       onRedirectToSignUp: () => {
         window.currentPage.page = SignUpPage
       },
-      onSubmit: (e) => {
+      onSubmit: () => {
         const loginEl = this.element?.querySelector('input[name="login"]') as HTMLInputElement
         const passwordEl = this.element?.querySelector('input[name="password"]') as HTMLInputElement
 
@@ -48,10 +49,10 @@ export class LoginPage extends Block {
           this.setProps({
             error: '',
           })
+          window.currentPage.page = MainPage
           console.log({ Login: loginEl.value, Password: passwordEl.value })
         }
         // console.log(errorMessage)
-        // window.currentPage.page = SignUpPage
       },
     })
   }

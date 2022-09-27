@@ -1,41 +1,56 @@
 require('babel-core/register')
 
 import { Block, renderDOM, registerComponent } from './core'
-import './app.scss';
+import './app.scss'
 
 import { LoginPage } from './pages/login/login'
+import { MainPage } from './pages/main/main'
 import Title from './components/title/'
-import Button from './components/button';
-import Link from './components/link';
-import Input from './components/input';
-import ErrorComponent from './components/error';
-import ControlledInput from './components/controlledInput';
+import Button from './components/button'
+import Link from './components/link'
+import Input from './components/input'
+import ErrorComponent from './components/error'
+import ControlledInput from './components/controlledInput'
+//------ИМПОРТЫ ДЛЯ ЧАТА
+import ChatContacts from './components/chat/chatContacts'
+import ContactSearchInput from './components/chat/chatContacts/contactSearchInput'
+import ChatFooter from './components/chat/chatFooter'
+import ChatHeader from './components/chat/chatHeader'
+import ChatMainBlock from './components/chat/chatMainBlock'
+import ChatMessages from './components/chat/chatMessages'
 // import Layout from './components/layout';
 
 registerComponent(Title)
 registerComponent(Button)
-registerComponent(Link);
-registerComponent(Input);
-registerComponent(ErrorComponent);
-registerComponent(ControlledInput);
+registerComponent(Link)
+registerComponent(Input)
+registerComponent(ErrorComponent)
+registerComponent(ControlledInput)
+//------РЕГИСТРЫ ДЛЯ ЧАТА
+registerComponent(ChatContacts)
+registerComponent(ContactSearchInput)
+registerComponent(ChatFooter)
+registerComponent(ChatHeader)
+registerComponent(ChatMainBlock)
+registerComponent(ChatMessages)
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderDOM(new LoginPage())
-});
+  renderDOM(new MainPage())
+})
 
-(window as any).currentPage = new Proxy(
-    { page: 'login' },
-    {
-      get(target: any, prop) {
-        const value = target[prop]
-        console.log('get data: ', value)
-        return typeof value === 'function' ? value.bind(target) : value
-      },
-      set(target, prop, value) {
-        target[prop] = value
-        console.log(value)
-        renderDOM(new target[prop]())
-        return true
-      },
+window.currentPage = new Proxy(
+  { page: 'login' },
+  {
+    get(target: any, prop) {
+      const value = target[prop]
+      console.log('get data: ', value)
+      return typeof value === 'function' ? value.bind(target) : value
     },
-  )
+    set(target, prop, value) {
+      target[prop] = value
+      console.log(value)
+      renderDOM(new target[prop]())
+      return true
+    },
+  },
+)

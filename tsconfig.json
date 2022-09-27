@@ -20,7 +20,10 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "paths": {
+      "*": ["typings/add.d.ts", "*"]
+    }
   },
-  "include": ["src"],
-  "typeRoots": ["node_modules/@types", "typings/app.d.ts"],
+  "include": ["src","typings/add.d.ts"],
+  "typeRoots": ["node_modules/@types", "./typings/app.d.ts"],
 }

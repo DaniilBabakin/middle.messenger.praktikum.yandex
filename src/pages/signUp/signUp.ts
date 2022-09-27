@@ -27,9 +27,6 @@ export class SignUpPage extends Block {
       onBlur: () => {
         console.log('blur')
       },
-      onRedirectToSignUp: () => {
-        window.currentPage.page = SignUpPage
-      },
       onSubmit: () => {
         const arrayOfInputsName = ['email', 'login', 'first_name', 'second_name', 'phone', 'password', 'check_password']
 
