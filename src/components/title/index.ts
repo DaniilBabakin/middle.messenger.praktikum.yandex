@@ -1,1 +1,1 @@
-export { Title as default } from './title';
+export { Title as default } from "./title"

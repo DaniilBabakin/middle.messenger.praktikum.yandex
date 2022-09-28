@@ -1,1 +1,1 @@
-export { ChatMainBlock as default } from './chatMainBlock';
+export { ChatMainBlock as default } from "./chatMainBlock"

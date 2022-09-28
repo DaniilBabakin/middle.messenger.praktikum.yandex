@@ -1,42 +1,140 @@
+button {
+  cursor: pointer;
+
+  padding: 0;
+
+  font-family: Raleway, sans-serif;
+
+  background: none;
+  border: none;
+  outline: none;
+
+  transition: 0.2s ease all;
+}
+
 @mixin custom-input-button {
-    box-sizing: border-box;
-    width: 25vw;
-    margin-bottom: 30px;
-    padding: 25px 35px;
-  
-    font-family: Raleway, sans-serif;
-    font-size: 24px;
-    font-weight: 400;
+  box-sizing: border-box;
+  width: 25vw;
+  margin-bottom: 30px;
+  padding: 25px 35px;
+
+  font-family: Raleway, sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  text-align: center;
+
+  border: 1px solid white;
+  border-radius: 15px;
+  outline: none;
+}
+
+// -----------CUSTOM_BUTTON-----------
+.custom-button {
+  @include custom-input-button;
+  cursor: pointer;
+
+  color: white;
+
+  background-color: #de6c69;
+  border: none;
+  box-shadow: 0 4px 4px 0 rgb(0 0 0 / 25%);
+
+  transition: 0.3s ease all;
+
+  &:hover {
+    transform: translateY(-3px);
+  }
+
+  &.blue {
+    width: 20vw;
+    padding: 15px 25px;
+
+    font-size: 15px;
     text-align: center;
-  
-    border: 1px solid white;
-    border-radius: 15px;
-    outline: none;
+
+    background-color: #3369f3;
   }
-  
-  .custom-button {
-    @include custom-input-button;
-    cursor: pointer;
-  
-    color: white;
-  
-    background-color: #de6c69;
-    border: none;
-    box-shadow: 0 4px 4px 0 rgb(0 0 0 / 25%);
-  
-    transition: 0.3s ease all;
-  
-    &:hover {
-      transform: translateY(-3px);
-    }
-  
-    &.blue {
-      width: 20vw;
-      padding: 15px 25px;
-  
-      font-size: 15px;
-      text-align: center;
-  
-      background-color: #3369f3;
-    }
+
+  &.mt220 {
+    margin-top: 220px;
   }
+
+  &.mt75 {
+    margin-top: 75px;
+  }
+}
+
+// -----------REDIRECT_BUTTON-----------
+.redirect-button {
+  font-size: 20px;
+  font-weight: 400;
+  color: white;
+}
+
+// -----------PROFILE_CHANGE_VALUES_BUTTON-----------
+.profile-change-values {
+  font-size: 16px;
+  font-weight: 600;
+
+  &.blue {
+    color: #3369f3;
+  }
+
+  &.red {
+    color: red;
+  }
+}
+
+// -----------BACK_TO_CHATS_BUTTON-----------
+.back-to-chats {
+  cursor: pointer;
+
+  position: absolute;
+  top: 50%;
+  left: 4vw;
+
+  width: 42px;
+  height: 42px;
+
+  background: center / cover no-repeat url("../../assets/BackArrow.png");
+
+  &:hover {
+    transform: translateX(-5px);
+  }
+}
+
+// -----------ERROR_PAGE_BUTTON-----------
+.error-page__button {
+  font-size: 23px;
+  color: #8bacff;
+  text-decoration: none;
+
+  transition: 0.3s ease all;
+
+  &:hover {
+    transform: translateY(-3px);
+
+    color: #a5bfff;
+  }
+}
+
+// -----------MESSAGES_FOOTER_SEND_MESSAGE_BUTTON-----------
+.messages__footer__send-message {
+  cursor: pointer;
+
+  transform: scale(-1);
+
+  min-width: 42px;
+  height: 42px;
+
+  background: center / cover no-repeat url("../../assets/BackArrow.png");
+  border: none;
+
+  transition: 0.2s ease all;
+
+  &:hover {
+    transform: translateY(-2px) scale(-1);
+
+    filter: contrast(151%);
+  }
+}

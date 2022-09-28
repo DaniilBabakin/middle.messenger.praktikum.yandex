@@ -1,11 +1,11 @@
-import { EventBus } from './eventBus'
-import { nanoid } from 'nanoid'
+import { EventBus } from "./eventBus"
+import { nanoid } from "nanoid"
 class Block {
   static EVENTS = {
-    INIT: 'init',
-    FLOW_CDM: 'flow:component-did-mount',
-    FLOW_CDU: 'flow:component-did-update',
-    FLOW_RENDER: 'flow:render',
+    INIT: "init",
+    FLOW_CDM: "flow:component-did-mount",
+    FLOW_CDU: "flow:component-did-update",
+    FLOW_RENDER: "flow:render",
   }
 
   public id = nanoid(6)
@@ -21,7 +21,7 @@ class Block {
    *
    * @returns {void}
    */
-  constructor(tagName = 'div', propsWithChildren: any = {}) {
+  constructor(tagName = "div", propsWithChildren: any = {}) {
     const eventBus = new EventBus()
 
     const { props, children } = this._getChildrenAndProps(propsWithChildren)
@@ -123,7 +123,7 @@ class Block {
   private _render() {
     const fragment = this.render()
 
-    this._element!.innerHTML = ''
+    this._element!.innerHTML = ""
 
     this._element!.append(fragment)
 
@@ -139,7 +139,7 @@ class Block {
 
     const html = template(contextAndStubs)
 
-    const temp = document.createElement('template')
+    const temp = document.createElement("template")
 
     temp.innerHTML = html
 
@@ -173,7 +173,7 @@ class Block {
     return new Proxy(props, {
       get(target, prop) {
         const value = target[prop]
-        return typeof value === 'function' ? value.bind(target) : value
+        return typeof value === "function" ? value.bind(target) : value
       },
       set(target, prop, value) {
         const oldTarget = { ...target }
@@ -186,7 +186,7 @@ class Block {
         return true
       },
       deleteProperty() {
-        throw new Error('Нет доступа')
+        throw new Error("Нет доступа")
       },
     })
   }
@@ -197,10 +197,10 @@ class Block {
   }
 
   show() {
-    this.getContent()!.style.display = 'block'
+    this.getContent()!.style.display = "block"
   }
 
   hide() {
-    this.getContent()!.style.display = 'none'
+    this.getContent()!.style.display = "none"
   }
 }

@@ -1,19 +1,20 @@
-import { validateForm, ValidateType } from 'helpers/validateForm'
-import Block from 'core/Block'
+import { validateForm, ValidateType } from "helpers/validateForm"
+import Block from "core/Block"
 
-import './controlledInput.scss'
+import "./controlledInput.scss"
 
 interface ControlledInputProps {
   onInput?: () => void
   onFocus?: () => void
   onBlur?: () => void
-  type?: 'text' | 'password' | 'email'
+  type?: "text" | "password" | "email"
   placeholder?: string
   value: string
   error?: string
   name?: string
   inputClassName?: string
   divClassName?: string
+  errorClassName?: string
   errorRef?: string
 }
 
@@ -44,8 +45,9 @@ export class ControlledInput extends Block {
             onInput=onInput 
             onFocus=onFocus 
             onBlur=onBlur 
+            value=value
         }}}
-        {{{Error ref=errorRef text=error}}}
+        {{{Error className=errorClassName ref=errorRef text=error}}}
       </div>
     `
   }

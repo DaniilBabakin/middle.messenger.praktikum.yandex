@@ -1,1 +1,1 @@
-export { ContactSearchInput as default } from './contactSearchInput';
+export { ContactSearchInput as default } from "./contactSearchInput"

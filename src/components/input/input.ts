@@ -1,12 +1,12 @@
-import Block from 'core/Block'
+import Block from "core/Block"
 
-import './input.scss'
+import "./input.scss"
 
 interface InputProps {
   onInput?: () => void
   onFocus?: () => void
   onBlur?: () => void
-  type?: 'text' | 'password' | 'email'
+  type?: "text" | "password" | "email"
   placeholder?: string
   value?: string
   name?: string
@@ -15,7 +15,7 @@ interface InputProps {
 
 export class Input extends Block {
   constructor({ onInput, onFocus, onBlur, ...props }: InputProps) {
-      super({ ...props, events: { input: onInput, focus: onFocus, blur: onBlur } })
+    super({ ...props, events: { input: onInput, focus: onFocus, blur: onBlur } })
   }
 
   protected render(): string {

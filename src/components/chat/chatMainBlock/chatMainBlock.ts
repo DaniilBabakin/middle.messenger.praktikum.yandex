@@ -1,6 +1,6 @@
-import Block from 'core/Block'
+import Block from "core/Block"
 
-import './chatMainBlock.scss'
+import "./chatMainBlock.scss"
 
 export class ChatMainBlock extends Block {
   constructor() {
@@ -17,7 +17,7 @@ export class ChatMainBlock extends Block {
             <span class="message__time">16:39</span>
             </div>
             <div class="message friend__message">
-            <p class="message__text">Выпьем за любовь?</p>
+            <p class="message__text">Как настроение?</p>
             <span class="message__time">16:40</span>
             </div>
         </div>

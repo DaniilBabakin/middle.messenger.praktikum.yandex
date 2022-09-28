@@ -1,36 +1,59 @@
-html,body{
-  font-family: 'Raleway',sans-serif;
-  padding:0;
-  margin:0;
+html,
+body {
+  margin: 0;
+  padding: 0;
+
+  font-family: Raleway, sans-serif;
 }
-a{
-  text-decoration: none;
-  color:#8bacff;
+
+a {
   font-size: 23px;
+  color: #8bacff;
+  text-decoration: none;
+
+  transition: 0.3s ease all;
+
+  &:hover {
+    transform: translateY(-3px);
+
+    color: #a5bfff;
+  }
 }
-.four-o-four{
-  display:flex;
-  justify-content: center;
+
+.error-page {
+  display: flex;
   align-items: center;
-  height:100vh;
-  width:100vw;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+
   background: center / cover no-repeat url("../../assets/Background.png");
-  &__container{
-    color:white;
-    display:flex;
+
+  &__container {
+    display: flex;
     flex-direction: column;
     align-items: center;
-  } 
-}
-.error{
-  color:transparent;
-  font-size:96px;
-  -webkit-text-stroke: 1px rgb(255, 255, 255);
-  margin-bottom: 5px;
-  &__message{
+
+    color: white;
+  }
+
+  &__status {
+    margin-top: 0;
+    margin-bottom: 5px;
+
+    font-size: 96px;
+    color: transparent;
+
+    -webkit-text-stroke: 1px rgb(255 255 255);
+  }
+
+  &__message {
     margin-top: 5px;
-    color:transparent;
-    font-size:40px;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.62);
+
+    font-size: 40px;
+    color: transparent;
+
+    -webkit-text-stroke: 1px rgb(255 255 255 / 62%);
   }
 }

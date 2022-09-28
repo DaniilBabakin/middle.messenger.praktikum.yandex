@@ -1,15 +1,15 @@
-import Block from 'core/Block';
+import Block from "core/Block"
 
-import './title.scss';
+import "./title.scss"
 
 interface TitleProps {
-  title: string;
-  subtitle: string;
+  title: string
+  subtitle: string
 }
 
 export class Title extends Block {
-  constructor({title,subtitle}: TitleProps) {
-    super({title,subtitle});
+  constructor({ title, subtitle }: TitleProps) {
+    super({ title, subtitle })
   }
 
   protected render(): string {

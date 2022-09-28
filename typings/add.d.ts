@@ -1,4 +1,4 @@
-import { Block } from 'core'
+import { Block } from "core"
 
 declare global {
   export type Nullable<T> = T | null
@@ -8,10 +8,10 @@ declare global {
   interface Window {
     currentPage: { page: typeof Block }
   }
+  module "*.png"
+  module "*.svg"
+  module "*.jpeg"
+  module "*.jpg"
 }
 export {}
 
-declare module '*.png'
-declare module '*.svg'
-declare module '*.jpeg'
-declare module '*.jpg'

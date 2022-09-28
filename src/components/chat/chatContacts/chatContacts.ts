@@ -1,22 +1,20 @@
-import Block from 'core/Block'
+import Block from "core/Block"
 
-import './chatContacts.scss'
-import contacts from '../../../data/contacts.json'
-import * as avatar from '../../../assets/defaultAvatar.png'
+import "./chatContacts.scss"
+import contacts from "../../../data/contacts.json"
+import * as avatar from "../../../assets/defaultAvatar.png"
 export class ChatContacts extends Block {
   constructor() {
     super(contacts)
     this.setProps({
       contacts: contacts,
-      avatar1: avatar
     })
   }
   protected render(): string {
-    console.log(avatar)
     // language=hbs
     return `
     <aside class="contacts">
-    <a href="./src/pages/profile/profile.hbs" class="contacts__link">Профиль ></a>
+    {{{ContactLink text="Профиль >"}}}
     {{{ContactSearchInput}}}
     <div class="contacts__list">
       {{#each contacts}}

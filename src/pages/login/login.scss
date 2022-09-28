@@ -20,7 +20,7 @@ a {
   width: 100vw;
   height: 100vh;
 
-  background: center / cover no-repeat url('../../assets/Background.png');
+  background: center / cover no-repeat url("../../assets/Background.png");
 
   &__container {
     display: flex;
@@ -37,5 +37,3 @@ a {
     justify-content: center;
   }
 }
-
-

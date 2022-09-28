@@ -18,3 +18,33 @@
     font-size: 20px;
   }
 }
+
+.profile__input {
+  width: 220px;
+  padding: 0 5px;
+
+  font: inherit;
+  text-align: right;
+
+  border: none;
+  outline: none;
+
+  &.default-font::placeholder {
+    font-family: Arial, sans-serif;
+    font-weight: 600;
+  }
+}
+
+.messages__footer__input {
+  width: 58vw;
+  height: 50%;
+  padding: 0 15px;
+
+  font-family: Raleway, sans-serif;
+  font-size: 15px;
+
+  background-color: #efefef;
+  border: none;
+  border-radius: 30px;
+  outline: none;
+}

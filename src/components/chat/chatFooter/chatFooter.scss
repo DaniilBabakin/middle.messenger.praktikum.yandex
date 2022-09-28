@@ -7,29 +7,15 @@
   width: 65vw;
   height: 8vh;
 
-  &__input {
-    width: 58vw;
-    height: 50%;
-    padding: 0 15px;
-
-    font-family: Raleway, sans-serif;
-    font-size: 15px;
-
-    background-color: #efefef;
-    border: none;
-    border-radius: 30px;
-    outline: none;
-  }
-
   &__send-message {
     cursor: pointer;
 
     transform: scale(-1);
 
-    width: 42px;
+    min-width: 42px;
     height: 42px;
 
-    background: center / cover no-repeat url('../../../assets/BackArrow.png');
+    background: center / cover no-repeat url("../../../assets/BackArrow.png");
     border: none;
 
     transition: 0.2s ease all;
@@ -46,10 +32,10 @@
 
     transform: scale(-1);
 
-    width: 42px;
+    min-width: 42px;
     height: 42px;
 
-    background: center / cover no-repeat url('../../../assets/ImportFileButton.png');
+    background: center / cover no-repeat url("../../../assets/ImportFileButton.png");
     border: none;
 
     transition: 0.2s ease all;

@@ -1,6 +1,6 @@
-import Block from 'core/Block'
+import Block from "core/Block"
 
-import './contactSearchInput.scss'
+import "./contactSearchInput.scss"
 
 export class ContactSearchInput extends Block {
   constructor() {

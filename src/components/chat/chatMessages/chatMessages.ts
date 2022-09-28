@@ -1,6 +1,6 @@
-import Block from 'core/Block'
+import Block from "core/Block"
 
-import './chatMessages.scss'
+import "./chatMessages.scss"
 
 export class ChatMessages extends Block {
   constructor() {

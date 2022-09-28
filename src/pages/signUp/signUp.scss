@@ -1,4 +1,4 @@
-@import '../login/login';
+@import "../login/login";
 
 html,
 body {
@@ -24,7 +24,7 @@ a {
   width: 100vw;
   height: 100vh;
 
-  background: center / cover no-repeat url('../../assets/Background.png');
+  background: center / cover no-repeat url("../../assets/Background.png");
 
   &__container {
     display: flex;
@@ -41,19 +41,3 @@ a {
     flex-direction: column;
   }
 }
-
-// .custom-input {
-//   @include custom-input-button;
-//   height: 60px;
-//   margin-bottom: 20px;
-
-//   font-size: 20px;
-
-//   &:first-of-type {
-//     margin-top: 25px;
-//   }
-
-//   &:last-of-type {
-//     margin-bottom: 40px;
-//   }
-// }
