@@ -1,4 +1,4 @@
-![Logo](https://downloader.disk.yandex.ru/preview/bcdcbdf95d84a50326c76c608d57e2ef56775aae3584080aba71d639484c23f8/631f87d2/5rNAT84K4Fd_ywUQAqV_ga8Pyi4rd2321KsfIaIrwm9jcFupqL5TEvybz4S8S79vEUvPOFt59_P6BQgUsMhimQ%3D%3D?uid=0&filename=Group%202011.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v2&size=2048x2048)
+![Logo](https://downloader.disk.yandex.ru/preview/b2c8c7822286f7e00ee6942205f32facae311042f9503c3b1fdac5d96bc2898a/6335aaaa/5rNAT84K4Fd_ywUQAqV_ga8Pyi4rd2321KsfIaIrwm9jcFupqL5TEvybz4S8S79vEUvPOFt59_P6BQgUsMhimQ%3D%3D?uid=0&filename=Group%202011.png&disposition=inline&hash=&limit=0&content_type=image%2Fpng&owner_uid=0&tknv=v2&size=2048x2048)
 
 # Веб-мессенджер
 
