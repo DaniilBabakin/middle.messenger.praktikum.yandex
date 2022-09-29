@@ -17,8 +17,6 @@ import ChatFooter from "./components/chat/chatFooter"
 import ChatHeader from "./components/chat/chatHeader"
 import ChatMainBlock from "./components/chat/chatMainBlock"
 import ChatMessages from "./components/chat/chatMessages"
-import signUp from "pages/signUp"
-import profileChangeValues from "pages/profileChangeValues"
 // import Layout from "./components/layout";
 
 registerComponent(Title)
@@ -36,7 +34,7 @@ registerComponent(ChatMainBlock)
 registerComponent(ChatMessages)
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderDOM(new profileChangeValues())
+  renderDOM(new LoginPage())
 })
 
 window.currentPage = new Proxy(
