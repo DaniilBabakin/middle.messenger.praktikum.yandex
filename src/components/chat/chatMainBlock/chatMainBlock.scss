@@ -1,0 +1,53 @@
+p {
+  margin: 0;
+}
+
+.messages__main-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+
+  box-sizing: border-box;
+  width: 70vw;
+  height: 74vh;
+  padding: 0 30px;
+
+  background-color: #dbdbdb;
+
+  &__time {
+    margin-bottom: 50px;
+
+    color: #999;
+  }
+}
+
+.message {
+  min-width: 5vw;
+  max-width: 23vw;
+  margin-bottom: 20px;
+  margin-left: auto;
+  padding: 20px 30px;
+
+  background-color: #e4edfd;
+  border-radius: 25px;
+  border-top-right-radius: 0;
+
+  &__time {
+    float: right;
+
+    margin-top: 5px;
+
+    font-size: 14px;
+    color: #999;
+  }
+
+  &.friend__message {
+    margin-right: auto;
+    margin-left: 0;
+
+    background-color: white;
+    border-top-left-radius: 0;
+    border-top-right-radius: 25px;
+  }
+}

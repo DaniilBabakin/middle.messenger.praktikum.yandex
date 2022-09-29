@@ -4,25 +4,25 @@
     "lastMessage":"Пойдем гулять!!",
     "time":"19:59",
     "missedMessages":"2",
-    "avatar":"./src/assets/defaultAvatar.png"
+    "avatar":"../../../assets/defaultAvatar.png"
   },
   {
     "name":"Андрей",
     "lastMessage":"Изображение",
     "time":"17:37",
     "missedMessages":"2",
-    "avatar":"./src/assets/defaultAvatar.png"
+    "avatar":"../../assets/defaultAvatar.png"
   },
   {
     "name":"Никита Ефимов",
     "lastMessage":"Привет, друг, слышал про Яндекс Практикум? Говорят, классное место :)",
     "time":"17:15",
     "missedMessages":"1",
-    "avatar":"./src/assets/defaultAvatar.png"
+    "avatar":"../../../../assets/defaultAvatar.png"
   },
   {
     "name":"Игорь Николаев",
-    "lastMessage":"Выпьем за любовь?",
+    "lastMessage":"Как настроение?",
     "time":"16:40",
     "missedMessages":"2",
     "avatar":"./src/assets/Nikolaev.jpg"
@@ -32,7 +32,7 @@
     "lastMessage":"Дань, меня тут все иностранцем считают, что делать?...",
     "time":"15:28",
     "missedMessages":"12",
-    "avatar":"./src/assets/Meladze.jpg"
+    "avatar":"../assets/Meladze.jpg"
   },
   {
     "name":"Зайцев Андрей",
@@ -49,7 +49,7 @@
   },
   {
     "name":"Шмелев Степан",
-    "lastMessage":"Как сделать деплой?",
+    "lastMessage":"Можешь проект посмотреть?",
     "time":"11:41",
     "missedMessages":"2",
     "avatar":"./src/assets/defaultAvatar.png"
