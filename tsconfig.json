@@ -29,5 +29,5 @@
     }
   },
   "include": ["src","typings/add.d.ts"],
-  "typeRoots": ["node_modules/@types", "./typings/app.d.ts"],
+  "typeRoots": ["node_modules/@types", "./typings/app.d.ts"]
 }
