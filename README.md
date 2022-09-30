@@ -4,6 +4,7 @@
 
 ## Кратко
 - Приложение написано на MVC архитектуре
+- Написан на Typescript
 - Используется EventBus
 - Страницы написаны на шаблонизаторе Handlebars
 - Дизайн в Figma: https://www.figma.com/file/xh7mEgQ8MzZmRm3e4KyR1S/Untitled?node-id=0%3A1
