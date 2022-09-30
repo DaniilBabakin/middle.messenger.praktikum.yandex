@@ -3,6 +3,7 @@ import Block from "core/Block"
 import "./chatMainBlock.scss"
 
 export class ChatMainBlock extends Block {
+  static componentName = "ChatMainBlock"
   constructor() {
     super()
   }

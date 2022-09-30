@@ -4,6 +4,7 @@ import { validateForm } from "helpers/validateForm"
 import "./chatFooter.scss"
 
 export class ChatFooter extends Block {
+  static componentName = "ChatFooter"
   constructor() {
     super()
 
@@ -24,9 +25,7 @@ export class ChatFooter extends Block {
       onSubmit: () => {
         const messageEl = this.element?.querySelector("input[name='message']") as HTMLInputElement
 
-        const errorMessage = validateForm([
-          { type: "message", value: messageEl.value },
-        ])
+        const errorMessage = validateForm([{ type: "message", value: messageEl.value }])
 
         if (errorMessage.text) {
           this.refs[errorMessage.inputName].refs[errorMessage.inputName.replace("Input", "Error")].setProps({

@@ -20,6 +20,8 @@ export default class Block<P = any> {
     FLOW_RENDER: "flow:render",
   } as const
 
+  static componentName: string
+
   public id = nanoid(6)
   private readonly _meta: BlockMeta
 

@@ -3,7 +3,10 @@ import Block from "core/Block"
 import "./chatContacts.scss"
 import contacts from "../../../data/contacts.json"
 import * as avatar from "../../../assets/defaultAvatar.png"
+
 export class ChatContacts extends Block {
+  static componentName = "ChatContacts"
+
   constructor() {
     super(contacts)
     this.setProps({

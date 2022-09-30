@@ -7,6 +7,7 @@ interface ContactLinkProps {
 }
 
 export class ContactLink extends Block {
+  static componentName = "ContactLink"
   constructor(props: ContactLinkProps) {
     super({
       ...props,

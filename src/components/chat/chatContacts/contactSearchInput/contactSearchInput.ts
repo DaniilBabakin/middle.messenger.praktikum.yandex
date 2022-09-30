@@ -3,6 +3,7 @@ import Block from "core/Block"
 import "./contactSearchInput.scss"
 
 export class ContactSearchInput extends Block {
+  static componentName = "ContactSearchInput"
   constructor() {
     super()
   }
