@@ -4,8 +4,8 @@
   "description": "",
   "scripts": {
     "dev": "parcel index.hbs --no-cache",
-    "build": "parcel build src/index.html --no-cache",
-    "start": "parcel build src/index.html --public-url ./ --no-source-maps --no-cache && node server.js",
+    "build": "parcel build src/index.html --no-cache --no-minify",
+    "start": "parcel build src/index.html --public-url ./ --no-source-maps --no-cache --no-optimize && node server.js",
     "start1": "parcel src/index.html --no-source-maps --no-cache"
   },
   "alias": {
