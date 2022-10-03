@@ -15,11 +15,11 @@ export class ChatMainBlock extends Block {
             <span class="messages__main-block__time">Сегодня</span>
             <div class="message friend__message">
             <p class="message__text">Привет!</p>
-            <span class="message__time">16:39</span>
+            <time class="message__time">16:39</time>
             </div>
             <div class="message friend__message">
             <p class="message__text">Как настроение?</p>
-            <span class="message__time">16:40</span>
+            <time class="message__time">16:40</time>
             </div>
         </div>
     `

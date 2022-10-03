@@ -2,6 +2,7 @@ import Block from "core/Block"
 
 import "./chatHeader.scss"
 import * as avatar from "../../../assets/defaultAvatar.png"
+
 export class ChatHeader extends Block {
   static componentName = "ChatHeader"
   constructor() {

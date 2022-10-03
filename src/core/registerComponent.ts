@@ -19,7 +19,7 @@ export default function registerComponent<Props extends any>(Component: BlockCon
       }
 
       const { children, refs } = data.root
-
+      
       /**
        * Костыль для того, чтобы передавать переменные
        * внутрь блоков вручную подменяя значение

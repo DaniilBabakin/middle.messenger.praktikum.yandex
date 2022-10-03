@@ -52,7 +52,7 @@ button {
     font-size: 15px;
     text-align: center;
 
-    background-color: #3369f3;
+    background-color: var(--main-blue-color);
   }
 
   &.mt220 {
@@ -77,7 +77,7 @@ button {
   font-weight: 600;
 
   &.blue {
-    color: #3369f3;
+    color: var(--main-blue-color);
   }
 
   &.red {

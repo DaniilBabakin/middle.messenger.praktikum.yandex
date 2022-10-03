@@ -28,7 +28,7 @@ export class ChatContacts extends Block {
               <span class="item__text__last-message">{{this.lastMessage}}</span>
             </div>
             <div class="item__info">
-              <span class="item__info__time">{{this.time}}</span>
+              <time class="item__info__time">{{this.time}}</time>
               {{#if this.missedMessages}}
               <span class="item__info__missed-messages">{{this.missedMessages}}</span>
               {{else}}
