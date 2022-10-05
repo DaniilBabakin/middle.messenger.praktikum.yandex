@@ -1,0 +1,55 @@
+.error {
+  position: absolute;
+  z-index: 1;
+  bottom: -50px;
+
+  display: none;
+
+  height: 30px;
+  padding: 15px 30px;
+
+  font-size: 15px;
+  color: rgb(241 0 0 / 80%);
+  text-align: center;
+
+  background-color: rgb(255 201 201);
+  border-radius: 15px;
+
+  &::after {
+    pointer-events: none;
+    content: "";
+
+    position: absolute;
+    bottom: 100%;
+    left: 60px;
+
+    width: 0;
+    height: 0;
+    margin-left: -17px;
+
+    border: solid transparent;
+    border-color: rgb(136 183 213 / 0%);
+    border-width: 19px;
+    border-bottom-color: rgb(255 201 201);
+  }
+
+  &.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &.profile__error {
+    bottom: -80px;
+
+    &::after {
+      left: 180px;
+    }
+  }
+
+  &.message-error {
+    bottom: -28px;
+
+    padding: 7px 30px;
+  }
+}

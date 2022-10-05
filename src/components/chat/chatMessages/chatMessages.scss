@@ -1,0 +1,20 @@
+@mixin block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 90vh;
+
+  background-color: #fcfcfc;
+  border-radius: 25px;
+}
+
+.messages {
+  @include block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  width: 70vw;
+}
+

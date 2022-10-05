@@ -1,70 +1,25 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,400;0,500;0,600;0,700;1,100&display=swap');
-html,body{
-  font-family: 'Raleway',sans-serif;
-  padding:0;
-  margin:0;
-}
-a{
-  text-decoration: none;
-  color:white;
-  font-size: 20px;
-}
-.login{
-  display:flex;
-  justify-content: center;
+.login {
+  display: flex;
   align-items: center;
-  height:100vh;
-  width:100vw;
+  justify-content: center;
+
+  width: 100vw;
+  height: 100vh;
+
   background: center / cover no-repeat url("../../assets/Background.png");
-  &__container{
-    color:white;
-    display:flex;
-    flex-direction: column;
-    align-items: center;
-  } 
-  &__form{
+
+  &__container {
     display: flex;
     flex-direction: column;
+    align-items: center;
+
+    color: white;
   }
-}
-@mixin custom-input-button{
-  box-sizing: border-box;
-  width:25vw;
-  padding:25px 35px;
-  margin-bottom: 30px;
-  border-radius: 15px;
-  outline: none;
-  font-size: 24px;
-  font-weight: 400;
-  font-family: 'Raleway';
-  border:1px solid white;
-  text-align: center;
-}
-.custom-input{
-  @include custom-input-button();
-  &:first-of-type{
-    margin-top: 65px;
-  }
-  &:last-of-type{
-    margin-bottom: 160px;
-  }
-}
-.custom-button{
-  @include custom-input-button();
-  background-color: #DE6C69;
-  border:none;
-  color:white;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-  transition: 0.3s ease all;
-  cursor:pointer;
-  &:hover{
-    transform:translateY(-3px)
-  }
-  &.blue{
-    text-align: center;
-    width:20vw;
-    font-size: 15px;
-    padding:15px 25px;
-    background-color: #3369F3;
+
+  &__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 }

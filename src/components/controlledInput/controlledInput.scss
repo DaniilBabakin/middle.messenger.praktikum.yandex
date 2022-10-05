@@ -1,0 +1,40 @@
+.input {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  margin-bottom: 30px;
+
+  &.profile__input__div {
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  &.short {
+    margin-bottom: 20px;
+  }
+
+  &.first {
+    margin-top: 65px;
+  }
+
+  &.first-short {
+    margin-top: 25px;
+  }
+
+  &.last {
+    margin-bottom: 160px;
+  }
+
+  &.last-short {
+    margin-bottom: 40px;
+  }
+
+  &.message-input {
+    height: 8vh;
+    margin-bottom: 0;
+  }
+}

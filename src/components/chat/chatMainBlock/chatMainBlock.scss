@@ -1,41 +1,53 @@
-p{
-  margin:0;
+p {
+  margin: 0;
 }
-.messages__main-block{
+
+.messages__main-block {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  height:74vh;
-  width:70vw;
-  background-color: #DBDBDB;
-  padding:0 30px;
+
   box-sizing: border-box;
-  &__time{
-    color:#999999;
+  width: 70vw;
+  height: 74vh;
+  padding: 0 30px;
+
+  background-color: #dbdbdb;
+
+  &__time {
     margin-bottom: 50px;
+
+    color: #999;
   }
 }
-.message{
-  background-color: #E4EDFD;
-  border-radius: 25px;
-  border-top-right-radius: 0;
-  max-width:23vw;
+
+.message {
   min-width: 5vw;
-  padding:20px 30px;
+  max-width: 23vw;
   margin-bottom: 20px;
   margin-left: auto;
-  &__time{
-    float:right;
-    color:#999999;
+  padding: 20px 30px;
+
+  background-color: #e4edfd;
+  border-radius: 25px;
+  border-top-right-radius: 0;
+
+  &__time {
+    float: right;
+
+    margin-top: 5px;
+
     font-size: 14px;
-    margin-top:5px;
+    color: #999;
   }
-  &.friend__message{
-    margin-left:0;
-    margin-right:auto;
+
+  &.friend__message {
+    margin-right: auto;
+    margin-left: 0;
+
     background-color: white;
-    border-top-right-radius: 25px;
     border-top-left-radius: 0;
+    border-top-right-radius: 25px;
   }
 }

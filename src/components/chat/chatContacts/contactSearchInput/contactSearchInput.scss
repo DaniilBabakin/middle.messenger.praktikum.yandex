@@ -1,0 +1,16 @@
+.search-input {
+  padding: 10px 20px;
+
+  font-family: Arial, FontAwesome, sans-serif;
+
+  background-color: #efefef;
+  border: none;
+  border-radius: 10px;
+  outline: none;
+
+  &::placeholder {
+    margin-right: 7px;
+
+    text-align: center;
+  }
+}

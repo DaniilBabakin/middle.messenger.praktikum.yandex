@@ -1,13 +1,23 @@
-.greetings-title{
-  color:#ffffff;
+.greetings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.greetings-title {
+  margin-bottom: 10px;
+
   font-size: 48px;
   font-weight: 600;
-  margin-bottom:10px;
+  color: #fff;
 }
-.greetings-subtitle{
-  color:#F6F6F6;
+
+.greetings-subtitle {
+  margin-top: 0;
+  margin-bottom: 0;
+
   font-size: 24px;
   font-weight: 400;
-  margin-top:0;
-  margin-bottom: 0;
+  color: #f6f6f6;
 }
