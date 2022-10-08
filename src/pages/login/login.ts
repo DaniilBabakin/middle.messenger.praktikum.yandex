@@ -3,6 +3,7 @@ import { MainPage } from "../main/main"
 import Block from "core/Block"
 import "./login.scss"
 import { validateForm, ValidateType } from "helpers/validateForm"
+import { router } from "../../index"
 
 export class LoginPage extends Block {
   constructor() {
@@ -23,7 +24,7 @@ export class LoginPage extends Block {
         })
       },
       onRedirectToSignUp: () => {
-        window.currentPage.page = SignUpPage
+        router.go('/sign-up')
       },
       onSubmit: () => {
         const loginEl = this.element?.querySelector("input[name='login']") as HTMLInputElement
@@ -43,7 +44,7 @@ export class LoginPage extends Block {
             loginValue: loginEl.value,
             passwordValue: passwordEl.value,
           })
-          window.currentPage.page = MainPage
+          router.go('/messenger')
           console.log("Форма готова к отправке, данные: ", { Login: loginEl.value, Password: passwordEl.value })
         }
       },

@@ -1,6 +1,7 @@
 import { Block } from "core"
 import "./contactLink.scss"
-import ProfilePage from "pages/profile"
+import { router } from "../../../../index"
+import { ROUTES } from "constants/routes"
 
 interface ContactLinkProps {
   text: string
@@ -13,7 +14,7 @@ export class ContactLink extends Block {
       ...props,
       events: {
         click: () => {
-          window.currentPage.page = ProfilePage
+          router.go(ROUTES.Profile)
         },
       },
     })

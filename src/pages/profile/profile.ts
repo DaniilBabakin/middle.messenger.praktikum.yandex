@@ -1,26 +1,24 @@
 import { Block } from "core"
 import * as avatar from "../../assets/defaultAvatarBig.png"
 import "./profile.scss"
-import MainPage from "pages/main"
-import LoginPage from "pages/login"
-import ProfileChangePasswordPage from "pages/profileChangePassword"
-import ProfileChangeValuesPage from "pages/profileChangeValues"
+import { router } from "../../index"
+import { ROUTES } from "constants/routes"
 
 export class ProfilePage extends Block {
   constructor() {
     super()
     this.setProps({
       redirectToProfileChangeValues: () => {
-        window.currentPage.page = ProfileChangeValuesPage
+        router.go(ROUTES.ProfileSettings)
       },
       redirectToProfileChangePassword: () => {
-        window.currentPage.page = ProfileChangePasswordPage
+        router.go(ROUTES.ChangePassword)
       },
-      redirectToLogin: () => {
-        window.currentPage.page = LoginPage
+      redirectQuitProfile: () => {
+        router.go(ROUTES.Login)
       },
-      redirectToMain: () => {
-        window.currentPage.page = MainPage
+      redirectBack: () => {
+        router.back()
       },
     })
   }
@@ -84,10 +82,10 @@ export class ProfilePage extends Block {
 
             {{!------- ВЫЙТИ -------}}
             <div class="profile__form__field no-border">
-                {{{Button text="Выйти" className="profile-change-values red" onClick=redirectToLogin}}}
+                {{{Button text="Выйти" className="profile-change-values red" onClick=redirectQuitProfile}}}
             </div> 
             {{!------- LINK BACK TO CHATS -------}}
-                {{{Button className="back-to-chats" onClick=redirectToMain}}}
+                {{{Button className="back-to-chats" onClick=redirectBack}}}
             </div>
         </div>
      </main>

@@ -1,12 +1,13 @@
+import { ROUTES } from "constants/routes"
 import { Block } from "core"
-import MainPage from "pages/main"
+import { router } from "../../index"
 import "./serverError.scss"
 export class ServerErrorPage extends Block {
   constructor() {
     super()
     this.setProps({
       onClick: () => {
-        window.currentPage.page = MainPage
+        router.go(ROUTES.Chat)
       },
     })
   }

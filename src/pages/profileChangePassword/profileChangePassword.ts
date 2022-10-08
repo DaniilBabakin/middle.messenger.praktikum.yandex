@@ -4,6 +4,8 @@ import "../profile/profile.scss"
 import LoginPage from "pages/login"
 import ProfilePage from "pages/profile"
 import { validateForm } from "helpers/validateForm"
+import { router } from "../../index"
+import { ROUTES } from "constants/routes"
 
 export class ProfileChangePasswordPage extends Block {
   constructor() {
@@ -12,11 +14,8 @@ export class ProfileChangePasswordPage extends Block {
       oldPasswordValue: "",
       newPasswordValue: "",
       check_passwordValue: "",
-      redirectToLogin: () => {
-        window.currentPage.page = LoginPage
-      },
-      redirectToProfile: () => {
-        window.currentPage.page = ProfilePage
+      redirectBack: () => {
+        router.back()
       },
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
@@ -74,7 +73,7 @@ export class ProfileChangePasswordPage extends Block {
                 return { [item.name]: item.element.value }
               }),
             )
-            window.currentPage.page = ProfilePage
+            router.go(ROUTES.Profile)
           }
         }
       },
@@ -141,7 +140,7 @@ export class ProfileChangePasswordPage extends Block {
                 }}}
                 </div>
             {{!------- LINK BACK TO PROFILE -------}}
-                {{{Button className="back-to-chats" onClick=redirectToProfile}}}
+                {{{Button className="back-to-chats" onClick=redirectBack}}}
                 {{{Button text="Сохранить" className="custom-button blue mt220" onClick=onSubmit}}}
             </form>
 

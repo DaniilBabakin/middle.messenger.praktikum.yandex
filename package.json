@@ -12,7 +12,9 @@
     "core": "./src/core",
     "components": "./src/components",
     "helpers": "./src/helpers",
-    "pages": "./src/pages"
+    "pages": "./src/pages",
+    "service":"./src/service",
+    "constants":"./src/constants"
   },
   "keywords": [],
   "author": "",

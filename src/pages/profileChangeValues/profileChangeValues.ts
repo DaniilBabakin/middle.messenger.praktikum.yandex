@@ -1,10 +1,10 @@
 import { Block } from "core"
 import * as avatar from "../../assets/defaultAvatarBig.png"
 import "../profile/profile.scss"
-import MainPage from "pages/main"
-import LoginPage from "pages/login"
 import ProfilePage from "pages/profile"
 import { validateForm } from "helpers/validateForm"
+import { router } from "../../index"
+import { ROUTES } from "constants/routes"
 
 export class ProfileChangeValuesPage extends Block {
   constructor() {
@@ -16,11 +16,8 @@ export class ProfileChangeValuesPage extends Block {
       secondNameValue: "",
       phoneValue: "",
       displayNameValue: "",
-      redirectToLogin: () => {
-        window.currentPage.page = LoginPage
-      },
-      redirectToProfile: () => {
-        window.currentPage.page = ProfilePage
+      redirectBack: () => {
+        router.back()
       },
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
@@ -71,7 +68,7 @@ export class ProfileChangeValuesPage extends Block {
               return { [item.name]: item.element.value }
             }),
           )
-          window.currentPage.page = ProfilePage
+          router.go(ROUTES.Profile)
         }
       },
     })
@@ -188,7 +185,7 @@ export class ProfileChangeValuesPage extends Block {
                 }}}
                 </div>
             {{!------- LINK BACK TO PROFILE -------}}
-                {{{Button className="back-to-chats" onClick=redirectToProfile}}}
+                {{{Button className="back-to-chats" onClick=redirectBack}}}
                 {{{Button text="Сохранить" className="custom-button blue mt75" onClick=onSubmit}}}
             </form>
 

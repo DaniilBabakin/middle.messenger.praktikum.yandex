@@ -3,6 +3,7 @@ import "./signUp.scss"
 import LoginPage from "pages/login"
 import { validateForm } from "helpers/validateForm"
 import MainPage from "pages/main"
+import { router } from "../../index"
 
 export class SignUpPage extends Block {
   constructor() {
@@ -27,7 +28,7 @@ export class SignUpPage extends Block {
         })
       },
       onRedirectToLogin: () => {
-        window.currentPage.page = LoginPage
+        router.go('/')
       },
       onSubmit: () => {
         //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
@@ -74,7 +75,7 @@ export class SignUpPage extends Block {
                 return { [item.name]: item.element.value }
               }),
             )
-            window.currentPage.page = MainPage
+            router.go('/messenger')
           }
         }
       },
