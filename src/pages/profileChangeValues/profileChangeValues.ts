@@ -5,17 +5,40 @@ import ProfilePage from "pages/profile"
 import { validateForm } from "helpers/validateForm"
 import { router } from "../../index"
 import { ROUTES } from "constants/routes"
+import { userAPI } from "service/api/userAPI"
+import GlobalStorage, { StoreEvents } from "service/GlobalStorage"
+import { authAPI } from "service/api/authAPI"
+import { UserType } from "types/User"
 
 export class ProfileChangeValuesPage extends Block {
+  currentUser
   constructor() {
     super()
+    this.currentUser = GlobalStorage.getState().user
+    if (!this.currentUser) {
+      authAPI.getUser().then((res: UserType) => {
+        this.setProps({
+          ...this.props,
+          values: {
+            emailValue: res.email,
+            loginValue: res.login,
+            firstNameValue: res.first_name,
+            secondNameValue: res.second_name,
+            phoneValue: res.phone,
+            displayNameValue: res.display_name,
+          },
+        })
+      })
+    }
     this.setProps({
-      emailValue: "",
-      loginValue: "",
-      firstNameValue: "",
-      secondNameValue: "",
-      phoneValue: "",
-      displayNameValue: "",
+      values: {
+        emailValue: `${this.currentUser?.email}`,
+        loginValue: `${this.currentUser?.login}`,
+        firstNameValue: `${this.currentUser?.first_name}`,
+        secondNameValue: `${this.currentUser?.second_name}`,
+        phoneValue: `${this.currentUser?.phone}`,
+        displayNameValue: `${this.currentUser?.display_name}`,
+      },
       redirectBack: () => {
         router.back()
       },
@@ -54,21 +77,29 @@ export class ProfileChangeValuesPage extends Block {
             text: errorMessage.text,
           })
         } else {
-          this.setProps({
-            emailValue: arrayOfHtmlElements[0].element.value,
-            loginValue: arrayOfHtmlElements[1].element.value,
-            firstNameValue: arrayOfHtmlElements[2].element.value,
-            secondNameValue: arrayOfHtmlElements[3].element.value,
-            phoneValue: arrayOfHtmlElements[4].element.value,
-            displayNameValue: arrayOfHtmlElements[5].element.value,
-          })
-          console.log(
-            "Форма готова к отправке, данные: ",
-            arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
-              return { [item.name]: item.element.value }
-            }),
+          console.log("ARRAY", arrayOfHtmlElements)
+          //   this.setProps({
+          //     emailValue: arrayOfHtmlElements[0].element.value,
+          //     loginValue: arrayOfHtmlElements[1].element.value,
+          //     firstNameValue: arrayOfHtmlElements[2].element.value,
+          //     secondNameValue: arrayOfHtmlElements[3].element.value,
+          //     phoneValue: arrayOfHtmlElements[4].element.value,
+          //     displayNameValue: arrayOfHtmlElements[5].element.value,
+          //   })
+          const formData = arrayOfHtmlElements.reduce<any>(
+            (acc, item: { name: string; element: HTMLInputElement }) =>
+              Object.assign(acc, { [item.name]: item.element.value }),
+            {},
           )
-          router.go(ROUTES.Profile)
+          console.log("Форма готова к отправке, данные: ", formData)
+
+          userAPI.changeValues(formData).then((res: any) => {
+            if (!res) {
+              throw Error("Settings change went wrong")
+            }
+            GlobalStorage.setUser(res)
+            router.go("/profile")
+          })
         }
       },
     })
@@ -80,7 +111,7 @@ export class ProfileChangeValuesPage extends Block {
             <div class="profile__container">
             <div>
                 <img src="${avatar}" class="profile__container_image" alt="Моя фотография"/>
-                <h1 class="profile__container_title">Даня</h1>
+                <h1 class="profile__container_title">${this.props?.values?.displayNameValue}</h1>
             </div>
             <form class="profile__form">
             {{!------- ПОЧТА -------}}
@@ -90,7 +121,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="email" 
-                    value=emailValue
+                    value=values.emailValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -107,7 +138,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="login" 
-                    value=loginValue
+                    value=values.loginValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -124,7 +155,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="first_name" 
-                    value=firstNameValue
+                    value=values.firstNameValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -141,7 +172,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="second_name" 
-                    value=secondNameValue
+                    value=values.secondNameValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -158,7 +189,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="display_name" 
-                    value=displayNameValue
+                    value=values.displayNameValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -175,7 +206,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="phone" 
-                    value=phoneValue
+                    value=values.phoneValue
                     inputClassName="profile__input default-font" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"

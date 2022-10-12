@@ -6,16 +6,20 @@ import ProfilePage from "pages/profile"
 import { validateForm } from "helpers/validateForm"
 import { router } from "../../index"
 import { ROUTES } from "constants/routes"
+import GlobalStorage from "service/GlobalStorage"
+import { UserType } from "types/User"
+import { authAPI } from "service/api/authAPI"
+import { userAPI } from "service/api/userAPI"
 
 export class ProfileChangePasswordPage extends Block {
   constructor() {
     super()
+
     this.setProps({
-      oldPasswordValue: "",
-      newPasswordValue: "",
-      check_passwordValue: "",
-      redirectBack: () => {
-        router.back()
+      values: {
+        oldPasswordValue: "",
+        newPasswordValue: "",
+        check_passwordValue: "",
       },
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
@@ -67,13 +71,25 @@ export class ProfileChangePasswordPage extends Block {
               newPasswordValue: arrayOfHtmlElements[1].element.value,
               check_passwordValue: arrayOfHtmlElements[2].element.value,
             })
-            console.log(
-              "Форма готова к отправке, данные: ",
-              arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
-                return { [item.name]: item.element.value }
-              }),
-            )
-            router.go(ROUTES.Profile)
+
+            const formData = arrayOfHtmlElements
+              .filter(({name}) => name !== "check_password")
+              .reduce<any>(
+                (acc, item: { name: string; element: HTMLInputElement }) =>
+                  Object.assign(acc, { [item.name]: item.element.value }),
+                {},
+              )
+            console.log("Форма готова к отправке, данные: ", formData)
+
+            userAPI.changePassword(formData).then((res: any) => {
+              if (!res) {
+                this.refs['oldPasswordInputRef'].refs['oldPasswordErrorRef'].setProps({
+                    text:'Пароль не совпадает'
+                })
+                return
+              }
+              router.go("/profile")
+            })
           }
         }
       },

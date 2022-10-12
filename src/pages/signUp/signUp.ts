@@ -4,6 +4,8 @@ import LoginPage from "pages/login"
 import { validateForm } from "helpers/validateForm"
 import MainPage from "pages/main"
 import { router } from "../../index"
+import { authAPI } from "service/api/authAPI"
+import GlobalStorage from "service/GlobalStorage"
 
 export class SignUpPage extends Block {
   constructor() {
@@ -28,7 +30,7 @@ export class SignUpPage extends Block {
         })
       },
       onRedirectToLogin: () => {
-        router.go('/')
+        router.go("/")
       },
       onSubmit: () => {
         //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
@@ -69,18 +71,38 @@ export class SignUpPage extends Block {
               passwordValue: arrayOfHtmlElements[5].element.value,
               checkPasswordValue: arrayOfHtmlElements[6].element.value,
             })
-            console.log(
-              "Форма готова к отправке, данные: ",
-              arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
-                return { [item.name]: item.element.value }
-              }),
-            )
-            router.go('/messenger')
+            const formData = arrayOfHtmlElements
+              .filter(({ name }) => name !== "check_password")
+              .reduce<any>(
+                (acc, item: { name: string; element: HTMLInputElement }) =>
+                  Object.assign(acc, { [item.name]: item.element.value }),
+                {},
+              )
+            console.log("Форма готова к отправке, данные: ", formData)
+
+            authAPI.signUp(formData).then((res) => {
+              if (!res) {
+                throw Error("Auth went wrong")
+              }
+              this.initUser()
+            })
           }
         }
       },
     })
   }
+
+  private _initUser() {
+    authAPI.getUser().then((user) => {
+      GlobalStorage.setUser(user)
+      router.go("/messenger")
+    })
+  }
+
+  initUser() {
+    this._initUser()
+  }
+
   render() {
     // language=hbs
     return `

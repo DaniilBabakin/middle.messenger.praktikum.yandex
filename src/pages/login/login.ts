@@ -4,6 +4,9 @@ import Block from "core/Block"
 import "./login.scss"
 import { validateForm, ValidateType } from "helpers/validateForm"
 import { router } from "../../index"
+import { authAPI } from "service/api/authAPI"
+import GlobalStorage from "service/GlobalStorage"
+import { ROUTES } from "constants/routes"
 
 export class LoginPage extends Block {
   constructor() {
@@ -14,17 +17,17 @@ export class LoginPage extends Block {
       passwordValue: "",
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
-        const inputRef = inputEl.name + "InputRef" 
+        const inputRef = inputEl.name + "InputRef"
         const errorRef = inputEl.name + "ErrorRef"
 
-        const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }]) 
+        const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }])
 
         this.refs[inputRef].refs[errorRef].setProps({
           text: errorMessage.text,
         })
       },
       onRedirectToSignUp: () => {
-        router.go('/sign-up')
+        router.go(ROUTES.SignUp)
       },
       onSubmit: () => {
         const loginEl = this.element?.querySelector("input[name='login']") as HTMLInputElement
@@ -44,11 +47,32 @@ export class LoginPage extends Block {
             loginValue: loginEl.value,
             passwordValue: passwordEl.value,
           })
-          router.go('/messenger')
-          console.log("Форма готова к отправке, данные: ", { Login: loginEl.value, Password: passwordEl.value })
+
+          const formData = { login: loginEl.value, password: passwordEl.value }
+          console.log("Форма готова к отправке, данные: ", formData)
+
+          authAPI.signIn(formData).then((res) => {
+            if (!res) {
+              this.refs['passwordInputRef'].refs['passwordErrorRef'].setProps({
+                text:"Логин или пароль неверны"
+              })
+            }
+            this.initUser()
+          })
         }
       },
     })
+  }
+
+  private _initUser() {
+    authAPI.getUser().then((user) => {
+      GlobalStorage.setUser(user)
+      router.go("/messenger")
+    })
+  }
+
+  initUser() {
+    this._initUser()
   }
 
   render() {

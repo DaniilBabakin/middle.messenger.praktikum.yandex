@@ -33,7 +33,6 @@ export class Route<P = any> {
     if (!this._block) {
       this._block = new this._blockClass()
       renderDOM(this._block)
-      console.log("Я тут", this._block)
       return
     }
     this._block.show()

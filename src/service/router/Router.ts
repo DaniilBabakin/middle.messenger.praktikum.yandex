@@ -1,5 +1,7 @@
 import { ROUTES } from "constants/routes"
 import { Block } from "core"
+import { authAPI } from "service/api/authAPI"
+import GlobalStorage from "service/GlobalStorage"
 import { Route } from "./Route"
 
 export class Router {
@@ -8,12 +10,10 @@ export class Router {
   private _currentRoute: Route | null = null
   private _rootQuery!: string
   public static __instance: Router
-
   constructor(rootQuery: string) {
     if (Router.__instance) {
       return Router.__instance
     }
-
     this.routes = []
     this.history = window.history
     this._currentRoute = null
@@ -38,12 +38,18 @@ export class Router {
   }
 
   private _onRoute(pathname: string) {
-    const route = this.getRoute(pathname)
+    const user = authAPI.getUser()
+    if (pathname !== ROUTES.Login && pathname !== ROUTES.SignUp && !user) {
+      console.log("User not found,redirect to login Page")
+      pathname = "/"
+      window.history.pushState({}, "", pathname)
+    }
+    let route = this.getRoute(pathname)
+
     if (this._currentRoute) {
       this._currentRoute.leave()
     }
     if (route) {
-      console.log(route)
       this._currentRoute = route
       route.render()
     }
@@ -64,7 +70,7 @@ export class Router {
   }
 
   getRoute(pathname: string) {
-    if (!Object.values(ROUTES).find(name=> name === pathname)) {
+    if (!Object.values(ROUTES).find((name) => name === pathname)) {
       return this.routes.find((route) => route.match("/not-found"))
     }
     return this.routes.find((route) => route.match(pathname))
