@@ -12,6 +12,11 @@ interface HTMLElementWithRefs extends HTMLElement {
   setProps: ({}) => void
 }
 
+export interface BlockClass<P> extends Function {
+  new (props: P): Block<P>
+  componentName?: string
+}
+
 export default class Block<P = any> {
   static EVENTS = {
     INIT: "init",

@@ -10,9 +10,9 @@ export const userAPI = {
     })
 
     if (res.status !== 200) {
-      throw Error(JSON.parse(res.responseText).reason)
+      return JSON.parse(res.responseText)
     }
-    return JSON.parse(res.response)
+    return true
   },
 
   changePassword: async (data: any): Promise<boolean> => {
@@ -21,10 +21,19 @@ export const userAPI = {
       data: JSON.stringify(data),
       headers: { "content-type": "application/json" },
     })
-    console.log(res)
+    console.log("RESPONSE", res)
     if (res.status !== 200) {
-      return false
+      return JSON.parse(res.responseText)
     }
+    return true
+  },
+
+  changeAvatar: async (data: any): Promise<boolean> => {
+    const res: any = await HTTPTransport.getInstance().put("/user/profile/avatar", {
+      includeCredentials: true,
+      data: data,
+    })
+    console.log(data, res)
     return true
   },
 }

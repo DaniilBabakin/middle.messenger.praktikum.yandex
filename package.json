@@ -19,7 +19,8 @@
     "helpers": "./src/helpers",
     "pages": "./src/pages",
     "service": "./src/service",
-    "constants": "./src/constants"
+    "constants": "./src/constants",
+    "api":"./src/api"
   },
   "keywords": [],
   "author": "",

@@ -1,25 +1,43 @@
-import { Block } from "core"
+import { Block, Store } from "core"
 import * as avatar from "../../assets/defaultAvatarBig.png"
 import "../profile/profile.scss"
 import LoginPage from "pages/login"
-import ProfilePage from "pages/profile"
 import { validateForm } from "helpers/validateForm"
 import { router } from "../../index"
-import { ROUTES } from "constants/routes"
-import GlobalStorage from "service/GlobalStorage"
-import { UserType } from "types/User"
-import { authAPI } from "service/api/authAPI"
-import { userAPI } from "service/api/userAPI"
+import { userAPI } from "api/userAPI"
+import { withRouter, withStore, withUser } from "helpers"
+import { Router } from "service/router/Router"
+import { changePassword } from "service/user"
 
-export class ProfileChangePasswordPage extends Block {
-  constructor() {
-    super()
+type ProfileChangePasswordPageProps = {
+  router: Router
+  store: Store<AppState>
+  user: User | null
+  values: {
+    oldPasswordValue: string
+    newPasswordValue: string
+    check_passwordValue: string
+  }
+  formError: () => void
+  redirectBack: () => void
+  onInput?: (e: FocusEvent) => void
+  onSubmit?: () => void
+}
+
+class ProfileChangePasswordPage extends Block<ProfileChangePasswordPageProps> {
+  constructor(props: ProfileChangePasswordPageProps) {
+    super(props)
 
     this.setProps({
+      ...props,
       values: {
         oldPasswordValue: "",
         newPasswordValue: "",
         check_passwordValue: "",
+      },
+      formError: () => this.props.store.getState().formError,
+      redirectBack: () => {
+        router.back()
       },
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
@@ -67,13 +85,16 @@ export class ProfileChangePasswordPage extends Block {
             })
           } else {
             this.setProps({
-              oldPasswordValue: arrayOfHtmlElements[0].element.value,
-              newPasswordValue: arrayOfHtmlElements[1].element.value,
-              check_passwordValue: arrayOfHtmlElements[2].element.value,
+              ...this.props,
+              values: {
+                oldPasswordValue: arrayOfHtmlElements[0].element.value,
+                newPasswordValue: arrayOfHtmlElements[1].element.value,
+                check_passwordValue: arrayOfHtmlElements[2].element.value,
+              },
             })
 
             const formData = arrayOfHtmlElements
-              .filter(({name}) => name !== "check_password")
+              .filter(({ name }) => name !== "check_password")
               .reduce<any>(
                 (acc, item: { name: string; element: HTMLInputElement }) =>
                   Object.assign(acc, { [item.name]: item.element.value }),
@@ -81,15 +102,7 @@ export class ProfileChangePasswordPage extends Block {
               )
             console.log("Форма готова к отправке, данные: ", formData)
 
-            userAPI.changePassword(formData).then((res: any) => {
-              if (!res) {
-                this.refs['oldPasswordInputRef'].refs['oldPasswordErrorRef'].setProps({
-                    text:'Пароль не совпадает'
-                })
-                return
-              }
-              router.go("/profile")
-            })
+            this.props.store.dispatch(changePassword, formData)
           }
         }
       },
@@ -101,8 +114,8 @@ export class ProfileChangePasswordPage extends Block {
         <main class="profile">
             <div class="profile__container">
             <div>
-                <img src="${avatar}" class="profile__container_image" alt="Моя фотография"/>
-                <h1 class="profile__container_title">Даня</h1>
+                {{{ChangeAvatar src="${this.props.user?.avatar}"}}}
+                <h1 class="profile__container_title">{{user.displayName}}</h1>
             </div>
             <form class="profile__form">
             {{!------- СТАРЫЙ ПАРОЛЬ -------}}
@@ -112,7 +125,7 @@ export class ProfileChangePasswordPage extends Block {
                     onInput=onInput
                     type="password" 
                     name="oldPassword" 
-                    value=oldPasswordValue
+                    value=values.oldPasswordValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -129,11 +142,11 @@ export class ProfileChangePasswordPage extends Block {
                     onInput=onInput
                     type="password" 
                     name="newPassword" 
-                    value=newPasswordValue
+                    value=values.newPasswordValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="Введите старый пароль"
+                    placeholder="Введите новый пароль"
                     ref="newPasswordInputRef"
                     errorRef="newPasswordErrorRef"
                 }}}
@@ -146,15 +159,16 @@ export class ProfileChangePasswordPage extends Block {
                     onInput=onInput
                     type="password" 
                     name="check_password" 
-                    value=check_passwordValue
+                    value=values.check_passwordValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="Введите старый пароль"
+                    placeholder="Повторите новый пароль"
                     ref="check_passwordInputRef"
                     errorRef="check_passwordErrorRef"
                 }}}
                 </div>
+                {{{ErrorFromServer text=formError}}}
             {{!------- LINK BACK TO PROFILE -------}}
                 {{{Button className="back-to-chats" onClick=redirectBack}}}
                 {{{Button text="Сохранить" className="custom-button blue mt220" onClick=onSubmit}}}
@@ -165,3 +179,6 @@ export class ProfileChangePasswordPage extends Block {
     `
   }
 }
+
+const ConnectedProfileChangePasswordPage = withRouter(withStore(withUser(ProfileChangePasswordPage)))
+export { ConnectedProfileChangePasswordPage as ProfileChangePasswordPage }

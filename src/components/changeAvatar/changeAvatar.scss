@@ -1,0 +1,60 @@
+.change-avatar {
+  position: relative;
+
+  width: 190px;
+  height: 190px;
+
+  border-radius: 50%;
+
+  transition: 0.2s ease all;
+
+  &::before {
+    content: "Изменить";
+
+    position: absolute;
+    z-index: 5;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 85px);
+
+    display: none;
+
+    font-weight: 600;
+    color: white;
+  }
+
+  &.isHovered {
+    &::before {
+      display: block;
+    }
+  }
+
+  &__image {
+    width: 190px;
+    height: 190px;
+
+    object-fit: cover;
+    border-radius: 50%;
+
+    transition: inherit;
+
+    &.isHovered {
+      filter: brightness(0.7);
+    }
+  }
+
+  &__input {
+    cursor: pointer;
+
+    position: absolute;
+    top: 0;
+    left: -50%;
+    transform: translateX(50%);
+
+    width: 190px;
+    height: 190px;
+
+    opacity: 0;
+    background-color: red;
+  }
+}

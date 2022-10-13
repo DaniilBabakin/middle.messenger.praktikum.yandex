@@ -4,17 +4,36 @@ import Block from "core/Block"
 import "./login.scss"
 import { validateForm, ValidateType } from "helpers/validateForm"
 import { router } from "../../index"
-import { authAPI } from "service/api/authAPI"
+import { authAPI } from "api/authAPI"
 import GlobalStorage from "service/GlobalStorage"
 import { ROUTES } from "constants/routes"
+import { login } from "service/auth"
+import { withRouter, withStore, withUser } from "helpers"
+import { Router } from "service/router/Router"
+import { Store } from "core"
 
-export class LoginPage extends Block {
-  constructor() {
-    super()
+type LoginPageProps = {
+  router: Router
+  store: Store<AppState>
+  user: User | null
+  loginValue: string
+  passwordValue: string
+  formError: () => void
+  onInput?: (e: FocusEvent) => void
+  onRedirectToSignUp?: () => void
+  onSubmit?: () => void
+  redirectBack?: () => void
+}
+
+class LoginPage extends Block<LoginPageProps> {
+  constructor(props: LoginPageProps) {
+    super(props)
 
     this.setProps({
+      ...props,
       loginValue: "",
       passwordValue: "",
+      formError: () => this.props.store.getState().formError,
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
         const inputRef = inputEl.name + "InputRef"
@@ -44,35 +63,25 @@ export class LoginPage extends Block {
           })
         } else {
           this.setProps({
+            ...this.props,
             loginValue: loginEl.value,
             passwordValue: passwordEl.value,
           })
 
           const formData = { login: loginEl.value, password: passwordEl.value }
           console.log("Форма готова к отправке, данные: ", formData)
-
-          authAPI.signIn(formData).then((res) => {
-            if (!res) {
-              this.refs['passwordInputRef'].refs['passwordErrorRef'].setProps({
-                text:"Логин или пароль неверны"
-              })
-            }
-            this.initUser()
-          })
+          //   authAPI.signIn(formData).then((res) => {
+          //     if (!res) {
+          //       this.refs["passwordInputRef"].refs["passwordErrorRef"].setProps({
+          //         text: "Логин или пароль неверны",
+          //       })
+          //     }
+          //     this.initUser()
+          //   })
+          this.props.store.dispatch(login, formData)
         }
       },
     })
-  }
-
-  private _initUser() {
-    authAPI.getUser().then((user) => {
-      GlobalStorage.setUser(user)
-      router.go("/messenger")
-    })
-  }
-
-  initUser() {
-    this._initUser()
   }
 
   render() {
@@ -107,7 +116,7 @@ export class LoginPage extends Block {
             errorRef="passwordErrorRef"
           }}}
             {{{Button text="Войти" className="custom-button" onClick=onSubmit }}}
-
+            <span>{{formError}}</span>
           </form>
           {{{Button text="Нет аккаунта?" className="redirect-button" onClick=onRedirectToSignUp}}}
       </div>
@@ -115,3 +124,6 @@ export class LoginPage extends Block {
     `
   }
 }
+
+const ConnectedLoginPage = withRouter(withStore(withUser(LoginPage)))
+export { ConnectedLoginPage as LoginPage }

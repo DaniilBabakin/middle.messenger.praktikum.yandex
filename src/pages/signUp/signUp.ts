@@ -4,7 +4,7 @@ import LoginPage from "pages/login"
 import { validateForm } from "helpers/validateForm"
 import MainPage from "pages/main"
 import { router } from "../../index"
-import { authAPI } from "service/api/authAPI"
+import { authAPI } from "api/authAPI"
 import GlobalStorage from "service/GlobalStorage"
 
 export class SignUpPage extends Block {

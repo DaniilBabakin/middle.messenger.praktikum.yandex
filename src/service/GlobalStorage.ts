@@ -1,6 +1,6 @@
 import EventBus from "core/EventBus"
 import { UserType } from "types/User"
-import { authAPI } from "./api/authAPI"
+import { authAPI } from "../api/authAPI"
 
 export enum StoreEvents {
   SetUser = "storage:user-set",

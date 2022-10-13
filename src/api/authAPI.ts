@@ -8,11 +8,10 @@ export const authAPI = {
       data: JSON.stringify(data),
       headers: { "content-type": "application/json" },
     })
-
     if (res.status !== 200) {
-      return false
+      return JSON.parse(res.responseText)
     }
-    return true
+    return res
   },
 
   signUp: async (data: any): Promise<boolean> => {
@@ -29,8 +28,8 @@ export const authAPI = {
   },
 
   logout: async () => {
-    console.log('Logout successfully developed')
-    const res:any = await HTTPTransport.getInstance().post("/auth/logout", {
+    console.log("Logout successfully developed")
+    const res: any = await HTTPTransport.getInstance().post("/auth/logout", {
       includeCredentials: true,
       headers: {
         accept: "application/json",

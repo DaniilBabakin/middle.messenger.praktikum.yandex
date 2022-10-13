@@ -1,44 +1,37 @@
-import { Block } from "core"
+import { Block, Store } from "core"
 import * as avatar from "../../assets/defaultAvatarBig.png"
 import "../profile/profile.scss"
 import ProfilePage from "pages/profile"
 import { validateForm } from "helpers/validateForm"
 import { router } from "../../index"
 import { ROUTES } from "constants/routes"
-import { userAPI } from "service/api/userAPI"
+import { userAPI } from "api/userAPI"
 import GlobalStorage, { StoreEvents } from "service/GlobalStorage"
-import { authAPI } from "service/api/authAPI"
-import { UserType } from "types/User"
+import { withRouter, withStore, withUser } from "helpers"
+import { Router } from "service/router/Router"
+import { changeValues } from "service/user"
 
-export class ProfileChangeValuesPage extends Block {
-  currentUser
-  constructor() {
-    super()
-    this.currentUser = GlobalStorage.getState().user
-    if (!this.currentUser) {
-      authAPI.getUser().then((res: UserType) => {
-        this.setProps({
-          ...this.props,
-          values: {
-            emailValue: res.email,
-            loginValue: res.login,
-            firstNameValue: res.first_name,
-            secondNameValue: res.second_name,
-            phoneValue: res.phone,
-            displayNameValue: res.display_name,
-          },
-        })
-      })
-    }
+type ProfileChangeValuesPageProps = {
+  router: Router
+  store: Store<AppState>
+  user: User | null
+  values: {
+    oldPasswordValue: string
+    newPasswordValue: string
+    check_passwordValue: string
+  }
+  formError: () => void
+  redirectBack?: () => void
+  onInput?: (e: FocusEvent) => void
+  onSubmit?: () => void
+}
+
+class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
+  constructor(props: ProfileChangeValuesPageProps) {
+    super(props)
+
     this.setProps({
-      values: {
-        emailValue: `${this.currentUser?.email}`,
-        loginValue: `${this.currentUser?.login}`,
-        firstNameValue: `${this.currentUser?.first_name}`,
-        secondNameValue: `${this.currentUser?.second_name}`,
-        phoneValue: `${this.currentUser?.phone}`,
-        displayNameValue: `${this.currentUser?.display_name}`,
-      },
+      ...props,
       redirectBack: () => {
         router.back()
       },
@@ -93,16 +86,11 @@ export class ProfileChangeValuesPage extends Block {
           )
           console.log("Форма готова к отправке, данные: ", formData)
 
-          userAPI.changeValues(formData).then((res: any) => {
-            if (!res) {
-              throw Error("Settings change went wrong")
-            }
-            GlobalStorage.setUser(res)
-            router.go("/profile")
-          })
+          this.props.store.dispatch(changeValues,formData)
         }
       },
     })
+    console.log(this.props)
   }
 
   protected render(): string {
@@ -110,8 +98,8 @@ export class ProfileChangeValuesPage extends Block {
         <main class="profile">
             <div class="profile__container">
             <div>
-                <img src="${avatar}" class="profile__container_image" alt="Моя фотография"/>
-                <h1 class="profile__container_title">${this.props?.values?.displayNameValue}</h1>
+                {{{ChangeAvatar src="${this.props.user?.avatar}"}}}
+                <h1 class="profile__container_title">{{user.displayName}}</h1>
             </div>
             <form class="profile__form">
             {{!------- ПОЧТА -------}}
@@ -121,7 +109,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="email" 
-                    value=values.emailValue
+                    value=user.email
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -138,7 +126,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="login" 
-                    value=values.loginValue
+                    value=user.login
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -155,7 +143,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="first_name" 
-                    value=values.firstNameValue
+                    value=user.firstName
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -172,7 +160,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="second_name" 
-                    value=values.secondNameValue
+                    value=user.secondName
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -189,7 +177,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="display_name" 
-                    value=values.displayNameValue
+                    value=user.displayName
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -206,7 +194,7 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="phone" 
-                    value=values.phoneValue
+                    value=user.phone
                     inputClassName="profile__input default-font" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -225,3 +213,6 @@ export class ProfileChangeValuesPage extends Block {
     `
   }
 }
+
+const ConnectedProfileChangeValuesPage = withRouter(withStore(withUser(ProfileChangeValuesPage)))
+export { ConnectedProfileChangeValuesPage as ProfileChangeValuesPage }
