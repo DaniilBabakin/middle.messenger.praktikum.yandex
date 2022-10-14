@@ -1,16 +1,28 @@
-.search-input {
-  padding: 10px 20px;
+.contact-search-input {
+  position: relative;
 
-  font-family: Arial, FontAwesome, sans-serif;
+  height: 35px;
+}
 
-  background-color: #efefef;
-  border: none;
-  border-radius: 10px;
-  outline: none;
+.search-results {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
 
-  &::placeholder {
-    margin-right: 7px;
+  display: block;
 
-    text-align: center;
+  min-height: 50px;
+
+  background-color: white;
+
+  &__item {
+    &__image {
+      width: 30px;
+      height: 30px;
+
+      object-fit: cover;
+      border-radius: 50%;
+    }
   }
 }

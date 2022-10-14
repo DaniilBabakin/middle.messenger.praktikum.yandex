@@ -11,6 +11,9 @@ export class ChatContacts extends Block {
     super(contacts)
     this.setProps({
       contacts: contacts,
+      onBlur:()=>{
+        console.log('52390523u86230962392')
+      }
     })
   }
   protected render(): string {
@@ -18,7 +21,7 @@ export class ChatContacts extends Block {
     return `
     <aside class="contacts">
     {{{ContactLink text="Профиль >"}}}
-    {{{ContactSearchInput}}}
+    {{{ContactSearchInput onBlur=onBlur}}}
     <div class="contacts__list">
       {{#each contacts}}
           <div class="contacts__list__item">

@@ -3,6 +3,7 @@ import "./errorFromServer.scss"
 
 interface ErrorFromServerProps {
   text?: string
+  className?: string
 }
 
 export class ErrorFromServer extends Block<ErrorFromServerProps> {
@@ -13,7 +14,7 @@ export class ErrorFromServer extends Block<ErrorFromServerProps> {
   protected render(): string {
     // language=hbs
     return `
-      <div class="error-from-server">{{#if text}}{{text}}{{/if}}</div>
+      <div class="error-from-server {{className}}">{{#if text}}{{text}}{{/if}}</div>
     `
   }
 }

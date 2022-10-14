@@ -1,11 +1,7 @@
-import { SignUpPage } from "../signUp/signUp"
-import { MainPage } from "../main/main"
 import Block from "core/Block"
 import "./login.scss"
 import { validateForm, ValidateType } from "helpers/validateForm"
 import { router } from "../../index"
-import { authAPI } from "api/authAPI"
-import GlobalStorage from "service/GlobalStorage"
 import { ROUTES } from "constants/routes"
 import { login } from "service/auth"
 import { withRouter, withStore, withUser } from "helpers"
@@ -22,7 +18,6 @@ type LoginPageProps = {
   onInput?: (e: FocusEvent) => void
   onRedirectToSignUp?: () => void
   onSubmit?: () => void
-  redirectBack?: () => void
 }
 
 class LoginPage extends Block<LoginPageProps> {
@@ -115,8 +110,8 @@ class LoginPage extends Block<LoginPageProps> {
             ref="passwordInputRef"
             errorRef="passwordErrorRef"
           }}}
-            {{{Button text="Войти" className="custom-button" onClick=onSubmit }}}
-            <span>{{formError}}</span>
+          {{{ErrorFromServer text=formError className="white"}}}
+          {{{Button text="Войти" className="custom-button" onClick=onSubmit }}}
           </form>
           {{{Button text="Нет аккаунта?" className="redirect-button" onClick=onRedirectToSignUp}}}
       </div>

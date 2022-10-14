@@ -1,6 +1,7 @@
 import EventBus from "./EventBus"
 import { nanoid } from "nanoid"
 import Handlebars from "handlebars"
+import { isEqual } from "helpers"
 
 interface BlockMeta<P = any> {
   props: P
@@ -92,7 +93,7 @@ export default class Block<P = any> {
     this._render()
   }
 
-  componentDidUpdate(oldProps: P, newProps: P) {
+  componentDidUpdate(oldProps:any, newProps: any) {
     return true
   }
 

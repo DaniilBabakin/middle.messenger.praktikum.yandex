@@ -27,7 +27,6 @@ export class Store<State extends Record<string, any>> extends EventBus {
   }
 
   dispatch(nextStateOrAction: Partial<State> | Action<State>, payload?: any) {
-    console.log("Я ИЗМЕНИЛСЯ-------------------")
     if (typeof nextStateOrAction === "function") {
       nextStateOrAction(this.dispatch.bind(this), this.state, payload)
     } else {

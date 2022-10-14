@@ -1,14 +1,27 @@
 import Block from "core/Block"
+import { withUser } from "helpers"
 import { validateForm } from "helpers/validateForm"
+import { searchUsers } from "service/user"
+import WebSocketTransport from "service/webSocket"
 
 import "./chatFooter.scss"
 
-export class ChatFooter extends Block {
-  static componentName = "ChatFooter"
-  constructor() {
-    super()
+type ChatFooterProps = {
+  user: User | null
+  error: string
+  messageValue: string
+  onInput?: (e: FocusEvent) => void
+  onSubmit?: () => void
+}
 
+class ChatFooter extends Block<ChatFooterProps> {
+  static componentName = "ChatFooter"
+  private _socketTransport?: WebSocketTransport
+  constructor(props: ChatFooterProps) {
+    super(props)
+    this._socketTransport = new WebSocketTransport(this.props.user, 150, "edf32442e332ef9209791ee88a52735182107d6d:1665741478")
     this.setProps({
+      ...props,
       error: "",
       messageValue: "",
       onInput: (e: FocusEvent) => {
@@ -17,6 +30,8 @@ export class ChatFooter extends Block {
         const errorRef = inputEl.name + "ErrorRef"
 
         const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }])
+
+        window.store.dispatch(searchUsers, { login: inputEl.value })
 
         this.refs[inputRef].refs[errorRef].setProps({
           text: errorMessage.text,
@@ -33,6 +48,7 @@ export class ChatFooter extends Block {
           })
         } else {
           this.setProps({
+            ...props,
             error: "",
             messageValue: messageEl.value,
           })
@@ -63,3 +79,6 @@ export class ChatFooter extends Block {
     `
   }
 }
+
+const ConnectedChatFooter = withUser(ChatFooter)
+export { ConnectedChatFooter as ChatFooter }

@@ -1,4 +1,6 @@
+import { ROUTES } from "constants/routes"
 import { HTTPTransport } from "core/CustomFetch"
+import { UserDTO } from "./types"
 
 export const authAPI = {
   //TODO: тип даты
@@ -41,15 +43,19 @@ export const authAPI = {
   },
 
   getUser: async () => {
-    console.log("я в гет юзер")
+    console.log("------GET USER-----")
     const res: any = await HTTPTransport.getInstance().get("/auth/user", {
       includeCredentials: true,
       headers: {
         accept: "application/json",
       },
     })
-    console.log(JSON.parse(res.response))
+    console.log("------GET USER-----", res)
+    //TODO: тест вариант
     if (res.status !== 200) {
+      if (window.location.pathname !== ROUTES.SignUp && window.location.pathname !== ROUTES.Login) {
+        window.router.go(ROUTES.Login)
+      }
       throw Error(JSON.parse(res.responseText).reason)
     }
     return JSON.parse(res.response)

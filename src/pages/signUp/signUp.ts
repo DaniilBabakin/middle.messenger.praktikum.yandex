@@ -1,17 +1,37 @@
 import Block from "core/Block"
 import "./signUp.scss"
-import LoginPage from "pages/login"
 import { validateForm } from "helpers/validateForm"
-import MainPage from "pages/main"
 import { router } from "../../index"
-import { authAPI } from "api/authAPI"
-import GlobalStorage from "service/GlobalStorage"
+import * as avatar from "../../assets/defaultAvatarBig.png"
+import { withRouter, withStore, withUser } from "helpers"
+import { Router } from "service/router/Router"
+import { Store } from "core"
+import { ROUTES } from "constants/routes"
+import { signUp } from "service/auth"
 
-export class SignUpPage extends Block {
-  constructor() {
-    super()
+type SignUpPageProps = {
+  router: Router
+  store: Store<AppState>
+  user: User | null
+  emailValue: string
+  loginValue: string
+  passwordValue: string
+  firstNameValue: string
+  secondNameValue: string
+  phoneValue: string
+  checkPasswordValue: string
+  formError: () => void
+  onInput?: (e: FocusEvent) => void
+  onRedirectToLogin?: () => void
+  onSubmit?: () => void
+}
+
+class SignUpPage extends Block<SignUpPageProps> {
+  constructor(props: SignUpPageProps) {
+    super(props)
 
     this.setProps({
+      ...props,
       emailValue: "",
       loginValue: "",
       passwordValue: "",
@@ -30,7 +50,7 @@ export class SignUpPage extends Block {
         })
       },
       onRedirectToLogin: () => {
-        router.go("/")
+        router.go(ROUTES.Login)
       },
       onSubmit: () => {
         //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
@@ -63,6 +83,7 @@ export class SignUpPage extends Block {
             })
           } else {
             this.setProps({
+              ...props,
               emailValue: arrayOfHtmlElements[0].element.value,
               loginValue: arrayOfHtmlElements[1].element.value,
               firstNameValue: arrayOfHtmlElements[2].element.value,
@@ -78,29 +99,14 @@ export class SignUpPage extends Block {
                   Object.assign(acc, { [item.name]: item.element.value }),
                 {},
               )
+            formData['avatar'] = avatar
             console.log("Форма готова к отправке, данные: ", formData)
 
-            authAPI.signUp(formData).then((res) => {
-              if (!res) {
-                throw Error("Auth went wrong")
-              }
-              this.initUser()
-            })
+            this.props.store.dispatch(signUp, formData)
           }
         }
       },
     })
-  }
-
-  private _initUser() {
-    authAPI.getUser().then((user) => {
-      GlobalStorage.setUser(user)
-      router.go("/messenger")
-    })
-  }
-
-  initUser() {
-    this._initUser()
   }
 
   render() {
@@ -203,3 +209,6 @@ export class SignUpPage extends Block {
     `
   }
 }
+
+const ConnectedSignUpPage = withRouter(withStore(withUser(SignUpPage)))
+export { ConnectedSignUpPage as SignUpPage }

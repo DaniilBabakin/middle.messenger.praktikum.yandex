@@ -25,7 +25,7 @@ import ErrorFromServer from "components/errorFromServer"
 
 //------ИМПОРТЫ ДЛЯ ЧАТА
 import ChatContacts from "./components/chat/chatContacts"
-import ContactSearchInput from "./components/chat/chatContacts/contactSearchInput"
+import ContactSearchInput, { ContactSearchResults } from "./components/chat/chatContacts/contactSearchInput"
 import ContactLink from "./components/chat/chatContacts/contactLink"
 import ChatFooter from "./components/chat/chatFooter"
 import ChatHeader from "./components/chat/chatHeader"
@@ -45,6 +45,8 @@ registerComponent(ChangeAvatar)
 //------РЕГИСТРЫ ДЛЯ ЧАТА
 registerComponent(ChatContacts)
 registerComponent(ContactSearchInput)
+registerComponent(ContactSearchResults)
+registerComponent(ChangeAvatar)
 registerComponent(ContactLink)
 registerComponent(ChatFooter)
 registerComponent(ChatHeader)

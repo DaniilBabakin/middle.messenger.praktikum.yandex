@@ -1,3 +1,4 @@
+import { UserDTO } from "api/types"
 import { Block } from "core"
 
 declare global {
@@ -13,6 +14,7 @@ declare global {
     screen: Screens | null
     isLoading: boolean
     formError: string | null
+    userSearchResult: UserDTO[] | null
     user: User | null
   }
 

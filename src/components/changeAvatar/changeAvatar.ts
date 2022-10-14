@@ -22,7 +22,6 @@ export class ChangeAvatar extends Block {
         },
         change: (e: FocusEvent) => {
           const inputEl = e.target as HTMLInputElement
-          console.log("zalupa", e, this)
           if (inputEl.files) {
             document.querySelector('[data-label="avatar"]').src = window.URL.createObjectURL(inputEl!.files[0])
             let photo = inputEl.files[0]
@@ -39,7 +38,7 @@ export class ChangeAvatar extends Block {
     // language=hbs
     return `
         <div class="change-avatar">
-            <img src=https://ya-praktikum.tech/api/v2/resources{{src}} class="change-avatar__image" data-label="avatar" alt="Моя фотография"/>
+            <img src=https://ya-praktikum.tech/api/v2/resources{{src}} onerror="this.onerror=null;this.src='${avatar}';" class="change-avatar__image" data-label="avatar" alt="Моя фотография"/>
             <input type="file" class="change-avatar__input"/>
         </div>
     `

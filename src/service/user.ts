@@ -32,12 +32,12 @@ export const userAPIjhljk = {
 }
 
 type ChangeValuesPayload = {
-  emailValue: string
-  loginValue: string
-  firstNameValue: string
-  secondNameValue: string
-  phoneValue: string
-  displayNameValue: string
+  email: string
+  login: string
+  first_name: string
+  second_name: string
+  phone: string
+  display_name: string
 }
 type ChangePasswordPayload = {
   oldPassword: string
@@ -56,8 +56,9 @@ export const changeValues = async (dispatch: Dispatch<AppState>, state: AppState
     dispatch({ isLoading: false, formError: response.reason })
     return
   }
-  
+
   const responseUser = await authAPI.getUser()
+
   dispatch({ isLoading: false, formError: null })
   dispatch({ user: transformUser(responseUser as UserDTO) })
 
@@ -82,7 +83,7 @@ export const changePassword = async (dispatch: Dispatch<AppState>, state: AppSta
 export const changeAvatar = async (dispatch: Dispatch<AppState>, state: AppState, action: ChangeAvatarPayload) => {
   dispatch({ isLoading: true })
 
-  const response = await userAPI.changePassword(action)
+  const response = await userAPI.changeAvatar(action)
 
   if (apiHasError(response)) {
     dispatch({ isLoading: false, formError: response.reason })
@@ -90,4 +91,10 @@ export const changeAvatar = async (dispatch: Dispatch<AppState>, state: AppState
   }
 
   dispatch({ isLoading: false, formError: null })
+}
+
+export const searchUsers = async (dispatch: Dispatch<AppState>, state: AppState, action: ChangeAvatarPayload) => {
+  const response = await userAPI.usersSearch(action)
+  console.log("RES", response)
+  dispatch({ userSearchResult: response })
 }

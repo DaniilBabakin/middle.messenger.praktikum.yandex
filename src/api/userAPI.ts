@@ -36,4 +36,14 @@ export const userAPI = {
     console.log(data, res)
     return true
   },
+
+  usersSearch: async (data: any) => {
+    const res: any = await HTTPTransport.getInstance().post("/user/search", {
+      includeCredentials: true,
+      data: JSON.stringify(data),
+      headers: { "content-type": "application/json" },
+    })
+    console.log("RESPONSE", res)
+    return JSON.parse(res.responseText)
+  },
 }

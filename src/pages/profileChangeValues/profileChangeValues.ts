@@ -1,12 +1,7 @@
 import { Block, Store } from "core"
-import * as avatar from "../../assets/defaultAvatarBig.png"
 import "../profile/profile.scss"
-import ProfilePage from "pages/profile"
 import { validateForm } from "helpers/validateForm"
 import { router } from "../../index"
-import { ROUTES } from "constants/routes"
-import { userAPI } from "api/userAPI"
-import GlobalStorage, { StoreEvents } from "service/GlobalStorage"
 import { withRouter, withStore, withUser } from "helpers"
 import { Router } from "service/router/Router"
 import { changeValues } from "service/user"
@@ -71,14 +66,27 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
           })
         } else {
           console.log("ARRAY", arrayOfHtmlElements)
-          //   this.setProps({
-          //     emailValue: arrayOfHtmlElements[0].element.value,
-          //     loginValue: arrayOfHtmlElements[1].element.value,
-          //     firstNameValue: arrayOfHtmlElements[2].element.value,
-          //     secondNameValue: arrayOfHtmlElements[3].element.value,
-          //     phoneValue: arrayOfHtmlElements[4].element.value,
-          //     displayNameValue: arrayOfHtmlElements[5].element.value,
-          //   })
+          // this.setProps({
+          //   emailValue: arrayOfHtmlElements[0].element.value,
+          //   loginValue: arrayOfHtmlElements[1].element.value,
+          //   firstNameValue: arrayOfHtmlElements[2].element.value,
+          //   secondNameValue: arrayOfHtmlElements[3].element.value,
+          //   phoneValue: arrayOfHtmlElements[4].element.value,
+          //   displayNameValue: arrayOfHtmlElements[5].element.value,
+          // })
+          this.setProps({
+            ...props,
+            user: {
+              id: this.props.user!.id,
+              avatar: this.props.user!.avatar,
+              email: arrayOfHtmlElements[0].element.value,
+              login: arrayOfHtmlElements[1].element.value,
+              firstName: arrayOfHtmlElements[2].element.value,
+              secondName: arrayOfHtmlElements[3].element.value,
+              phone: arrayOfHtmlElements[4].element.value,
+              displayName: arrayOfHtmlElements[5].element.value,
+            },
+          })
           const formData = arrayOfHtmlElements.reduce<any>(
             (acc, item: { name: string; element: HTMLInputElement }) =>
               Object.assign(acc, { [item.name]: item.element.value }),
@@ -86,7 +94,7 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
           )
           console.log("Форма готова к отправке, данные: ", formData)
 
-          this.props.store.dispatch(changeValues,formData)
+          this.props.store.dispatch(changeValues, formData)
         }
       },
     })
@@ -113,7 +121,7 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="rrdreaming@yandex.ru"
+                    placeholder="Почта"
                     ref="emailInputRef"
                     errorRef="emailErrorRef"
                 }}}
@@ -130,7 +138,7 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="daniilbabakin"
+                    placeholder="Логин"
                     ref="loginInputRef"
                     errorRef="loginErrorRef"
                 }}}
@@ -147,7 +155,7 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="Даниил"
+                    placeholder="Имя"
                     ref="first_nameInputRef"
                     errorRef="first_nameErrorRef"
                 }}}
@@ -164,7 +172,7 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="Бабакин"
+                    placeholder="Фамилия"
                     ref="second_nameInputRef"
                     errorRef="second_nameErrorRef"
                 }}}
@@ -181,7 +189,7 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="Даниил"
+                    placeholder="Имя в чате"
                     ref="display_nameInputRef"
                     errorRef="display_nameErrorRef"
                 }}}
@@ -198,7 +206,7 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
                     inputClassName="profile__input default-font" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="+7 (916) 563 19 58"
+                    placeholder="Номер телефона"
                     ref="phoneInputRef"
                     errorRef="phoneErrorRef"
                 }}}
