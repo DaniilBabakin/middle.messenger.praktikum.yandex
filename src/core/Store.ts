@@ -22,7 +22,7 @@ export class Store<State extends Record<string, any>> extends EventBus {
     const prevState = { ...this.state }
 
     this.state = { ...this.state, ...nextState }
-
+    console.log("NEXT STATE--------------",prevState,nextState)
     this.emit("changed", prevState, nextState)
   }
 
@@ -30,6 +30,7 @@ export class Store<State extends Record<string, any>> extends EventBus {
     if (typeof nextStateOrAction === "function") {
       nextStateOrAction(this.dispatch.bind(this), this.state, payload)
     } else {
+    console.log('Z TUT')
       this.set({ ...this.state, ...nextStateOrAction })
     }
   }

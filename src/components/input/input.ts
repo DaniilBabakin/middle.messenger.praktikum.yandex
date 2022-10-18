@@ -11,6 +11,7 @@ interface InputProps {
   value?: string
   name?: string
   inputClassName?: string
+  autofocus?: boolean
 }
 
 export class Input extends Block {
@@ -22,7 +23,7 @@ export class Input extends Block {
   protected render(): string {
     // language=hbs
     return `
-        <input name="{{name}}" autocomplete="off" value="{{value}}" class="{{inputClassName}}" type="{{type}}" placeholder="{{placeholder}}">
+        <input name="{{name}}" {{#if autofocus}}tabindex="-1"{{/if}} autocomplete="off" value="{{value}}" class="{{inputClassName}}" type="{{type}}" placeholder="{{placeholder}}">
     `
   }
 }

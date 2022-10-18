@@ -21,11 +21,11 @@ class ContactSearchResults extends Block<ContactSearchResultsProps> {
     // language=hbs
     return `
     <div class="search-results">
-        {{#if store.userSearchResult}}
-            {{#each store.userSearchResult }}
+        {{#if store.contacts}}
+            {{#each store.contacts }}
             <div class="search-results__item">
+                <img src=https://ya-praktikum.tech/api/v2/resources{{this.avatar}} onerror="this.onerror=null;this.src='${avatar}';" class="search-results__item__image" data-label="avatar" alt="Моя фотография"/>
                  <span>{{this.login}}</span>
-                 <img src=https://ya-praktikum.tech/api/v2/resources{{this.avatar}} onerror="this.onerror=null;this.src='${avatar}';" class="search-results__item__image" data-label="avatar" alt="Моя фотография"/>
             </div>
             {{/each}}
         {{/if}}

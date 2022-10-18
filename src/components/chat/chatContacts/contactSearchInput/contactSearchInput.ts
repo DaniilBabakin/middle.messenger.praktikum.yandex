@@ -10,7 +10,7 @@ type ContactSearchInputProps = {
   store: Store<AppState>
   events: Record<string, any>
   searchValue: string
-  onBlur: () => void
+  onInput: () => void
 }
 
 export class ContactSearchInput extends Block<ContactSearchInputProps> {
@@ -19,37 +19,16 @@ export class ContactSearchInput extends Block<ContactSearchInputProps> {
     super({
       ...props,
       events: {
-        onBlur: props.onBlur,
-        input: (e: FocusEvent) => {
-          const inputEl = e.target as HTMLInputElement
-          window.store.dispatch(searchUsers, { login: inputEl.value })
-        },
-        focus: () => {
-          console.log("123")
-          window.store.dispatch({ userSearchResult: null })
-        },
+        input: props.onInput,
       },
     })
-    this.setProps({
-      ...props,
-      searchValue: "",
-    })
-    console.log(this.props)
   }
   protected render(): string {
     // language=hbs
     return `
     <div class="contact-search-input">
         <input type="text" value="{{searchValue}}"  placeholder="&#xF002; Поиск" class="search-input">
-        {{{Input onBlur=onBlur inputClassName="search-input" placeholder="&#xF002; Поиск"}}}
-        {{{ContactSearchResults}}}
     </div>
-
     `
-  }
-}
-function mapUserToProps(state: any) {
-  return {
-    userSearchResult: state!.userSearchResult,
   }
 }

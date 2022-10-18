@@ -1,26 +1,34 @@
 import Block from "core/Block"
+import { withChatMessages } from "helpers/withChatMessages"
+import { withCurrentChat } from "helpers/withCurrentChat"
+import { ChatMessageType } from "types/ChatMessage"
 
 import "./chatMainBlock.scss"
 
-export class ChatMainBlock extends Block {
+type ChatMainBlockProps = {
+  chatMessages: ChatMessageType[]
+}
+
+export class ChatMainBlock extends Block<ChatMainBlockProps> {
   static componentName = "ChatMainBlock"
-  constructor() {
-    super()
+  
+  constructor(props: ChatMainBlockProps) {
+    super(props)
   }
 
   protected render(): string {
     // language=hbs
     return `
         <div class="messages__main-block"> 
-            <span class="messages__main-block__time">Сегодня</span>
-            <div class="message friend__message">
-            <p class="message__text">Привет!</p>
-            <time class="message__time">16:39</time>
-            </div>
-            <div class="message friend__message">
-            <p class="message__text">Как настроение?</p>
-            <time class="message__time">16:40</time>
-            </div>
+            {{#each chatMessages}}
+                {{#if this.whenDate}}
+                   <span class="when-date">{{this.whenDate}}</span>
+                {{/if}}
+                <div class="message {{#ifNotMyMessage this.user_id}}friend__message{{/ifNotMyMessage}}">
+                    <p class="message__text">{{this.content}}</p>
+                    <time class="message__time">{{this.time}}</time>
+                </div>
+            {{/each}}
         </div>
     `
   }

@@ -1,14 +1,13 @@
 import EventBus from "core/EventBus"
 
-type WebSocketTransportProps = {
-  chatId: number
-  token: string
-}
-
 export default class WebSocketTransport {
+  static EVENTS = {
+    WS_MESSAGES_ARRIVED: "ws-messages-arrived",
+  } as const
+
   eventBus: EventBus
-  private _socket: WebSocket
-  private keepWSConnection: boolean = false
+  public isGettingOldMessages: boolean = false
+
   private static WS_EVENTS = {
     PING: "ping",
     PONG: "pong",
@@ -16,7 +15,15 @@ export default class WebSocketTransport {
     GET_OLD: "get old",
     MESSAGE: "message",
   } as const
-  user: User | null;
+
+  private static SERVICE_MESSAGE_TYPES = [
+    WebSocketTransport.WS_EVENTS.USER_CONNECTED,
+    WebSocketTransport.WS_EVENTS.PONG,
+  ]
+
+  private _socket: WebSocket
+  private keepWSConnection: boolean = false
+  user: User | null
   constructor(user: User | null, chatId: number, token: string) {
     this.user = user
     this.eventBus = new EventBus()
@@ -27,7 +34,17 @@ export default class WebSocketTransport {
     this._onClose()
   }
 
+  start() {
+    this.keepWSConnection = true
+    this.startPingingSocket()
+  }
+
+  stop() {
+    this.keepWSConnection = false
+  }
+
   send(message: string) {
+    console.log(message)
     this._socket.send(
       JSON.stringify({
         content: message,
@@ -35,16 +52,50 @@ export default class WebSocketTransport {
       }),
     )
   }
+  
+  private startPingingSocket(timeout: number = 1000) {
+    setTimeout(() => {
+      this._socket.send(
+        JSON.stringify({
+          type: WebSocketTransport.WS_EVENTS.PING,
+        }),
+      )
+      if (this.keepWSConnection) {
+        this.startPingingSocket()
+      }
+    }, timeout)
+  }
+  
+  public getOldMessages(page: string = "0") {
+    console.log("Get messages request")
+    this.isGettingOldMessages = true
+    this._socket.send(
+      JSON.stringify({
+        content: page,
+        type: WebSocketTransport.WS_EVENTS.GET_OLD,
+      }),
+    )
+  }
 
   private _onOpen() {
     this._socket.onopen = () => {
       console.log("Successfully connected to WS")
+      this.getOldMessages()
     }
   }
 
   private _onMessage() {
     this._socket.onmessage = (event) => {
-      console.log("Receved data", event)
+      const jsonData = JSON.parse(event.data)
+      if (WebSocketTransport.SERVICE_MESSAGE_TYPES.includes(jsonData.type)) {
+        return
+      }
+
+      console.log("Receved data", event, jsonData)
+      let messages: any[]
+
+      messages = jsonData
+      this.eventBus.emit(WebSocketTransport.EVENTS.WS_MESSAGES_ARRIVED, messages)
     }
   }
 

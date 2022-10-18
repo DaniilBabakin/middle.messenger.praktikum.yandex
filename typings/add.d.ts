@@ -1,5 +1,8 @@
 import { UserDTO } from "api/types"
 import { Block } from "core"
+import { ChatType } from "types/Chat"
+import { ChatMessageType } from "types/ChatMessage"
+import { CurrentChatType } from "types/CurrentChat"
 
 declare global {
   export type Nullable<T> = T | null
@@ -14,7 +17,10 @@ declare global {
     screen: Screens | null
     isLoading: boolean
     formError: string | null
-    userSearchResult: UserDTO[] | null
+    contacts: User[] | null
+    chats: ChatType[] | null
+    currentChat: CurrentChatType
+    chatMessages: ChatMessageType[]
     user: User | null
   }
 

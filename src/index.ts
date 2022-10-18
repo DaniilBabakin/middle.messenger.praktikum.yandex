@@ -4,6 +4,7 @@ import { registerComponent } from "./core"
 import "./app.scss"
 import { Router } from "service/router/Router"
 import { ROUTES } from "./constants/routes"
+import Handlebars from "handlebars"
 
 //PAGES
 import LoginPage from "./pages/login"
@@ -34,6 +35,9 @@ import ChatMessages from "./components/chat/chatMessages"
 import { Store } from "core/Store"
 import { defaultState } from "./store"
 import { initApp } from "service/initApp"
+import ChatItem from "components/chat/chatContacts/ChatItem"
+import { ChatHeaderOptions } from "components/chat/chatHeader/chatOptions"
+import * as modals from "components/modal"
 
 registerComponent(Title)
 registerComponent(Button)
@@ -42,16 +46,23 @@ registerComponent(ErrorComponent)
 registerComponent(ErrorFromServer)
 registerComponent(ControlledInput)
 registerComponent(ChangeAvatar)
+modals.default.forEach((component) => registerComponent(component))
 //------РЕГИСТРЫ ДЛЯ ЧАТА
 registerComponent(ChatContacts)
 registerComponent(ContactSearchInput)
 registerComponent(ContactSearchResults)
 registerComponent(ChangeAvatar)
 registerComponent(ContactLink)
+registerComponent(ChatItem)
 registerComponent(ChatFooter)
+registerComponent(ChatHeaderOptions)
 registerComponent(ChatHeader)
 registerComponent(ChatMainBlock)
 registerComponent(ChatMessages)
+
+Handlebars.registerHelper("ifNotMyMessage", function (arg1, options) {
+  return arg1 !== window.store.getState()?.user?.id ? "friend__message" : ""
+})
 
 export const router = new Router(".app")
 

@@ -96,5 +96,5 @@ export const changeAvatar = async (dispatch: Dispatch<AppState>, state: AppState
 export const searchUsers = async (dispatch: Dispatch<AppState>, state: AppState, action: ChangeAvatarPayload) => {
   const response = await userAPI.usersSearch(action)
   console.log("RES", response)
-  dispatch({ userSearchResult: response })
+  dispatch({ contacts: response.map((item: UserDTO) => transformUser(item)) })
 }

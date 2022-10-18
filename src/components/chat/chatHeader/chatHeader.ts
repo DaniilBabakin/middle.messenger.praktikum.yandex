@@ -2,11 +2,16 @@ import Block from "core/Block"
 
 import "./chatHeader.scss"
 import * as avatar from "../../../assets/defaultAvatar.png"
+import { CurrentChatType } from "types/CurrentChat"
+
+type ChatHeaderProps = {
+  currentChat: CurrentChatType
+}
 
 export class ChatHeader extends Block {
   static componentName = "ChatHeader"
-  constructor() {
-    super()
+  constructor(props:ChatHeaderProps) {
+    super(props)
   }
 
   protected render(): string {
@@ -15,10 +20,11 @@ export class ChatHeader extends Block {
         <header class="messages__header">
             <div class="messages__header__person">
             <img src="${avatar}" alt="Фотография собеседника" class="messages__header__person__image"/>
-            <span>Игорь Николаев</span>
+            <span>{{currentChat.title}}</span>
             </div>
-            <span class="messages__header__options">&#xF142;</span>
+            {{{ChatHeaderOptions}}}
         </header>
     `
   }
 }
+

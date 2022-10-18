@@ -2,6 +2,8 @@ import EventBus from "./EventBus"
 import { nanoid } from "nanoid"
 import Handlebars from "handlebars"
 import { isEqual } from "helpers"
+import cloneDeep from "helpers/cloneDeep"
+import { isCyclic } from "helpers/isCyclic"
 
 interface BlockMeta<P = any> {
   props: P
@@ -93,7 +95,7 @@ export default class Block<P = any> {
     this._render()
   }
 
-  componentDidUpdate(oldProps:any, newProps: any) {
+  componentDidUpdate(oldProps: any, newProps: any) {
     return true
   }
 
@@ -147,18 +149,28 @@ export default class Block<P = any> {
   }
 
   private _makePropsProxy = (props: any): any => {
-    return new Proxy(props as unknown as object, {
+    return new Proxy(props as any, {
       get(target: Record<string, unknown>, prop: string) {
         const value = target[prop]
         return typeof value === "function" ? value.bind(target) : value
       },
-      set: (target: Record<string, unknown>, prop: string, value: unknown) => {
+      set: (target: Record<string, any>, prop: string, value: any) => {
+        // if (target[prop] === undefined || target[prop] === null) {
+        //   target[prop] = value
+        //   this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
+        //   return true
+        // }
+        // if (isCyclic(target[prop]) || isCyclic(value)) {
+        //   target[prop] = value
+        //   this.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target)
+        //   return true
+        // }
+        // if (JSON.stringify(target[prop]) === JSON.stringify(value)) {
         target[prop] = value
-
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep, в след итерации нужно заставлять добавлять cloneDeep им самим
         this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
         return true
+        // }
+        // return true
       },
       deleteProperty() {
         throw new Error("Нет доступа")

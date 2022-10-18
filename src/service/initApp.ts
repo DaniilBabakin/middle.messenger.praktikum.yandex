@@ -2,6 +2,7 @@ import { authAPI } from "api/authAPI"
 import { UserDTO } from "api/types"
 import type { Dispatch } from "core/Store"
 import { transformUser, apiHasError } from "helpers"
+import { getChats } from "./chat"
 
 export async function initApp(dispatch: Dispatch<AppState>) {
   // Ручкая задержка для демонстрации загрузочного экрана
@@ -9,6 +10,8 @@ export async function initApp(dispatch: Dispatch<AppState>) {
 
   try {
     const response = await authAPI.getUser()
+
+    dispatch(getChats)
 
     if (apiHasError(response)) {
       return

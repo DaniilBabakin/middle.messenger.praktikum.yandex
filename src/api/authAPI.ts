@@ -3,7 +3,7 @@ import { HTTPTransport } from "core/CustomFetch"
 import { UserDTO } from "./types"
 
 export const authAPI = {
-  //TODO: тип даты
+
   signIn: async (data: any): Promise<boolean> => {
     const res: any = await HTTPTransport.getInstance().post("/auth/signin", {
       includeCredentials: true,
@@ -43,14 +43,12 @@ export const authAPI = {
   },
 
   getUser: async () => {
-    console.log("------GET USER-----")
     const res: any = await HTTPTransport.getInstance().get("/auth/user", {
       includeCredentials: true,
       headers: {
         accept: "application/json",
       },
     })
-    console.log("------GET USER-----", res)
     //TODO: тест вариант
     if (res.status !== 200) {
       if (window.location.pathname !== ROUTES.SignUp && window.location.pathname !== ROUTES.Login) {

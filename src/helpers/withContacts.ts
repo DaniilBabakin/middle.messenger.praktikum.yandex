@@ -1,21 +1,21 @@
+import { UserDTO } from "api/types"
 import { BlockClass } from "core"
 
-type WithUserProps = { user: User | null }
+type WithContactsProps = { contacts: UserDTO[] | null }
 
-export function withUser<P extends WithUserProps>(WrappedBlock: BlockClass<P>) {
+export function withContacts<P extends WithContactsProps>(WrappedBlock: BlockClass<P>) {
   // @ts-expect-error No base constructor has the specified
   return class extends WrappedBlock<P> {
     public static componentName = WrappedBlock.componentName || WrappedBlock.name
 
     constructor(props: P) {
-      super({ ...props, user: window.store.getState().user })
+      super({ ...props, contacts: window.store.getState().contacts })
     }
 
     __onChangeUserCallback = (prevState: AppState, nextState: AppState) => {
-      if (JSON.stringify(prevState.user) !== JSON.stringify(nextState.user)) {
-        console.log('USER CHANGED')
+      if (JSON.stringify(prevState.contacts) !== JSON.stringify(nextState.contacts)) {
         // @ts-expect-error this is not typed
-        this.setProps({ ...this.props, user: nextState.user })
+        this.setProps({ ...this.props, contacts: nextState.contacts })
       }
     }
 
@@ -28,5 +28,5 @@ export function withUser<P extends WithUserProps>(WrappedBlock: BlockClass<P>) {
       super.componentWillUnmount()
       window.store.off("changed", this.__onChangeUserCallback)
     }
-  } as BlockClass<Omit<P, "user">>
+  } as BlockClass<Omit<P, "contacts">>
 }

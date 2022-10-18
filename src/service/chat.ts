@@ -1,59 +1,17 @@
-import { authAPI } from "api/authAPI"
-import { UserDTO } from "api/types"
-import { ROUTES } from "constants/routes"
+import { chatsAPI } from "api/chatAPI"
 import type { Dispatch } from "core"
-import { transformUser, apiHasError } from "helpers"
+import WebSocketTransport from "./webSocket"
 
-type LoginPayload = {
-  login: string
-  password: string
-}
-
-export const getToken = async (dispatch: Dispatch<AppState>, state: AppState, action: LoginPayload): Promise<string> => {
-    const res = await HTTPTransport.getInstance().post(
-        `/chats/token/${chatId}`,
-        {
-            includeCredentials: true,
-            headers: {
-                'accept': 'application/json',
-            }
-        }
-    );
-    if (res.status !== 200) {
-        throw Error(JSON.parse(res.responseText).reason);
-    }
-    return JSON.parse(res.responseText).token
-}
-
-export const signUp = async (dispatch: Dispatch<AppState>, state: AppState, action: LoginPayload) => {
-  dispatch({ isLoading: true })
-  const response = await authAPI.signUp(action)
-
-  if (apiHasError(response)) {
-    dispatch({ isLoading: false, formError: response.reason })
-    return
+export const getChats = async (dispatch: Dispatch<AppState>) => {
+  const res = await chatsAPI.getChats()
+  if (res) {
+    dispatch({ chats: res })
   }
-
-  const responseUser = await authAPI.getUser()
-
-  dispatch({ isLoading: false, formError: null })
-
-  if (apiHasError(response)) {
-    dispatch(logout)
-    return
-  }
-
-  dispatch({ user: transformUser(responseUser as UserDTO) })
-
-  window.router.go(ROUTES.Chat)
+  console.log("CHATS", res)
 }
 
-export const logout = async (dispatch: Dispatch<AppState>) => {
-  dispatch({ isLoading: true })
-
-  await authAPI.logout()
-
-  dispatch({ isLoading: false, user: null })
-
-  window.router.go(ROUTES.Login)
+export const createWebSocketsConnection = async (user: User | null, chatId: number) => {
+  const token = await chatsAPI.getToken(chatId)
+  return new WebSocketTransport(user, chatId, token)
 }
+

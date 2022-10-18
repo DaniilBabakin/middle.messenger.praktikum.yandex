@@ -1,7 +1,5 @@
 import Block from "core/Block"
-import { withUser } from "helpers"
 import { validateForm } from "helpers/validateForm"
-import { searchUsers } from "service/user"
 import WebSocketTransport from "service/webSocket"
 
 import "./chatFooter.scss"
@@ -11,15 +9,15 @@ type ChatFooterProps = {
   error: string
   messageValue: string
   onInput?: (e: FocusEvent) => void
-  onSubmit?: () => void
+  onSubmit: () => void
+  onBlur: () => void
+  socket: WebSocketTransport
 }
 
-class ChatFooter extends Block<ChatFooterProps> {
+export class ChatFooter extends Block<ChatFooterProps> {
   static componentName = "ChatFooter"
-  private _socketTransport?: WebSocketTransport
   constructor(props: ChatFooterProps) {
     super(props)
-    this._socketTransport = new WebSocketTransport(this.props.user, 150, "edf32442e332ef9209791ee88a52735182107d6d:1665741478")
     this.setProps({
       ...props,
       error: "",
@@ -30,8 +28,6 @@ class ChatFooter extends Block<ChatFooterProps> {
         const errorRef = inputEl.name + "ErrorRef"
 
         const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }])
-
-        window.store.dispatch(searchUsers, { login: inputEl.value })
 
         this.refs[inputRef].refs[errorRef].setProps({
           text: errorMessage.text,
@@ -52,10 +48,24 @@ class ChatFooter extends Block<ChatFooterProps> {
             error: "",
             messageValue: messageEl.value,
           })
+
+          props.socket.send(messageEl.value)
           console.log("Сообщение готово к отправке, данные: ", { Message: messageEl.value })
         }
       },
     })
+    this.element?.querySelector("input[name='message']")?.addEventListener("keypress", (event: any) => {
+      // If the user presses the "Enter" key on the keyboard
+      if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault()
+        this.props.onSubmit()
+      }
+    })
+  }
+  componentDidMount() {
+    const messageEl = this.element?.querySelector("input[name='message']") as HTMLInputElement
+    messageEl.focus()
   }
   protected render(): string {
     // language=hbs
@@ -67,6 +77,7 @@ class ChatFooter extends Block<ChatFooterProps> {
                 type="text" 
                 name="message" 
                 value=messageValue 
+                autofocus=true
                 placeholder="Сообщение" 
                 inputClassName="messages__footer__input" 
                 divClassName="message-input" 
@@ -79,6 +90,3 @@ class ChatFooter extends Block<ChatFooterProps> {
     `
   }
 }
-
-const ConnectedChatFooter = withUser(ChatFooter)
-export { ConnectedChatFooter as ChatFooter }

@@ -16,6 +16,7 @@ interface ControlledInputProps {
   divClassName?: string
   errorClassName?: string
   errorRef?: string
+  autofocus?: boolean
 }
 
 export class ControlledInput extends Block {
@@ -30,6 +31,11 @@ export class ControlledInput extends Block {
         this.refs[errorReference].setProps({
           text: errorMessage.text,
         })
+        setTimeout(() => {
+          this.refs[errorReference].setProps({
+            text: "",
+          })
+        }, 5000)
       },
     })
   }
@@ -41,6 +47,7 @@ export class ControlledInput extends Block {
         {{{Input 
             name="{{name}}" 
             type="{{type}}"
+            autofocus=autofocus
             inputClassName="{{inputClassName}}"
             placeholder="{{placeholder}}" 
             onInput=onInput 

@@ -1,7 +1,7 @@
 import { HTTPTransport } from "core/CustomFetch"
 
 export const userAPI = {
-  //TODO: тип даты
+
   changeValues: async (data: any): Promise<boolean> => {
     const res: any = await HTTPTransport.getInstance().put("/user/profile", {
       includeCredentials: true,

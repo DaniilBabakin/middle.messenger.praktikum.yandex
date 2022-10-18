@@ -36,13 +36,6 @@ export class Router {
   }
 
   private _onRoute(pathname: string) {
-    //TODO:Странно
-    // const user = authAPI.getUser()
-    // if (pathname !== ROUTES.Login && pathname !== ROUTES.SignUp && !user) {
-    //   console.log("User not found,redirect to login Page")
-    //   pathname = "/"
-    //   window.history.pushState({}, "", pathname)
-    // }
     let route = this.getRoute(pathname)
 
     if (this._currentRoute) {
