@@ -37,8 +37,8 @@ import { defaultState } from "./store"
 import { initApp } from "service/initApp"
 import ChatItem from "components/chat/chatContacts/ChatItem"
 import { ChatHeaderOptions } from "components/chat/chatHeader/chatOptions"
-import * as modals from "components/modal"
-
+import * as modals from "components/modals"
+import Loader from "components/loader"
 registerComponent(Title)
 registerComponent(Button)
 registerComponent(Input)
@@ -46,6 +46,7 @@ registerComponent(ErrorComponent)
 registerComponent(ErrorFromServer)
 registerComponent(ControlledInput)
 registerComponent(ChangeAvatar)
+registerComponent(Loader)
 modals.default.forEach((component) => registerComponent(component))
 //------РЕГИСТРЫ ДЛЯ ЧАТА
 registerComponent(ChatContacts)

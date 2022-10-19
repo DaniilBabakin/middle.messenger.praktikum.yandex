@@ -71,4 +71,13 @@ export const chatsAPI = {
     }
     return JSON.parse(res.responseText).token
   },
+  
+  changeAvatar: async (data: any) => {
+    const res: any = await HTTPTransport.getInstance().put("/chats/avatar", {
+      includeCredentials: true,
+      data: data,
+    })
+    console.log(data, res)
+    return JSON.parse(res.responseText)
+  },
 }

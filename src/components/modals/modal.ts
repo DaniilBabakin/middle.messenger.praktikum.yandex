@@ -14,7 +14,7 @@ export class Modal extends Block {
     })
   }
   componentDidMount(props: any): void {
-    document.querySelector(".modal")?.addEventListener("click", () => {
+    document.getElementById("base")?.addEventListener("click", () => {
       console.log("12234532")
     })
     document.querySelector(".modal__body")?.addEventListener("click", (e: Event) => {
@@ -24,7 +24,7 @@ export class Modal extends Block {
   protected render(): string {
     // language=hbs
     return `
-        <div class="modal">
+        <div class="modal" id="base">
             <div class="modal__body">Привет!</div>
         </div>
     `

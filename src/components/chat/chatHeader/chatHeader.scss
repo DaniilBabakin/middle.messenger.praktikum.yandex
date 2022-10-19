@@ -40,6 +40,7 @@
     right: 0;
 
     display: flex;
+    flex-direction: column;
 
     width: 15vw;
     height: 25vh;
@@ -57,6 +58,20 @@
 
       visibility: visible;
       opacity: 1;
+    }
+
+    .change-chat-title-btn {
+      height: 5vh;
+
+      font-size: 15px;
+      color: white;
+
+      background-color: rgb(66 66 66);
+      border-bottom: 1px solid red;
+
+      &:hover {
+        background-color: rgb(41 41 41);
+      }
     }
   }
 }

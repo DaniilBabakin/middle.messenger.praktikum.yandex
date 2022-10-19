@@ -106,7 +106,7 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
         <main class="profile">
             <div class="profile__container">
             <div>
-                {{{ChangeAvatar src="${this.props.user?.avatar}"}}}
+                {{{ChangeAvatar src="${this.props.user?.avatar}" type="USER"}}}
                 <h1 class="profile__container_title">{{user.displayName}}</h1>
             </div>
             <form class="profile__form">

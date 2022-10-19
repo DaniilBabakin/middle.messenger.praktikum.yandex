@@ -19,7 +19,6 @@ class MainPage extends Block<MainPageProps> {
         <main class="main">
             {{{ChatContacts}}}
             {{{ChatMessages currentChat=currentChat}}}
-            {{{ChangeChatTitleModal}}}
         </main>
     `
   }

@@ -14,6 +14,7 @@ type ChatMessagesProps = {
   currentChat: CurrentChatType
   chatMessages: ChatMessageType[]
   _socketTransport: WebSocketTransport | undefined
+  isLoading: boolean
 }
 
 class ChatMessages extends Block<ChatMessagesProps> {
@@ -27,6 +28,7 @@ class ChatMessages extends Block<ChatMessagesProps> {
       ...props,
       chatMessages: [],
       _socketTransport: undefined,
+      isLoading: false,
     })
   }
 
@@ -44,6 +46,9 @@ class ChatMessages extends Block<ChatMessagesProps> {
   }
 
   private serveWSIncomingMessages(messagesList: any) {
+    this.setProps({ ...this.props, isLoading: true })
+    let objDiv = document.querySelector(".messages__main-block") as HTMLElement
+
     if (Array.isArray(messagesList)) {
       messagesList = messagesList
         .map((message: ChatMessageType, index) => {
@@ -55,9 +60,8 @@ class ChatMessages extends Block<ChatMessagesProps> {
       let minutes = date.getMinutes()
       messagesList = { ...messagesList, time: `${date.getHours()}:${minutes < 10 ? `0${minutes}` : minutes}` }
     }
-    this.setProps({ ...this.props, chatMessages: this.props.chatMessages.concat(messagesList) })
+    this.setProps({ ...this.props, chatMessages: this.props.chatMessages.concat(messagesList), isLoading: false })
 
-    let objDiv = document.querySelector(".messages__main-block") as HTMLElement
     objDiv.scrollTop = objDiv.scrollHeight
   }
 
@@ -70,8 +74,9 @@ class ChatMessages extends Block<ChatMessagesProps> {
     return `
         <div class="messages">
             {{{ChatHeader currentChat=currentChat}}}
-            {{{ChatMainBlock chatMessages=chatMessages}}}
+            {{{ChatMainBlock chatMessages=chatMessages isLoading=isLoading}}}
             {{{ChatFooter socket=_socketTransport}}}
+            {{{ChangeChatTitleModal currentChat=currentChat socket=_socketTransport}}}
         </div>
     `
   }

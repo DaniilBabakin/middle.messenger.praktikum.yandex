@@ -2,8 +2,12 @@ import Block from "core/Block"
 import { userAPI } from "api/userAPI"
 import * as avatar from "../../assets/defaultAvatarBig.png"
 import "./changeAvatar.scss"
+import { chatsAPI } from "api/chatAPI"
+import { changeChatAvatar } from "service/chat"
 interface ChangeAvatarProps {
   src: string
+  type: "USER" | "CHAT"
+  currentChatId?: number
 }
 
 export class ChangeAvatar extends Block {
@@ -28,7 +32,12 @@ export class ChangeAvatar extends Block {
             let formData = new FormData()
 
             formData.append("avatar", photo)
-            userAPI.changeAvatar(formData)
+            if (props.type === "USER") {
+              userAPI.changeAvatar(formData)
+            } else {
+              formData.append("chatId", JSON.stringify(props.currentChatId))
+              window.store.dispatch(changeChatAvatar, formData)
+            }
           }
         },
       },
