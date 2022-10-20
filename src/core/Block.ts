@@ -1,6 +1,9 @@
 import EventBus from "./EventBus"
 import { nanoid } from "nanoid"
 import Handlebars from "handlebars"
+import { isEqual } from "helpers"
+import cloneDeep from "helpers/cloneDeep"
+import { isCyclic } from "helpers/isCyclic"
 
 interface BlockMeta<P = any> {
   props: P
@@ -12,6 +15,11 @@ interface HTMLElementWithRefs extends HTMLElement {
   setProps: ({}) => void
 }
 
+export interface BlockClass<P> extends Function {
+  new (props: P): Block<P>
+  componentName?: string
+}
+
 export default class Block<P = any> {
   static EVENTS = {
     INIT: "init",
@@ -19,6 +27,8 @@ export default class Block<P = any> {
     FLOW_CDU: "flow:component-did-update",
     FLOW_RENDER: "flow:render",
   } as const
+
+  static componentName: string
 
   public id = nanoid(6)
   private readonly _meta: BlockMeta
@@ -51,14 +61,14 @@ export default class Block<P = any> {
     eventBus.emit(Block.EVENTS.INIT, this.props)
   }
 
-  _registerEvents(eventBus: EventBus<Events>) {
+  private _registerEvents(eventBus: EventBus<Events>) {
     eventBus.on(Block.EVENTS.INIT, this.init.bind(this))
     eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this))
     eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this))
     eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this))
   }
 
-  _createResources() {
+  private _createResources() {
     this._element = this._createDocumentElement("div")
   }
 
@@ -71,13 +81,13 @@ export default class Block<P = any> {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER, this.props)
   }
 
-  _componentDidMount(props: P) {
+  private _componentDidMount(props: P) {
     this.componentDidMount(props)
   }
 
   componentDidMount(props: P) {}
 
-  _componentDidUpdate(oldProps: P, newProps: P) {
+  private _componentDidUpdate(oldProps: P, newProps: P) {
     const response = this.componentDidUpdate(oldProps, newProps)
     if (!response) {
       return
@@ -85,7 +95,7 @@ export default class Block<P = any> {
     this._render()
   }
 
-  componentDidUpdate(oldProps: P, newProps: P) {
+  componentDidUpdate(oldProps: any, newProps: any) {
     return true
   }
 
@@ -109,7 +119,7 @@ export default class Block<P = any> {
     return this._element
   }
 
-  _render() {
+  private _render() {
     const fragment = this._compile()
 
     this._removeEvents()
@@ -138,23 +148,29 @@ export default class Block<P = any> {
     return this.element!
   }
 
-  _makePropsProxy(props: any): any {
-    // Можно и так передать this
-    // Такой способ больше не применяется с приходом ES6+
-    const self = this
-
-    return new Proxy(props as unknown as object, {
+  private _makePropsProxy = (props: any): any => {
+    return new Proxy(props as any, {
       get(target: Record<string, unknown>, prop: string) {
         const value = target[prop]
         return typeof value === "function" ? value.bind(target) : value
       },
-      set(target: Record<string, unknown>, prop: string, value: unknown) {
+      set: (target: Record<string, any>, prop: string, value: any) => {
+        // if (target[prop] === undefined || target[prop] === null) {
+        //   target[prop] = value
+        //   this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
+        //   return true
+        // }
+        // if (isCyclic(target[prop]) || isCyclic(value)) {
+        //   target[prop] = value
+        //   this.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target)
+        //   return true
+        // }
+        // if (JSON.stringify(target[prop]) === JSON.stringify(value)) {
         target[prop] = value
-
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep, в след итерации нужно заставлять добавлять cloneDeep им самим
-        self.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
+        this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
         return true
+        // }
+        // return true
       },
       deleteProperty() {
         throw new Error("Нет доступа")
@@ -162,11 +178,11 @@ export default class Block<P = any> {
     }) as unknown as P
   }
 
-  _createDocumentElement(tagName: string) {
+  private _createDocumentElement(tagName: string) {
     return document.createElement(tagName)
   }
 
-  _removeEvents() {
+  private _removeEvents() {
     const events: Record<string, () => void> = (this.props as any).events
 
     if (!events || !this._element) {
@@ -178,7 +194,7 @@ export default class Block<P = any> {
     })
   }
 
-  _addEvents() {
+  private _addEvents() {
     const events: Record<string, () => void> = (this.props as any).events
 
     if (!events) {
@@ -190,7 +206,7 @@ export default class Block<P = any> {
     })
   }
 
-  _compile(): DocumentFragment {
+  private _compile(): DocumentFragment {
     const fragment = document.createElement("template")
 
     /**

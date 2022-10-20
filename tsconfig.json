@@ -24,10 +24,11 @@
     "strictNullChecks": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "types": ["mocha"],
     "paths": {
       "*": ["typings/add.d.ts", "*"]
     }
   },
   "include": ["src","typings/add.d.ts"],
-  "typeRoots": ["node_modules/@types", "./typings/app.d.ts"],
+  "typeRoots": ["node_modules/@types", "./typings/app.d.ts"]
 }

@@ -1,29 +1,47 @@
-import { SignUpPage } from "../signUp/signUp"
-import { MainPage } from "../main/main"
 import Block from "core/Block"
 import "./login.scss"
 import { validateForm, ValidateType } from "helpers/validateForm"
+import { router } from "../../index"
+import { ROUTES } from "constants/routes"
+import { login } from "service/auth"
+import { withRouter, withStore, withUser } from "helpers"
+import { Router } from "service/router/Router"
+import { Store } from "core"
 
-export class LoginPage extends Block {
-  constructor() {
-    super()
+type LoginPageProps = {
+  router: Router
+  store: Store<AppState>
+  user: User | null
+  loginValue: string
+  passwordValue: string
+  formError: () => void
+  onInput?: (e: FocusEvent) => void
+  onRedirectToSignUp?: () => void
+  onSubmit?: () => void
+}
+
+class LoginPage extends Block<LoginPageProps> {
+  constructor(props: LoginPageProps) {
+    super(props)
 
     this.setProps({
+      ...props,
       loginValue: "",
       passwordValue: "",
+      formError: () => this.props.store.getState().formError,
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
-        const inputRef = inputEl.name + "InputRef" //Чтобы найти нужный объект в this.refs. Получается, например loginInputRef
-        const errorRef = inputEl.name + "ErrorRef" //Чтобы найти нужный объект в this.refs[inputRef] Получается, например loginErrorRef
+        const inputRef = inputEl.name + "InputRef"
+        const errorRef = inputEl.name + "ErrorRef"
 
-        const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }]) //Две константы выше сделаны как раз для того, чтобы не нужно было через условия отслеживать, какой тип отправлять. Результат функции - {text:сообщение об ошибке, inputName:имя элемента}
+        const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }])
 
         this.refs[inputRef].refs[errorRef].setProps({
           text: errorMessage.text,
         })
       },
       onRedirectToSignUp: () => {
-        window.currentPage.page = SignUpPage
+        router.go(ROUTES.SignUp)
       },
       onSubmit: () => {
         const loginEl = this.element?.querySelector("input[name='login']") as HTMLInputElement
@@ -40,11 +58,22 @@ export class LoginPage extends Block {
           })
         } else {
           this.setProps({
+            ...this.props,
             loginValue: loginEl.value,
             passwordValue: passwordEl.value,
           })
-          window.currentPage.page = MainPage
-          console.log("Форма готова к отправке, данные: ", { Login: loginEl.value, Password: passwordEl.value })
+
+          const formData = { login: loginEl.value, password: passwordEl.value }
+          console.log("Форма готова к отправке, данные: ", formData)
+          //   authAPI.signIn(formData).then((res) => {
+          //     if (!res) {
+          //       this.refs["passwordInputRef"].refs["passwordErrorRef"].setProps({
+          //         text: "Логин или пароль неверны",
+          //       })
+          //     }
+          //     this.initUser()
+          //   })
+          this.props.store.dispatch(login, formData)
         }
       },
     })
@@ -81,8 +110,8 @@ export class LoginPage extends Block {
             ref="passwordInputRef"
             errorRef="passwordErrorRef"
           }}}
-            {{{Button text="Войти" className="custom-button" onClick=onSubmit }}}
-
+          {{{ErrorFromServer text=formError className="white"}}}
+          {{{Button text="Войти" className="custom-button" onClick=onSubmit }}}
           </form>
           {{{Button text="Нет аккаунта?" className="redirect-button" onClick=onRedirectToSignUp}}}
       </div>
@@ -90,3 +119,6 @@ export class LoginPage extends Block {
     `
   }
 }
+
+const ConnectedLoginPage = withRouter(withStore(withUser(LoginPage)))
+export { ConnectedLoginPage as LoginPage }

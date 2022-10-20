@@ -16,9 +16,11 @@ interface ControlledInputProps {
   divClassName?: string
   errorClassName?: string
   errorRef?: string
+  autofocus?: boolean
 }
 
 export class ControlledInput extends Block {
+  static componentName = "ControlledInput"
   constructor(props: ControlledInputProps) {
     super({
       ...props,
@@ -29,6 +31,11 @@ export class ControlledInput extends Block {
         this.refs[errorReference].setProps({
           text: errorMessage.text,
         })
+        setTimeout(() => {
+          this.refs[errorReference].setProps({
+            text: "",
+          })
+        }, 5000)
       },
     })
   }
@@ -40,6 +47,7 @@ export class ControlledInput extends Block {
         {{{Input 
             name="{{name}}" 
             type="{{type}}"
+            autofocus=autofocus
             inputClassName="{{inputClassName}}"
             placeholder="{{placeholder}}" 
             onInput=onInput 

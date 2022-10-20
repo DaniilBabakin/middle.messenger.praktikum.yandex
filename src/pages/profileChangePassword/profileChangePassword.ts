@@ -1,30 +1,50 @@
-import { Block } from "core"
+import { Block, Store } from "core"
 import * as avatar from "../../assets/defaultAvatarBig.png"
 import "../profile/profile.scss"
-import MainPage from "pages/main"
 import LoginPage from "pages/login"
-import ProfilePage from "pages/profile"
 import { validateForm } from "helpers/validateForm"
+import { router } from "../../index"
+import { userAPI } from "api/userAPI"
+import { withRouter, withStore, withUser } from "helpers"
+import { Router } from "service/router/Router"
+import { changePassword } from "service/user"
 
-export class ProfileChangePasswordPage extends Block {
-  constructor() {
-    super()
+type ProfileChangePasswordPageProps = {
+  router: Router
+  store: Store<AppState>
+  user: User | null
+  values: {
+    oldPasswordValue: string
+    newPasswordValue: string
+    check_passwordValue: string
+  }
+  formError: () => void
+  redirectBack: () => void
+  onInput?: (e: FocusEvent) => void
+  onSubmit?: () => void
+}
+
+class ProfileChangePasswordPage extends Block<ProfileChangePasswordPageProps> {
+  constructor(props: ProfileChangePasswordPageProps) {
+    super(props)
+
     this.setProps({
-      oldPasswordValue: "",
-      newPasswordValue: "",
-      repeatNewPasswordValue: "",
-      redirectToLogin: () => {
-        window.currentPage.page = LoginPage
+      ...props,
+      values: {
+        oldPasswordValue: "",
+        newPasswordValue: "",
+        check_passwordValue: "",
       },
-      redirectToProfile: () => {
-        window.currentPage.page = ProfilePage
+      formError: () => this.props.store.getState().formError,
+      redirectBack: () => {
+        router.back()
       },
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
-        const inputRef = inputEl.name + "InputRef" //Чтобы найти нужный объект в this.refs. Получается, например loginInputRef
-        const errorRef = inputEl.name + "ErrorRef" //Чтобы найти нужный объект в this.refs[inputRef] Получается, например loginErrorRef
+        const inputRef = inputEl.name + "InputRef"
+        const errorRef = inputEl.name + "ErrorRef"
 
-        const errorMessage = validateForm([{ type: inputEl.name, value: String(inputEl.value) }]) //Две константы выше сделаны как раз для того, чтобы не нужно было через условия отслеживать, какой тип отправлять. Результат функции - {text:сообщение об ошибке, inputName:имя элемента}
+        const errorMessage = validateForm([{ type: inputEl.name, value: String(inputEl.value) }])
 
         this.refs[inputRef].refs[errorRef].setProps({
           text: errorMessage.text,
@@ -32,7 +52,7 @@ export class ProfileChangePasswordPage extends Block {
       },
       onSubmit: () => {
         //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
-        const arrayOfInputsName = ["oldPassword", "newPassword", "repeatNewPassword"]
+        const arrayOfInputsName = ["oldPassword", "newPassword", "check_password"]
 
         //Сам маппинг
         const arrayOfHtmlElements: { name: string; element: HTMLInputElement }[] = arrayOfInputsName.map(
@@ -40,7 +60,12 @@ export class ProfileChangePasswordPage extends Block {
             return { name: name, element: this.element?.querySelector(`input[name="${name}"]`) as HTMLInputElement }
           },
         )
-
+        const NamesToArrayOfHTMLElements = (names: string[]) => {
+          return names.map((name: string) => {
+            return { name: name, element: this.element?.querySelector(`input[name="${name}"]`) as HTMLInputElement }
+          })
+        }
+        NamesToArrayOfHTMLElements.bind(this)
         //Проверяем наличие ошибок(Маппинг помогает упростить запрос)
         const errorMessage = validateForm(
           arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
@@ -55,22 +80,29 @@ export class ProfileChangePasswordPage extends Block {
           })
         } else {
           if (arrayOfHtmlElements[1].element.value !== arrayOfHtmlElements[2].element.value) {
-            this.refs["repeatNewPasswordInputRef"].refs["repeatNewPasswordErrorRef"].setProps({
+            this.refs["check_passwordInputRef"].refs["check_passwordErrorRef"].setProps({
               text: "Пароли не совпадают",
             })
           } else {
             this.setProps({
-              oldPasswordValue: arrayOfHtmlElements[0].element.value,
-              newPasswordValue: arrayOfHtmlElements[1].element.value,
-              repeatNewPasswordValue: arrayOfHtmlElements[2].element.value,
+              ...this.props,
+              values: {
+                oldPasswordValue: arrayOfHtmlElements[0].element.value,
+                newPasswordValue: arrayOfHtmlElements[1].element.value,
+                check_passwordValue: arrayOfHtmlElements[2].element.value,
+              },
             })
-            console.log(
-              "Форма готова к отправке, данные: ",
-              arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
-                return { [item.name]: item.element.value }
-              }),
-            )
-            window.currentPage.page = ProfilePage
+
+            const formData = arrayOfHtmlElements
+              .filter(({ name }) => name !== "check_password")
+              .reduce<any>(
+                (acc, item: { name: string; element: HTMLInputElement }) =>
+                  Object.assign(acc, { [item.name]: item.element.value }),
+                {},
+              )
+            console.log("Форма готова к отправке, данные: ", formData)
+
+            this.props.store.dispatch(changePassword, formData)
           }
         }
       },
@@ -82,8 +114,8 @@ export class ProfileChangePasswordPage extends Block {
         <main class="profile">
             <div class="profile__container">
             <div>
-                <img src="${avatar}" class="profile__container_image" alt="Моя фотография"/>
-                <h1 class="profile__container_title">Даня</h1>
+                {{{ChangeAvatar src="${this.props.user?.avatar}"}}}
+                <h1 class="profile__container_title">{{user.displayName}}</h1>
             </div>
             <form class="profile__form">
             {{!------- СТАРЫЙ ПАРОЛЬ -------}}
@@ -93,7 +125,7 @@ export class ProfileChangePasswordPage extends Block {
                     onInput=onInput
                     type="password" 
                     name="oldPassword" 
-                    value=oldPasswordValue
+                    value=values.oldPasswordValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
@@ -110,11 +142,11 @@ export class ProfileChangePasswordPage extends Block {
                     onInput=onInput
                     type="password" 
                     name="newPassword" 
-                    value=newPasswordValue
+                    value=values.newPasswordValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="Введите старый пароль"
+                    placeholder="Введите новый пароль"
                     ref="newPasswordInputRef"
                     errorRef="newPasswordErrorRef"
                 }}}
@@ -126,18 +158,19 @@ export class ProfileChangePasswordPage extends Block {
                 {{{ControlledInput 
                     onInput=onInput
                     type="password" 
-                    name="repeatNewPassword" 
-                    value=repeatNewPasswordValue
+                    name="check_password" 
+                    value=values.check_passwordValue
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="Введите старый пароль"
-                    ref="repeatNewPasswordInputRef"
-                    errorRef="repeatNewPasswordErrorRef"
+                    placeholder="Повторите новый пароль"
+                    ref="check_passwordInputRef"
+                    errorRef="check_passwordErrorRef"
                 }}}
                 </div>
+                {{{ErrorFromServer text=formError}}}
             {{!------- LINK BACK TO PROFILE -------}}
-                {{{Button className="back-to-chats" onClick=redirectToProfile}}}
+                {{{Button className="back-to-chats" onClick=redirectBack}}}
                 {{{Button text="Сохранить" className="custom-button blue mt220" onClick=onSubmit}}}
             </form>
 
@@ -146,3 +179,6 @@ export class ProfileChangePasswordPage extends Block {
     `
   }
 }
+
+const ConnectedProfileChangePasswordPage = withRouter(withStore(withUser(ProfileChangePasswordPage)))
+export { ConnectedProfileChangePasswordPage as ProfileChangePasswordPage }

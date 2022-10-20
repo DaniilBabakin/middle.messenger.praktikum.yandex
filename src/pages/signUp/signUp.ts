@@ -1,14 +1,37 @@
 import Block from "core/Block"
 import "./signUp.scss"
-import LoginPage from "pages/login"
-import { validateForm, ValidateType } from "helpers/validateForm"
-import MainPage from "pages/main"
+import { validateForm } from "helpers/validateForm"
+import { router } from "../../index"
+import * as avatar from "../../assets/defaultAvatarBig.png"
+import { withRouter, withStore, withUser } from "helpers"
+import { Router } from "service/router/Router"
+import { Store } from "core"
+import { ROUTES } from "constants/routes"
+import { signUp } from "service/auth"
 
-export class SignUpPage extends Block {
-  constructor() {
-    super()
+type SignUpPageProps = {
+  router: Router
+  store: Store<AppState>
+  user: User | null
+  emailValue: string
+  loginValue: string
+  passwordValue: string
+  firstNameValue: string
+  secondNameValue: string
+  phoneValue: string
+  checkPasswordValue: string
+  formError: () => void
+  onInput?: (e: FocusEvent) => void
+  onRedirectToLogin?: () => void
+  onSubmit?: () => void
+}
+
+class SignUpPage extends Block<SignUpPageProps> {
+  constructor(props: SignUpPageProps) {
+    super(props)
 
     this.setProps({
+      ...props,
       emailValue: "",
       loginValue: "",
       passwordValue: "",
@@ -18,17 +41,16 @@ export class SignUpPage extends Block {
       checkPasswordValue: "",
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
-        const inputRef = inputEl.name + "InputRef" //Чтобы найти нужный объект в this.refs. Получается, например loginInputRef
-        const errorRef = inputEl.name + "ErrorRef" //Чтобы найти нужный объект в this.refs[inputRef] Получается, например loginErrorRef
+        const inputRef = inputEl.name + "InputRef"
+        const errorRef = inputEl.name + "ErrorRef"
 
-        const errorMessage = validateForm([{ type: inputEl.name, value: String(inputEl.value) }]) //Две константы выше сделаны как раз для того, чтобы не нужно было через условия отслеживать, какой тип отправлять. Результат функции - {text:сообщение об ошибке, inputName:имя элемента}
-
+        const errorMessage = validateForm([{ type: inputEl.name, value: String(inputEl.value) }])
         this.refs[inputRef].refs[errorRef].setProps({
           text: errorMessage.text,
         })
       },
       onRedirectToLogin: () => {
-        window.currentPage.page = LoginPage
+        router.go(ROUTES.Login)
       },
       onSubmit: () => {
         //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
@@ -61,6 +83,7 @@ export class SignUpPage extends Block {
             })
           } else {
             this.setProps({
+              ...props,
               emailValue: arrayOfHtmlElements[0].element.value,
               loginValue: arrayOfHtmlElements[1].element.value,
               firstNameValue: arrayOfHtmlElements[2].element.value,
@@ -69,18 +92,23 @@ export class SignUpPage extends Block {
               passwordValue: arrayOfHtmlElements[5].element.value,
               checkPasswordValue: arrayOfHtmlElements[6].element.value,
             })
-            console.log(
-              "Форма готова к отправке, данные: ",
-              arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
-                return { [item.name]: item.element.value }
-              }),
-            )
-            window.currentPage.page = MainPage
+            const formData = arrayOfHtmlElements
+              .filter(({ name }) => name !== "check_password")
+              .reduce<any>(
+                (acc, item: { name: string; element: HTMLInputElement }) =>
+                  Object.assign(acc, { [item.name]: item.element.value }),
+                {},
+              )
+            formData['avatar'] = avatar
+            console.log("Форма готова к отправке, данные: ", formData)
+
+            this.props.store.dispatch(signUp, formData)
           }
         }
       },
     })
   }
+
   render() {
     // language=hbs
     return `
@@ -181,3 +209,6 @@ export class SignUpPage extends Block {
     `
   }
 }
+
+const ConnectedSignUpPage = withRouter(withStore(withUser(SignUpPage)))
+export { ConnectedSignUpPage as SignUpPage }

@@ -1,10 +1,15 @@
 export enum ValidateType {
   Login = "login",
   Password = "password",
+  NewPassword = "newPassword",
+  OldPassword = "oldPassword",
+  CheckPassword = "check_password",
   FirstName = "first_name",
   SecondName = "second_name",
   Email = "email",
   Phone = "phone",
+  DisplayName = "display_name",
+  Message = "message",
 }
 
 type ValidateRule = {
@@ -17,7 +22,7 @@ export function validateForm(rules: ValidateRule[]) {
   for (let i = 0; i < rules.length; i++) {
     const { type, value } = rules[i]
     //Ниже я сделал именно через "название типа" , потому что в том же onBlur можно просто указать type:inputEl.name, вместо поиска нужного типа через условия
-    if (type === "login") {
+    if (type === ValidateType.Login) {
       errorMessage.inputName = "loginInputRef"
       if (value.length === 0) {
         errorMessage.text = "Логин не может быть пустым"
@@ -42,7 +47,12 @@ export function validateForm(rules: ValidateRule[]) {
         break
       }
     }
-    if (type === "password" || type === "newPassword" || type === "oldPassword" || type === "repeatNewPassword") {
+    if (
+      type === ValidateType.Password ||
+      type === ValidateType.NewPassword ||
+      type === ValidateType.OldPassword ||
+      type === ValidateType.CheckPassword
+    ) {
       errorMessage.inputName = `${type}InputRef`
       if (value.length === 0) {
         errorMessage.text = "Пароль не может быть пустым"
@@ -61,7 +71,7 @@ export function validateForm(rules: ValidateRule[]) {
         break
       }
     }
-    if (type === "first_name" || type === "second_name") {
+    if (type === ValidateType.FirstName || type === ValidateType.SecondName) {
       errorMessage.inputName = `${type}InputRef`
       const nameForText = type === ValidateType.FirstName ? "Имя" : "Фамилия"
       if (value.length === 0) {
@@ -81,7 +91,7 @@ export function validateForm(rules: ValidateRule[]) {
         break
       }
     }
-    if (type === "email") {
+    if (type === ValidateType.Email) {
       errorMessage.inputName = "emailInputRef"
       if (value.length === 0) {
         errorMessage.text = "Почта не может быть пустой"
@@ -106,7 +116,7 @@ export function validateForm(rules: ValidateRule[]) {
         break
       }
     }
-    if (type === "phone") {
+    if (type === ValidateType.Phone) {
       errorMessage.inputName = "phoneInputRef"
       if (value.length === 0) {
         errorMessage.text = "Номер телефона не может быть пустым"
@@ -117,8 +127,8 @@ export function validateForm(rules: ValidateRule[]) {
       } else if (value.match(/[A-Za-zА-Яа-я]+/g)) {
         errorMessage.text = "Номер телефона не может содержать буквы"
         break
-      } else if (!value.match(/^[+]/g)) {
-        errorMessage.text = "Номер телефона должен начинаться с плюса"
+      } else if (!value.match(/^[+]7/)) {
+        errorMessage.text = "Номер телефона должен начинаться с +7"
         break
       } else if (value.length < 10) {
         errorMessage.text = "Номер телефона должен содержать от 10 символов"
@@ -128,14 +138,14 @@ export function validateForm(rules: ValidateRule[]) {
         break
       }
     }
-    if (type === "display_name") {
+    if (type === ValidateType.DisplayName) {
       errorMessage.inputName = "display_nameInputRef"
       if (value.length === 0) {
         errorMessage.text = "Имя в чате не может быть пустым"
         break
       }
     }
-    if (type === "message") {
+    if (type === ValidateType.Message) {
       errorMessage.inputName = "messageInputRef"
       if (value.length === 0) {
         errorMessage.text = "Сообщение не может быть пустым"

@@ -1,33 +1,41 @@
-import { Block } from "core"
-import * as avatar from "../../assets/defaultAvatarBig.png"
+import { Block, Store } from "core"
 import "../profile/profile.scss"
-import MainPage from "pages/main"
-import LoginPage from "pages/login"
-import ProfilePage from "pages/profile"
 import { validateForm } from "helpers/validateForm"
+import { router } from "../../index"
+import { withRouter, withStore, withUser } from "helpers"
+import { Router } from "service/router/Router"
+import { changeValues } from "service/user"
 
-export class ProfileChangeValuesPage extends Block {
-  constructor() {
-    super()
+type ProfileChangeValuesPageProps = {
+  router: Router
+  store: Store<AppState>
+  user: User | null
+  values: {
+    oldPasswordValue: string
+    newPasswordValue: string
+    check_passwordValue: string
+  }
+  formError: () => void
+  redirectBack?: () => void
+  onInput?: (e: FocusEvent) => void
+  onSubmit?: () => void
+}
+
+class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
+  constructor(props: ProfileChangeValuesPageProps) {
+    super(props)
+
     this.setProps({
-      emailValue: "",
-      loginValue: "",
-      firstNameValue: "",
-      secondNameValue: "",
-      phoneValue: "",
-      displayNameValue: "",
-      redirectToLogin: () => {
-        window.currentPage.page = LoginPage
-      },
-      redirectToProfile: () => {
-        window.currentPage.page = ProfilePage
+      ...props,
+      redirectBack: () => {
+        router.back()
       },
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
-        const inputRef = inputEl.name + "InputRef" //Чтобы найти нужный объект в this.refs. Получается, например loginInputRef
-        const errorRef = inputEl.name + "ErrorRef" //Чтобы найти нужный объект в this.refs[inputRef] Получается, например loginErrorRef
+        const inputRef = inputEl.name + "InputRef"
+        const errorRef = inputEl.name + "ErrorRef"
 
-        const errorMessage = validateForm([{ type: inputEl.name, value: String(inputEl.value) }]) //Две константы выше сделаны как раз для того, чтобы не нужно было через условия отслеживать, какой тип отправлять. Результат функции - {text:сообщение об ошибке, inputName:имя элемента}
+        const errorMessage = validateForm([{ type: inputEl.name, value: String(inputEl.value) }])
 
         this.refs[inputRef].refs[errorRef].setProps({
           text: errorMessage.text,
@@ -57,24 +65,40 @@ export class ProfileChangeValuesPage extends Block {
             text: errorMessage.text,
           })
         } else {
+          console.log("ARRAY", arrayOfHtmlElements)
+          // this.setProps({
+          //   emailValue: arrayOfHtmlElements[0].element.value,
+          //   loginValue: arrayOfHtmlElements[1].element.value,
+          //   firstNameValue: arrayOfHtmlElements[2].element.value,
+          //   secondNameValue: arrayOfHtmlElements[3].element.value,
+          //   phoneValue: arrayOfHtmlElements[4].element.value,
+          //   displayNameValue: arrayOfHtmlElements[5].element.value,
+          // })
           this.setProps({
-            emailValue: arrayOfHtmlElements[0].element.value,
-            loginValue: arrayOfHtmlElements[1].element.value,
-            firstNameValue: arrayOfHtmlElements[2].element.value,
-            secondNameValue: arrayOfHtmlElements[3].element.value,
-            phoneValue: arrayOfHtmlElements[4].element.value,
-            displayNameValue: arrayOfHtmlElements[5].element.value,
+            ...props,
+            user: {
+              id: this.props.user!.id,
+              avatar: this.props.user!.avatar,
+              email: arrayOfHtmlElements[0].element.value,
+              login: arrayOfHtmlElements[1].element.value,
+              firstName: arrayOfHtmlElements[2].element.value,
+              secondName: arrayOfHtmlElements[3].element.value,
+              phone: arrayOfHtmlElements[4].element.value,
+              displayName: arrayOfHtmlElements[5].element.value,
+            },
           })
-          console.log(
-            "Форма готова к отправке, данные: ",
-            arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
-              return { [item.name]: item.element.value }
-            }),
+          const formData = arrayOfHtmlElements.reduce<any>(
+            (acc, item: { name: string; element: HTMLInputElement }) =>
+              Object.assign(acc, { [item.name]: item.element.value }),
+            {},
           )
-          window.currentPage.page = ProfilePage
+          console.log("Форма готова к отправке, данные: ", formData)
+
+          this.props.store.dispatch(changeValues, formData)
         }
       },
     })
+    console.log(this.props)
   }
 
   protected render(): string {
@@ -82,8 +106,8 @@ export class ProfileChangeValuesPage extends Block {
         <main class="profile">
             <div class="profile__container">
             <div>
-                <img src="${avatar}" class="profile__container_image" alt="Моя фотография"/>
-                <h1 class="profile__container_title">Даня</h1>
+                {{{ChangeAvatar src="${this.props.user?.avatar}" type="USER"}}}
+                <h1 class="profile__container_title">{{user.displayName}}</h1>
             </div>
             <form class="profile__form">
             {{!------- ПОЧТА -------}}
@@ -93,11 +117,11 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="email" 
-                    value=emailValue
+                    value=user.email
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="rrdreaming@yandex.ru"
+                    placeholder="Почта"
                     ref="emailInputRef"
                     errorRef="emailErrorRef"
                 }}}
@@ -110,11 +134,11 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="login" 
-                    value=loginValue
+                    value=user.login
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="daniilbabakin"
+                    placeholder="Логин"
                     ref="loginInputRef"
                     errorRef="loginErrorRef"
                 }}}
@@ -127,11 +151,11 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="first_name" 
-                    value=firstNameValue
+                    value=user.firstName
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="Даниил"
+                    placeholder="Имя"
                     ref="first_nameInputRef"
                     errorRef="first_nameErrorRef"
                 }}}
@@ -144,11 +168,11 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="second_name" 
-                    value=secondNameValue
+                    value=user.secondName
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="Бабакин"
+                    placeholder="Фамилия"
                     ref="second_nameInputRef"
                     errorRef="second_nameErrorRef"
                 }}}
@@ -161,11 +185,11 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="display_name" 
-                    value=displayNameValue
+                    value=user.displayName
                     inputClassName="profile__input" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="Даниил"
+                    placeholder="Имя в чате"
                     ref="display_nameInputRef"
                     errorRef="display_nameErrorRef"
                 }}}
@@ -178,17 +202,17 @@ export class ProfileChangeValuesPage extends Block {
                     onInput=onInput
                     type="text" 
                     name="phone" 
-                    value=phoneValue
+                    value=user.phone
                     inputClassName="profile__input default-font" 
                     divClassName="profile__input__div" 
                     errorClassName="profile__error"
-                    placeholder="+7 (916) 563 19 58"
+                    placeholder="Номер телефона"
                     ref="phoneInputRef"
                     errorRef="phoneErrorRef"
                 }}}
                 </div>
             {{!------- LINK BACK TO PROFILE -------}}
-                {{{Button className="back-to-chats" onClick=redirectToProfile}}}
+                {{{Button className="back-to-chats" onClick=redirectBack}}}
                 {{{Button text="Сохранить" className="custom-button blue mt75" onClick=onSubmit}}}
             </form>
 
@@ -197,3 +221,6 @@ export class ProfileChangeValuesPage extends Block {
     `
   }
 }
+
+const ConnectedProfileChangeValuesPage = withRouter(withStore(withUser(ProfileChangeValuesPage)))
+export { ConnectedProfileChangeValuesPage as ProfileChangeValuesPage }

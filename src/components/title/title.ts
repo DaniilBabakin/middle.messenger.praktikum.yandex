@@ -8,6 +8,7 @@ interface TitleProps {
 }
 
 export class Title extends Block {
+  static componentName = "Title"
   constructor({ title, subtitle }: TitleProps) {
     super({ title, subtitle })
   }

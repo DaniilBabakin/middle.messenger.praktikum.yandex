@@ -3,11 +3,47 @@ import Block from "core/Block"
 import "./chatContacts.scss"
 import contacts from "../../../data/contacts.json"
 import * as avatar from "../../../assets/defaultAvatar.png"
-export class ChatContacts extends Block {
-  constructor() {
-    super(contacts)
+import { withContacts, withStore } from "helpers"
+import { Store } from "core"
+import { UserDTO } from "api/types"
+import { searchUsers } from "service/user"
+import { withChats } from "helpers/withChats"
+import { ChatType } from "types/Chat"
+
+type ChatContactsProps = {
+  store: Store<AppState>
+  chats: ChatType[]
+  contacts: User[]
+  events: Record<string, any>
+  searchValue: string
+  onInput: (e: FocusEvent) => void
+  onFocus: () => void
+  onClick: (e: FocusEvent) => void
+}
+
+class ChatContacts extends Block<ChatContactsProps> {
+  static componentName = "ChatContacts"
+
+  constructor(props: ChatContactsProps) {
+    super()
     this.setProps({
-      contacts: contacts,
+      ...props,
+      searchValue: "",
+      onInput: (e: FocusEvent) => {
+        const inputEl = e.target as HTMLInputElement
+        this.setProps({
+          ...props,
+          searchValue: inputEl.value,
+        })
+        window.store.dispatch(searchUsers, { login: inputEl.value })
+      },
+      onFocus: () => {
+        console.log("123")
+        window.store.dispatch({ contacts: null })
+      },
+      onClick: (e: FocusEvent) => {
+        const inputEl = e.target as HTMLInputElement
+      },
     })
   }
   protected render(): string {
@@ -15,24 +51,10 @@ export class ChatContacts extends Block {
     return `
     <aside class="contacts">
     {{{ContactLink text="Профиль >"}}}
-    {{{ContactSearchInput}}}
+    {{{ContactSearchInput onInput=onInput searchValue=searchValue}}}
     <div class="contacts__list">
-      {{#each contacts}}
-          <div class="contacts__list__item">
-            <img src="${avatar}" alt="Фотография пользователя" class="item__image"/>
-            <div class="item__text">
-              <span class="item__text__name">{{this.name}}</span>
-              <span class="item__text__last-message">{{this.lastMessage}}</span>
-            </div>
-            <div class="item__info">
-              <span class="item__info__time">{{this.time}}</span>
-              {{#if this.missedMessages}}
-              <span class="item__info__missed-messages">{{this.missedMessages}}</span>
-              {{else}}
-              <span class="item__info__missed-messages_empty">1</span>
-              {{/if}}
-            </div>
-          </div>
+      {{#each chats}}
+          {{{ChatItem onClick=onClick chat=this}}}
       {{/each}}
   
     </div>
@@ -40,3 +62,10 @@ export class ChatContacts extends Block {
     `
   }
 }
+function mapUserToProps(state: any) {
+  return {
+    contacts: state!.contacts,
+  }
+}
+const ConnectedChatContacts = withChats(withContacts(ChatContacts))
+export { ConnectedChatContacts as ChatContacts }

@@ -1,0 +1,12 @@
+.error-from-server {
+  padding-top: 10px;
+
+  color: red;
+  text-align: center;
+
+  &.white {
+    padding: 0 0 20px;
+
+    color: white;
+  }
+}

@@ -1,21 +1,33 @@
 import Block from "core/Block"
 import { validateForm } from "helpers/validateForm"
+import WebSocketTransport from "service/webSocket"
 
 import "./chatFooter.scss"
 
-export class ChatFooter extends Block {
-  constructor() {
-    super()
+type ChatFooterProps = {
+  user: User | null
+  error: string
+  messageValue: string
+  onInput?: (e: FocusEvent) => void
+  onSubmit: () => void
+  onBlur: () => void
+  socket: WebSocketTransport
+}
 
+export class ChatFooter extends Block<ChatFooterProps> {
+  static componentName = "ChatFooter"
+  constructor(props: ChatFooterProps) {
+    super(props)
     this.setProps({
+      ...props,
       error: "",
       messageValue: "",
       onInput: (e: FocusEvent) => {
         const inputEl = e.target as HTMLInputElement
-        const inputRef = inputEl.name + "InputRef" //Чтобы найти нужный объект в this.refs. Получается, например loginInputRef
-        const errorRef = inputEl.name + "ErrorRef" //Чтобы найти нужный объект в this.refs[inputRef] Получается, например loginErrorRef
+        const inputRef = inputEl.name + "InputRef"
+        const errorRef = inputEl.name + "ErrorRef"
 
-        const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }]) //Две константы выше сделаны как раз для того, чтобы не нужно было через условия отслеживать, какой тип отправлять. Результат функции - {text:сообщение об ошибке, inputName:имя элемента}
+        const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }])
 
         this.refs[inputRef].refs[errorRef].setProps({
           text: errorMessage.text,
@@ -24,9 +36,7 @@ export class ChatFooter extends Block {
       onSubmit: () => {
         const messageEl = this.element?.querySelector("input[name='message']") as HTMLInputElement
 
-        const errorMessage = validateForm([
-          { type: "message", value: messageEl.value },
-        ])
+        const errorMessage = validateForm([{ type: "message", value: messageEl.value }])
 
         if (errorMessage.text) {
           this.refs[errorMessage.inputName].refs[errorMessage.inputName.replace("Input", "Error")].setProps({
@@ -34,13 +44,28 @@ export class ChatFooter extends Block {
           })
         } else {
           this.setProps({
+            ...props,
             error: "",
             messageValue: messageEl.value,
           })
+
+          props.socket.send(messageEl.value)
           console.log("Сообщение готово к отправке, данные: ", { Message: messageEl.value })
         }
       },
     })
+    this.element?.querySelector("input[name='message']")?.addEventListener("keypress", (event: any) => {
+      // If the user presses the "Enter" key on the keyboard
+      if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault()
+        this.props.onSubmit()
+      }
+    })
+  }
+  componentDidMount() {
+    const messageEl = this.element?.querySelector("input[name='message']") as HTMLInputElement
+    messageEl.focus()
   }
   protected render(): string {
     // language=hbs
@@ -52,6 +77,7 @@ export class ChatFooter extends Block {
                 type="text" 
                 name="message" 
                 value=messageValue 
+                autofocus=true
                 placeholder="Сообщение" 
                 inputClassName="messages__footer__input" 
                 divClassName="message-input" 

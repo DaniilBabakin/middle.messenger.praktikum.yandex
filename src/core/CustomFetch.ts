@@ -1,4 +1,6 @@
-enum METHOD {
+import { queryStringify } from "helpers/queryStringify"
+
+enum Method {
   GET = "GET",
   POST = "POST",
   PUT = "PUT",
@@ -7,7 +9,8 @@ enum METHOD {
 }
 
 type Options = {
-  method: METHOD
+  method: Method
+  includeCredentials?: boolean
   data?: any
   timeout?: number
   headers?: Record<string, string>
@@ -15,32 +18,42 @@ type Options = {
 
 type OptionsWithoutMethod = Omit<Options, "method">
 
-function queryStringify(data: {}) {
-  return `?${Object.entries(data)
-    .map(([key, val]) => `${key}=${val}`)
-    .join("&")}`
-}
 export class HTTPTransport {
-  get = (url: string, options: OptionsWithoutMethod = {}) => {
-    return this.request(url, { ...options, method: METHOD.GET }, options.timeout)
+  public baseUrl: string
+  private static _instance: HTTPTransport
+
+  static getInstance() {
+    if (!this._instance) {
+      this._instance = new HTTPTransport("https://ya-praktikum.tech/api/v2")
+    }
+    return this._instance
   }
-  post = (url: string, options: OptionsWithoutMethod = {}) => {
-    return this.request(url, { ...options, method: METHOD.POST }, options.timeout)
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl
   }
-  put = (url: string, options: OptionsWithoutMethod = {}) => {
-    return this.request(url, { ...options, method: METHOD.PUT }, options.timeout)
+  get = (path: string, options: OptionsWithoutMethod = {}) => {
+    if (options.data) {
+      return this.request(`${path}${queryStringify(options.data)}`, { ...options, method: Method.GET }, options.timeout)
+    }
+    return this.request(path, { ...options, method: Method.GET }, options.timeout)
   }
-  delete = (url: string, options: OptionsWithoutMethod = {}) => {
-    return this.request(url, { ...options, method: METHOD.DELETE }, options.timeout)
+  post = (path: string, options: OptionsWithoutMethod = {}) => {
+    return this.request(path, { ...options, method: Method.POST }, options.timeout)
+  }
+  put = (path: string, options: OptionsWithoutMethod = {}) => {
+    return this.request(path, { ...options, method: Method.PUT }, options.timeout)
+  }
+  delete = (path: string, options: OptionsWithoutMethod = {}) => {
+    return this.request(path, { ...options, method: Method.DELETE }, options.timeout)
   }
 
-  request(url: string, options: Options = { method: METHOD.GET }, timeout = 5000) {
-    const { headers = {}, method, data } = options
-
+  request(path: string, options: Options = { method: Method.GET }, timeout = 0) {
+    const { headers = {}, includeCredentials = true, method, data } = options
+    const url = this.baseUrl + path
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
-      xhr.open(method, method === METHOD.GET && !!data ? `${url}${queryStringify(data)}` : url)
-
+      xhr.open(method, url)
+      xhr.withCredentials = includeCredentials
       Object.keys(headers).forEach((key) => {
         xhr.setRequestHeader(key, headers[key])
       })
@@ -55,7 +68,7 @@ export class HTTPTransport {
       xhr.timeout = timeout
       xhr.ontimeout = reject
 
-      if (method === METHOD.GET || !data) {
+      if (method === Method.GET || !data) {
         xhr.send()
       } else {
         xhr.send(data)

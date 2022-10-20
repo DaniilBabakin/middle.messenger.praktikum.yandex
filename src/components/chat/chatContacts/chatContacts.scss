@@ -52,6 +52,7 @@
           width: 54px;
           height: 54px;
 
+          object-fit: cover;
           background-repeat: no-repeat;
           background-position: center;
           background-size: cover;
@@ -101,7 +102,7 @@
             font-size: 14px;
             color: white;
 
-            background-color: #3369f3;
+            background-color: var(--main-blue-color);
             border-radius: 50%;
 
             &_empty {
