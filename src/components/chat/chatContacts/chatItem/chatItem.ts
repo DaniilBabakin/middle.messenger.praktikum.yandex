@@ -34,7 +34,7 @@ export class ChatItem extends Block {
                 <span class="item__text__name">{{chat.title}}</span>
             </div>
             <div class="item__info">
-                <time class="item__info__time">{{this.time}}</time>
+                <time class="item__info__time">{{this.customTime}}</time>
                 {{#if this.missedMessages}}
                 <span class="item__info__missed-messages">{{this.missedMessages}}</span>
                 {{else}}

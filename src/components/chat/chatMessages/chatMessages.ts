@@ -47,8 +47,6 @@ class ChatMessages extends Block<ChatMessagesProps> {
 
   private serveWSIncomingMessages(messagesList: any) {
     this.setProps({ ...this.props, isLoading: true })
-    let objDiv = document.querySelector(".messages__main-block") as HTMLElement
-
     if (Array.isArray(messagesList)) {
       messagesList = messagesList
         .map((message: ChatMessageType, index) => {
@@ -56,12 +54,10 @@ class ChatMessages extends Block<ChatMessagesProps> {
         })
         .reverse()
     } else {
-      const date = new Date(messagesList.time)
-      let minutes = date.getMinutes()
-      messagesList = { ...messagesList, time: `${date.getHours()}:${minutes < 10 ? `0${minutes}` : minutes}` }
+      messagesList = transformDate(messagesList, this.props.chatMessages, this.props.chatMessages.length - 2)
     }
     this.setProps({ ...this.props, chatMessages: this.props.chatMessages.concat(messagesList), isLoading: false })
-
+    let objDiv = document.querySelector(".messages__main-block") as HTMLElement
     objDiv.scrollTop = objDiv.scrollHeight
   }
 

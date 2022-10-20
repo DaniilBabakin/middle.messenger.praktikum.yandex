@@ -36,7 +36,7 @@ export class ChatHeaderOptions extends Block<ChatHeaderOptionsProps> {
     return `
         <div class="messages__header__open-options">&#xF142;
             <div class="messages__header__options">
-                <button class="change-chat-title-btn">Изменить название чата</button>
+                <button class="change-chat-title-btn">Изменить аватар чата</button>
             </div>
         </div>
     `

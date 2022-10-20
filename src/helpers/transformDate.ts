@@ -1,6 +1,7 @@
 import { ChatMessageType } from "types/ChatMessage"
 
-export function transformDate(message: ChatMessageType,array:ChatMessageType[],index:number) {
+export function transformDate(message: ChatMessageType, array: ChatMessageType[], index: number) {
+  console.log(array)
   const date = new Date(message.time)
   const currentDate = new Date(Date.now())
   let minutes = date.getMinutes()
@@ -20,19 +21,18 @@ export function transformDate(message: ChatMessageType,array:ChatMessageType[],i
   )
   let day = Number(date.toString().slice(8, 10))
   let prevDay = Number(new Date(array[index + 1]?.time).toString().slice(8, 10))
-
-  if (day > prevDay) {
-    message.whenDate = `${Number(date.toString().slice(8, 10))} ${months[date.getMonth()]}`
-  }
+  console.log(message, prevDay, array[index + 1])
   if (!prevDay) {
+    message.whenDate = `${Number(date.toString().slice(8, 10))} ${months[date.getMonth()]}`
+  } else if (day > prevDay) {
     message.whenDate = `${Number(date.toString().slice(8, 10))} ${months[date.getMonth()]}`
   }
   if (message.whenDate === `${Number(currentDate.toString().slice(8, 10))} ${months[currentDate.getMonth()]}`) {
     message.whenDate = "Сегодня"
   }
-  
+
   return {
     ...message,
-    time: `${date.getHours()}:${minutes < 10 ? `0${minutes}` : minutes}`,
+    customTime: `${date.getHours()}:${minutes < 10 ? `0${minutes}` : minutes}`,
   }
 }

@@ -5,6 +5,7 @@ export type ChatMessageType = {
   id: number
   is_read: boolean
   time: string
+  customTime: string
   type: string
   user_id: number
   whenDate?:string
