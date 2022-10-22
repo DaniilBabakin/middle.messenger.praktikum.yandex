@@ -589,7 +589,7 @@ var _chatMessagesDefault = parcelHelpers.interopDefault(_chatMessages);
 var _store = require("./core/Store");
 var _store1 = require("./store");
 var _initApp = require("./service/initApp");
-var _chatItem = require("./components/chat/chatContacts/ChatItem");
+var _chatItem = require("./components/chat/chatContacts/chatItem");
 var _chatItemDefault = parcelHelpers.interopDefault(_chatItem);
 var _chatOptions = require("./components/chat/chatHeader/chatOptions");
 var _modals = require("./components/modals");
@@ -634,7 +634,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     store.dispatch((0, _initApp.initApp));
 });
 
-},{"./core":"9qbGm","./app.scss":"iMe5A","./service/router/Router":"lb7vy","./constants/routes":"l5zUS","handlebars":"dH8Fg","./pages/login":"66kNr","./pages/signUp":"hQ9S3","./pages/profile":"glT1D","./pages/main":"dgjed","./pages/notFound":"eLxNZ","./pages/profileChangeValues":"ewmbx","./pages/profileChangePassword":"jnIdi","./components/title/":"dofwQ","./components/button":"83hYd","./components/input":"jnHpm","./components/error":"3HodH","./components/controlledInput":"4xVW7","./components/changeAvatar":"lF9zh","./components/errorFromServer":"15udH","./components/chat/chatContacts":"jF6XM","./components/chat/chatContacts/contactSearchInput":"dymjr","./components/chat/chatContacts/contactLink":"4hYNY","./components/chat/chatFooter":"8XOWw","./components/chat/chatHeader":"7I0CK","./components/chat/chatMainBlock":"8tG0V","./components/chat/chatMessages":"krfDb","./core/Store":"7b9cm","./store":"hgR4b","./service/initApp":"xvWW9","./components/chat/chatContacts/ChatItem":"gBr2q","./components/chat/chatHeader/chatOptions":"eCiEJ","./components/modals":"kK5V8","./components/loader":"3xV5d","babel-core/register":"lLu7D","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"9qbGm":[function(require,module,exports) {
+},{"./core":"9qbGm","./app.scss":"iMe5A","./service/router/Router":"lb7vy","./constants/routes":"l5zUS","handlebars":"dH8Fg","./pages/login":"66kNr","./pages/signUp":"hQ9S3","./pages/profile":"glT1D","./pages/main":"dgjed","./pages/notFound":"eLxNZ","./pages/profileChangeValues":"ewmbx","./pages/profileChangePassword":"jnIdi","./components/title/":"dofwQ","./components/button":"83hYd","./components/input":"jnHpm","./components/error":"3HodH","./components/controlledInput":"4xVW7","./components/changeAvatar":"lF9zh","./components/errorFromServer":"15udH","./components/chat/chatContacts":"jF6XM","./components/chat/chatContacts/contactSearchInput":"dymjr","./components/chat/chatContacts/contactLink":"4hYNY","./components/chat/chatFooter":"8XOWw","./components/chat/chatHeader":"7I0CK","./components/chat/chatMainBlock":"8tG0V","./components/chat/chatMessages":"krfDb","./core/Store":"7b9cm","./store":"hgR4b","./service/initApp":"xvWW9","./components/chat/chatContacts/chatItem":"bhHf9","./components/chat/chatHeader/chatOptions":"eCiEJ","./components/modals":"kK5V8","./components/loader":"3xV5d","babel-core/register":"lLu7D","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"9qbGm":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "registerComponent", ()=>(0, _registerComponentDefault.default));
@@ -12327,6 +12327,7 @@ class Router {
         this._currentRoute = null;
         this._rootQuery = rootQuery;
         Router.__instance = this;
+        console.log("Я РОУТЕР");
     }
     use(pathname, block) {
         const route = new (0, _route.Route)(pathname, block, {
@@ -14254,7 +14255,9 @@ class ControlledInput extends (0, _blockDefault.default) {
     static componentName = "ControlledInput";
     constructor(props){
         super({
-            ...props,
+            ...props
+        });
+        if (!props.onBlur) this.setProps({
             onBlur: (e)=>{
                 const inputEl = e.target;
                 const errorMessage = (0, _validateForm.validateForm)([
@@ -14296,7 +14299,7 @@ class ControlledInput extends (0, _blockDefault.default) {
     }
 }
 
-},{"helpers/validateForm":"4HK2h","core/Block":"aWH7T","./controlledInput.scss":"768wL","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"768wL":[function() {},{}],"lF9zh":[function(require,module,exports) {
+},{"core/Block":"aWH7T","./controlledInput.scss":"768wL","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh","helpers/validateForm":"4HK2h"}],"768wL":[function() {},{}],"lF9zh":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>(0, _changeAvatar.ChangeAvatar));
@@ -14602,7 +14605,6 @@ parcelHelpers.export(exports, "ChatContacts", ()=>ConnectedChatContacts);
 var _block = require("core/Block");
 var _blockDefault = parcelHelpers.interopDefault(_block);
 var _chatContactsScss = require("./chatContacts.scss");
-var _helpers = require("helpers");
 var _user = require("service/user");
 var _withChats = require("helpers/withChats");
 class ChatContacts extends (0, _blockDefault.default) {
@@ -14614,19 +14616,24 @@ class ChatContacts extends (0, _blockDefault.default) {
             searchValue: "",
             onInput: (e)=>{
                 const inputEl = e.target;
-                this.setProps({
-                    ...props,
-                    searchValue: inputEl.value
-                });
+                // this.setProps({
+                //   ...props,
+                //   searchValue: inputEl.value,
+                // })
                 window.store.dispatch((0, _user.searchUsers), {
                     login: inputEl.value
                 });
             },
-            onFocus: ()=>{
+            onBlur: ()=>{
                 console.log("123");
                 window.store.dispatch({
                     contacts: null
                 });
+            },
+            onFocus: ()=>{
+                const searchResults = document.querySelector(".search-results");
+                console.log(searchResults);
+                console.log("GFDFG");
             },
             onClick: (e)=>{
                 const inputEl = e.target;
@@ -14638,12 +14645,21 @@ class ChatContacts extends (0, _blockDefault.default) {
         return `
     <aside class="contacts">
     {{{ContactLink text="Профиль >"}}}
-    {{{ContactSearchInput onInput=onInput searchValue=searchValue}}}
+    {{{ControlledInput 
+        onInput=onInput 
+        onFocus=onFocus
+        onBlur=onBlur
+        type="text" 
+        value=searchValue
+        inputClassName="search-input"
+        divClassName="short"
+        placeholder="Поиск"
+        ref="searchResultsInputRef"
+      }}}
     <div class="contacts__list">
       {{#each chats}}
           {{{ChatItem onClick=onClick chat=this}}}
       {{/each}}
-  
     </div>
   </aside>
     `;
@@ -14654,9 +14670,9 @@ function mapUserToProps(state) {
         contacts: state.contacts
     };
 }
-const ConnectedChatContacts = (0, _withChats.withChats)((0, _helpers.withContacts)(ChatContacts));
+const ConnectedChatContacts = (0, _withChats.withChats)(ChatContacts);
 
-},{"core/Block":"aWH7T","./chatContacts.scss":"g6d21","helpers":"dvGNW","service/user":"5YzWJ","helpers/withChats":"itia4","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"g6d21":[function() {},{}],"itia4":[function(require,module,exports) {
+},{"core/Block":"aWH7T","./chatContacts.scss":"g6d21","service/user":"5YzWJ","helpers/withChats":"itia4","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"g6d21":[function() {},{}],"itia4":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "withChats", ()=>withChats);
@@ -14706,18 +14722,25 @@ var _contactSearchInputScss = require("./contactSearchInput.scss");
 class ContactSearchInput extends (0, _blockDefault.default) {
     static componentName = "ContactSearchInput";
     constructor(props){
-        super({
-            ...props,
-            events: {
-                input: props.onInput
-            }
-        });
+        super(props);
     }
     render() {
         // language=hbs
         return `
     <div class="contact-search-input">
-        <input type="text" value="{{searchValue}}"  placeholder="&#xF002; Поиск" class="search-input">
+        <input type="text" value="{{searchValue}}" placeholder="&#xF002; Поиск" class="search-input">
+        {{{ControlledInput 
+            onInput=onInput 
+            onFocus=onFocus
+            onBlur=onBlur
+            type="text" 
+            value=searchValue
+            inputClassName="search-input"
+            divClassName="short"
+            placeholder="&#xF002; Поиск"
+            ref="searchResultsInputRef"
+          }}}
+        {{{ContactSearchResults}}}
     </div>
     `;
     }
@@ -14736,19 +14759,18 @@ class ContactSearchResults extends (0, _blockDefault.default) {
     static componentName = "ContactSearchResults";
     constructor(props){
         super(props);
-        this.setProps(props);
-        console.log(this, this.props.store.dispatch);
+        console.log("CONTACTS", this.props.contacts);
     }
     render() {
         // language=hbs
         return `
     <div class="search-results">
-        {{#if store.contacts}}
-            {{#each store.contacts }}
-            <div class="search-results__item">
-                <img src=https://ya-praktikum.tech/api/v2/resources{{this.avatar}} onerror="this.onerror=null;this.src='${_defaultAvatarPng}';" class="search-results__item__image" data-label="avatar" alt="Моя фотография"/>
-                 <span>{{this.login}}</span>
-            </div>
+        {{#if contacts}}
+            {{#each contacts }}
+                <div class="search-results__item">
+                    <img src=https://ya-praktikum.tech/api/v2/resources{{this.avatar}} onerror="this.onerror=null;this.src='${_defaultAvatarPng}';" class="search-results__item__image" data-label="avatar" alt="Моя фотография"/>
+                    <span>{{this.login}}</span>
+                </div>
             {{/each}}
         {{/if}}
     </div>
@@ -14756,12 +14778,7 @@ class ContactSearchResults extends (0, _blockDefault.default) {
     `;
     }
 }
-function mapUserToProps(state) {
-    return {
-        userSearchResult: state.userSearchResult
-    };
-}
-const ConnectedContactSearchResults = (0, _helpers.withStore)(ContactSearchResults, mapUserToProps);
+const ConnectedContactSearchResults = (0, _helpers.withContacts)(ContactSearchResults);
 
 },{"core/Block":"aWH7T","helpers":"dvGNW","../../../../assets/defaultAvatar.png":"jRfiW","./contactSearchInput.scss":"5GcGF","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"jRfiW":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("8HyDi") + "defaultAvatar.c06b6b80.png" + "?" + Date.now();
@@ -15104,13 +15121,13 @@ async function initApp(dispatch) {
     }
 }
 
-},{"api/authAPI":"cCIu8","helpers":"dvGNW","./chat":"10g0Y","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"gBr2q":[function(require,module,exports) {
+},{"api/authAPI":"cCIu8","helpers":"dvGNW","./chat":"10g0Y","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"bhHf9":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>(0, _chatItem.ChatItem));
 var _chatItem = require("./chatItem");
 
-},{"./chatItem":"lnfq7","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"lnfq7":[function(require,module,exports) {
+},{"./chatItem":"2QDSH","@parcel/transformer-js/src/esmodule-helpers.js":"j7FRh"}],"2QDSH":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "ChatItem", ()=>ChatItem);

@@ -10,12 +10,16 @@
   left: 50%;
   transform: translateX(-50%);
 
-  display: block;
+  display: none;
 
   width: 100%;
 
   background-color: white;
   border: 1px solid black;
+
+  &.active {
+    display: block;
+  }
 
   &__item {
     display: flex;

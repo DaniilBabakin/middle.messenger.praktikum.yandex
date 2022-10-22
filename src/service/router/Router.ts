@@ -18,6 +18,7 @@ export class Router {
     this._rootQuery = rootQuery
 
     Router.__instance = this
+    console.log('Я РОУТЕР')
   }
 
   use(pathname: string, block: typeof Block) {
