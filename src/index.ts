@@ -39,6 +39,8 @@ import ChatItem from "components/chat/chatContacts/ChatItem"
 import { ChatHeaderOptions } from "components/chat/chatHeader/chatOptions"
 import * as modals from "components/modals"
 import Loader from "components/loader"
+import ContactsList from "components/chat/chatContacts/contactsList"
+
 registerComponent(Title)
 registerComponent(Button)
 registerComponent(Input)
@@ -59,6 +61,7 @@ registerComponent(ChatFooter)
 registerComponent(ChatHeaderOptions)
 registerComponent(ChatHeader)
 registerComponent(ChatMainBlock)
+registerComponent(ContactsList)
 registerComponent(ChatMessages)
 
 Handlebars.registerHelper("ifNotMyMessage", function (arg1, options) {

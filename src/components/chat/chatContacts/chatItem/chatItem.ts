@@ -1,13 +1,17 @@
 import { Block } from "core"
-import { router } from "../../../../index"
-import { ROUTES } from "constants/routes"
 
 import * as avatar from "../../../../assets/defaultAvatar.png"
 import { chatsAPI } from "api/chatAPI"
 import { ChatType } from "types/Chat"
+import { getChatByTitle } from "service/chat"
+
+interface ChatItemType extends ChatType {
+  fromSearch?: boolean
+}
 
 interface ChatItemProps {
-  chat: ChatType
+  chat: ChatItemType
+  fromSearch?: boolean
 }
 
 export class ChatItem extends Block {
@@ -18,9 +22,21 @@ export class ChatItem extends Block {
       events: {
         click: (e: FocusEvent) => {
           const inputEl = e.target as HTMLInputElement
-          chatsAPI.getToken(props.chat.id).then((token) => {
-            window.store.dispatch({ currentChat: { ...props.chat, token: token } })
-          })
+          console.log("CHAT ID")
+          console.log("CHAT123", props.chat)
+
+          if (props.fromSearch) {
+            window.store.dispatch(getChatByTitle, {
+              id: props.chat.id,
+              avatar: props.chat.avatar,
+              title: `${props.chat.login}`,
+            })
+          } else {
+            chatsAPI.getToken(props.chat.id).then((token) => {
+              window.store.dispatch({ currentChat: { ...props.chat, token: token } })
+            })
+          }
+
           console.log(props.chat)
         },
       },
@@ -31,7 +47,11 @@ export class ChatItem extends Block {
         <div class="contacts__list__item" id="{{id}}">
             <img src=https://ya-praktikum.tech/api/v2/resources{{chat.avatar}} onerror="this.onerror=null;this.src='${avatar}';" alt="Фотография пользователя" class="item__image"/>
             <div class="item__text">
-                <span class="item__text__name">{{chat.title}}</span>
+                {{#if chat.login}}
+                    <span class="item__text__name">{{chat.login}}</span>
+                {{else}}
+                    <span class="item__text__name">{{chat.title}}</span>
+                {{/if}}
             </div>
             <div class="item__info">
                 <time class="item__info__time">{{this.customTime}}</time>

@@ -1,4 +1,4 @@
-import { UserDTO } from 'api/types';
+import { UserDTO } from "api/types"
 
 export const transformUser = (data: UserDTO): User => {
   return {
@@ -10,5 +10,6 @@ export const transformUser = (data: UserDTO): User => {
     avatar: data.avatar,
     phone: data.phone,
     email: data.email,
-  };
-};
+    fromSearch: data.fromSearch,
+  }
+}

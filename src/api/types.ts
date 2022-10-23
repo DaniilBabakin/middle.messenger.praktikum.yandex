@@ -11,4 +11,5 @@ export type UserDTO = {
   avatar: string
   phone: string
   email: string
+  fromSearch?: boolean
 }

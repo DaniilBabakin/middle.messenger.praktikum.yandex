@@ -43,7 +43,7 @@
     flex-direction: column;
 
     width: 15vw;
-    height: 25vh;
+    height: 10vh;
 
     visibility: hidden;
     opacity: 0;
@@ -60,7 +60,7 @@
       opacity: 1;
     }
 
-    .change-chat-title-btn {
+    &__button {
       height: 5vh;
 
       font-size: 15px;

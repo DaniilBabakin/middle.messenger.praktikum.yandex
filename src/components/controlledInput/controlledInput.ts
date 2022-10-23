@@ -22,22 +22,24 @@ interface ControlledInputProps {
 export class ControlledInput extends Block {
   static componentName = "ControlledInput"
   constructor(props: ControlledInputProps) {
-    super({
-      ...props,
-      onBlur: (e: FocusEvent) => {
-        const inputEl = e.target as HTMLInputElement
-        const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }])
-        const errorReference = props.errorRef as string
-        this.refs[errorReference].setProps({
-          text: errorMessage.text,
-        })
-        setTimeout(() => {
+    super(props)
+    if (!props.onBlur) {
+      this.setProps({
+        onBlur: (e: FocusEvent) => {
+          const inputEl = e.target as HTMLInputElement
+          const errorMessage = validateForm([{ type: inputEl.name, value: inputEl.value }])
+          const errorReference = props.errorRef as string
           this.refs[errorReference].setProps({
-            text: "",
+            text: errorMessage.text,
           })
-        }, 5000)
-      },
-    })
+          setTimeout(() => {
+            this.refs[errorReference].setProps({
+              text: "",
+            })
+          }, 5000)
+        },
+      })
+    }
   }
 
   protected render(): string {

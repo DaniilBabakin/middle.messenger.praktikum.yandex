@@ -73,6 +73,7 @@ class ChatMessages extends Block<ChatMessagesProps> {
             {{{ChatMainBlock chatMessages=chatMessages isLoading=isLoading}}}
             {{{ChatFooter socket=_socketTransport}}}
             {{{ChangeChatTitleModal currentChat=currentChat socket=_socketTransport}}}
+            {{{DeleteChatModal currentChat=currentChat }}}
         </div>
     `
   }
