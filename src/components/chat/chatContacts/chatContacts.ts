@@ -9,6 +9,7 @@ import { UserDTO } from "api/types"
 import { searchUsers } from "service/user"
 import { withChats } from "helpers/withChats"
 import { ChatType } from "types/Chat"
+import { getChats } from "service/chat"
 
 type ChatContactsProps = {
   store: Store<AppState>
@@ -21,7 +22,7 @@ type ChatContactsProps = {
   onClick: (e: FocusEvent) => void
 }
 
-class ChatContacts extends Block<ChatContactsProps> {
+export class ChatContacts extends Block<ChatContactsProps> {
   static componentName = "ChatContacts"
 
   constructor(props: ChatContactsProps) {
@@ -35,15 +36,18 @@ class ChatContacts extends Block<ChatContactsProps> {
         //   ...props,
         //   searchValue: inputEl.value,
         // })
-        window.store.dispatch(searchUsers, { login: inputEl.value })
+        if (inputEl.value === "") {
+          window.store.dispatch(getChats)
+        } else {
+          window.store.dispatch(searchUsers, { login: inputEl.value })
+        }
       },
       onBlur: () => {
         console.log("123")
         window.store.dispatch({ contacts: null })
       },
       onFocus: () => {
-        const searchResults = document.querySelector(".search-results")
-        console.log(searchResults)
+        window.store.dispatch(searchUsers, { login: '' })
         console.log("GFDFG")
       },
       onClick: (e: FocusEvent) => {
@@ -55,31 +59,21 @@ class ChatContacts extends Block<ChatContactsProps> {
     // language=hbs
     return `
     <aside class="contacts">
-    {{{ContactLink text="Профиль >"}}}
-    {{{ControlledInput 
-        onInput=onInput 
-        onFocus=onFocus
-        onBlur=onBlur
-        type="text" 
-        value=searchValue
-        inputClassName="search-input"
-        divClassName="short"
-        placeholder="Поиск"
-        ref="searchResultsInputRef"
-      }}}
-    <div class="contacts__list">
-      {{#each chats}}
-          {{{ChatItem onClick=onClick chat=this}}}
-      {{/each}}
-    </div>
-  </aside>
+        {{{ContactLink text="Профиль >"}}}
+        {{{ControlledInput 
+            onInput=onInput 
+            onFocus=onFocus
+            onBlur=onBlur
+            type="text" 
+            value=searchValue
+            inputClassName="search-input"
+            divClassName="short"
+            placeholder="Поиск"
+            ref="searchResultsInputRef"
+        }}}
+        {{{ContactsList chats=chats}}}
+    </aside>
     `
   }
 }
-function mapUserToProps(state: any) {
-  return {
-    contacts: state!.contacts,
-  }
-}
-const ConnectedChatContacts = withChats(ChatContacts)
-export { ConnectedChatContacts as ChatContacts }
+

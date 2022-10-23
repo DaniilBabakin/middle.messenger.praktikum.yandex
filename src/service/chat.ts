@@ -1,6 +1,7 @@
 import { chatsAPI } from "api/chatAPI"
 import type { Dispatch } from "core"
 import { ChatType } from "types/Chat"
+import { CurrentChatType } from "types/CurrentChat"
 import WebSocketTransport from "./webSocket"
 
 export const getChats = async (dispatch: Dispatch<AppState>) => {
@@ -10,6 +11,36 @@ export const getChats = async (dispatch: Dispatch<AppState>) => {
   }
   console.log("CHATS", res)
 }
+
+export const getChatByTitle = async (
+  dispatch: Dispatch<AppState>,
+  state: AppState,
+  action: { id: number; avatar: string; title: string },
+) => {
+  const res = await chatsAPI.getChatByTitle(action.title)
+  if (res.length > 0) {
+    chatsAPI.getToken(res[0].id).then((token: string) => {
+      dispatch({ currentChat: { ...res[0], avatar: action.avatar, token: token } })
+    })
+  } else {
+    chatsAPI.createChat({ title: action.title }).then((res) => {
+      chatsAPI.addUserToChat(action.id, res.id)
+      window.store.dispatch(getChatByTitle, action)
+    })
+    return true
+  }
+}
+
+export const deleteChat = async (dispatch: Dispatch<AppState>, state: AppState, chatId: number) => {
+  const res = await chatsAPI.deleteChat(chatId)
+  if (res) {
+    window.store.dispatch({
+      chats: window.store.getState().chats?.filter((chat: ChatType) => chat.id !== chatId),
+      currentChat: undefined,
+    })
+  }
+}
+
 export const changeChatAvatar = async (dispatch: Dispatch<AppState>, state: AppState, action: {}) => {
   console.log("DATA", action)
   const res = await chatsAPI.changeAvatar(action)

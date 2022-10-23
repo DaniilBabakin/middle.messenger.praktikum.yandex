@@ -33,6 +33,7 @@ declare global {
     avatar: string
     phone: string
     email: string
+    fromSearch?:boolean
   }
 
   module "*.png"

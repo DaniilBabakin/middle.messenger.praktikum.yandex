@@ -22,9 +22,7 @@ interface ControlledInputProps {
 export class ControlledInput extends Block {
   static componentName = "ControlledInput"
   constructor(props: ControlledInputProps) {
-    super({
-      ...props,
-    })
+    super(props)
     if (!props.onBlur) {
       this.setProps({
         onBlur: (e: FocusEvent) => {
