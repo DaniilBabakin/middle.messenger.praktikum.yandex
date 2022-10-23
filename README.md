@@ -4,6 +4,8 @@
 
 ## Кратко
 - Приложение написано на MVC архитектуре
+- Realtime сообщения с WebSocket
+- Авторизация
 - Написан на Typescript
 - Используется EventBus
 - Страницы написаны на шаблонизаторе Handlebars
@@ -16,7 +18,7 @@
 Склонируйте проект
 
 ```bash
-  git clone -b sprint_2 https://github.com/DaniilBabakin/middle.messenger.praktikum.yandex.git
+  git clone -b sprint_3 https://github.com/DaniilBabakin/middle.messenger.praktikum.yandex.git
 ```
 
 Перейдите в папку репозитория
