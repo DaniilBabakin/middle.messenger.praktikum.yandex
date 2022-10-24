@@ -1,71 +1,84 @@
-import { ROUTES } from "constants/routes"
-import { Block } from "core"
-import { Route } from "./Route"
+import { CoreRouter, Store, renderDOM } from "core"
+import { getScreenComponent, Screens } from "helpers"
+import { ROUTES } from "../../constants/routes"
 
-export class Router {
-  public routes: Route[] = []
-  public history = window.history
-  private _currentRoute: Route | null = null
-  private _rootQuery!: string
-  public static __instance: Router
-  constructor(rootQuery: string) {
-    if (Router.__instance) {
-      return Router.__instance
+const routes = [
+  {
+    path: ROUTES.Login,
+    block: Screens.Login,
+    shouldAuthorized: false,
+    shouldGuest: true,
+  },
+  {
+    path: ROUTES.SignUp,
+    block: Screens.SignUp,
+    shouldAuthorized: false,
+    shouldGuest: true,
+  },
+  {
+    path: ROUTES.Chat,
+    block: Screens.Main,
+    shouldAuthorized: true,
+    shouldGuest: false,
+  },
+  {
+    path: ROUTES.Profile,
+    block: Screens.Profile,
+    shouldAuthorized: true,
+    shouldGuest: false,
+  },
+  {
+    path: ROUTES.ProfileSettings,
+    block: Screens.ProfileChangeValues,
+    shouldAuthorized: true,
+    shouldGuest: false,
+  },
+  {
+    path: ROUTES.ChangePassword,
+    block: Screens.ProfileChangePassword,
+    shouldAuthorized: true,
+    shouldGuest: false,
+  },
+  {
+    path: "*",
+    block: Screens.NotFound,
+    shouldAuthorized: false,
+  },
+]
+
+export function initRouter(router: CoreRouter, store: Store<AppState>) {
+  routes.forEach((route) => {
+    router.use(route.path, () => {
+      const isAuthorized = Boolean(store.getState().user)
+      const currentScreen = Boolean(store.getState().screen)
+
+      if (isAuthorized && route.shouldGuest) {
+        window.history.pushState({}, "", "/messenger")
+        console.log("Redirect to MAIN")
+        store.dispatch({ screen: Screens.Main })
+        return
+      }
+
+      if (isAuthorized || !route.shouldAuthorized) {
+        store.dispatch({ screen: route.block })
+        return
+      }
+
+      if (!currentScreen) {
+        console.log("go to login")
+        store.dispatch({ screen: Screens.Login })
+      }
+    })
+  })
+
+  store.on("changed", (prevState, nextState) => {
+    if (!prevState.appIsInited && nextState.appIsInited) {
+      router.start()
     }
-    this.routes = []
-    this.history = window.history
-    this._currentRoute = null
-    this._rootQuery = rootQuery
-
-    Router.__instance = this
-  }
-
-  use(pathname: string, block: typeof Block) {
-    const route = new Route(pathname, block, { rootQuery: this._rootQuery })
-    this.routes.push(route)
-    return this
-  }
-
-  start() {
-    window.onpopstate = ((event: PopStateEvent) => {
-      const target = event.currentTarget as Window
-      this._onRoute(target.location.pathname)
-    }).bind(this)
-
-    this._onRoute(window.location.pathname)
-  }
-
-  private _onRoute(pathname: string) {
-    let route = this.getRoute(pathname)
-
-    if (this._currentRoute) {
-      this._currentRoute.leave()
+    if (prevState.screen !== nextState.screen) {
+      const Page = getScreenComponent(nextState.screen)
+      renderDOM(new Page({}))
+      document.title = `${Page.componentName}`
     }
-    if (route) {
-      this._currentRoute = route
-      route.render()
-    }
-  }
-
-  go(pathname: string) {
-    console.log(pathname)
-    this.history.pushState({}, "", pathname)
-    this._onRoute(pathname)
-  }
-
-  back() {
-    window.history.back()
-  }
-
-  forward() {
-    window.history.forward()
-  }
-
-  getRoute(pathname: string) {
-    const route = this.routes.find((route) => route.match(pathname))
-    if (!route) {
-      return this.routes.find((route) => route.match(ROUTES.NotFound))
-    }
-    return route
-  }
+  })
 }

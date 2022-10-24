@@ -1,16 +1,12 @@
-import { Block, Store } from "core"
-import * as avatar from "../../assets/defaultAvatarBig.png"
+import { Block, CoreRouter, Store } from "core"
 import "../profile/profile.scss"
-import LoginPage from "pages/login"
 import { validateForm } from "helpers/validateForm"
 import { router } from "../../index"
-import { userAPI } from "api/userAPI"
 import { withRouter, withStore, withUser } from "helpers"
-import { Router } from "service/router/Router"
 import { changePassword } from "service/user"
 
 type ProfileChangePasswordPageProps = {
-  router: Router
+  router: CoreRouter
   store: Store<AppState>
   user: User | null
   values: {

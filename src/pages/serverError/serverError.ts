@@ -7,7 +7,7 @@ export class ServerErrorPage extends Block {
     super()
     this.setProps({
       onClick: () => {
-        router.go(ROUTES.Chat)
+        window.router.go(ROUTES.Chat)
       },
     })
   }

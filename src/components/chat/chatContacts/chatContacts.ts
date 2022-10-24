@@ -7,7 +7,6 @@ import { withContacts, withStore } from "helpers"
 import { Store } from "core"
 import { UserDTO } from "api/types"
 import { searchUsers } from "service/user"
-import { withChats } from "helpers/withChats"
 import { ChatType } from "types/Chat"
 import { getChats } from "service/chat"
 
@@ -47,7 +46,7 @@ export class ChatContacts extends Block<ChatContactsProps> {
         window.store.dispatch({ contacts: null })
       },
       onFocus: () => {
-        window.store.dispatch(searchUsers, { login: '' })
+        window.store.dispatch(searchUsers, { login: "" })
         console.log("GFDFG")
       },
       onClick: (e: FocusEvent) => {
@@ -71,9 +70,8 @@ export class ChatContacts extends Block<ChatContactsProps> {
             placeholder="Поиск"
             ref="searchResultsInputRef"
         }}}
-        {{{ContactsList chats=chats}}}
+        {{{ContactsList}}}
     </aside>
     `
   }
 }
-

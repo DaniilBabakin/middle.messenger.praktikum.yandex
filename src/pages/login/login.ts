@@ -6,10 +6,10 @@ import { ROUTES } from "constants/routes"
 import { login } from "service/auth"
 import { withRouter, withStore, withUser } from "helpers"
 import { Router } from "service/router/Router"
-import { Store } from "core"
+import { CoreRouter, Store } from "core"
 
 type LoginPageProps = {
-  router: Router
+  router: CoreRouter
   store: Store<AppState>
   user: User | null
   loginValue: string
@@ -41,7 +41,7 @@ class LoginPage extends Block<LoginPageProps> {
         })
       },
       onRedirectToSignUp: () => {
-        router.go(ROUTES.SignUp)
+        window.router.go(ROUTES.SignUp)
       },
       onSubmit: () => {
         const loginEl = this.element?.querySelector("input[name='login']") as HTMLInputElement

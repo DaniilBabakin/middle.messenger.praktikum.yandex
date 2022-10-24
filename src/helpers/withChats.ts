@@ -13,6 +13,7 @@ export function withChats(WrappedBlock: BlockClass<WithChatsProps>) {
     }
 
     __onChangeChatsCallback = (prevState: AppState, nextState: AppState) => {
+      console.log("WITHCHATS", prevState.chats, nextState.chats)
       if (JSON.stringify(prevState.chats) !== JSON.stringify(nextState.chats)) {
         // @ts-expect-error this is not typed
         this.setProps({ ...this.props, chats: nextState.chats })
