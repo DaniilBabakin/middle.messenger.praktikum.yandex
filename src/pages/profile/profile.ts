@@ -1,13 +1,12 @@
-import { Block, Store } from "core"
+import { Block, CoreRouter, Store } from "core"
 import "./profile.scss"
 import { ROUTES } from "constants/routes"
 import { authAPI } from "api/authAPI"
 import { withRouter, withStore, withUser } from "helpers"
-import { Router } from "service/router/Router"
 
 
 type ProfilePageProps = {
-  router: Router
+  router: CoreRouter
   store: Store<AppState>
   user: User | null
   redirectToProfileChangeValues?: () => void

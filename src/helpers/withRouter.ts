@@ -1,8 +1,8 @@
 import { BlockClass } from "core"
 import { HTTPTransport } from "core/CustomFetch"
-import { Router } from "service/router/Router"
+import { CoreRouter } from "core"
 
-type WithRouterProps = { router: Router }
+type WithRouterProps = { router: CoreRouter }
 
 export function withRouter<P extends WithRouterProps>(WrappedBlock: BlockClass<P>) {
   // @ts-expect-error No base constructor has the specified number of type arguments

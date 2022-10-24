@@ -149,28 +149,25 @@ export default class Block<P = any> {
   }
 
   private _makePropsProxy = (props: any): any => {
+    let waitProxy = false
     return new Proxy(props as any, {
       get(target: Record<string, unknown>, prop: string) {
         const value = target[prop]
         return typeof value === "function" ? value.bind(target) : value
       },
       set: (target: Record<string, any>, prop: string, value: any) => {
-        // if (target[prop] === undefined || target[prop] === null) {
-        //   target[prop] = value
-        //   this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
-        //   return true
-        // }
-        // if (isCyclic(target[prop]) || isCyclic(value)) {
-        //   target[prop] = value
-        //   this.eventBus().emit(Block.EVENTS.FLOW_CDU, {...target}, target)
-        //   return true
-        // }
-        // if (JSON.stringify(target[prop]) === JSON.stringify(value)) {
+        if (typeof target[prop] !== "undefined" && value === target[prop]) {
+          return true
+        }
         target[prop] = value
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
+        if (!waitProxy) {
+          waitProxy = true
+          setTimeout(() => {
+            this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
+            waitProxy = false
+          }, 10)
+        }
         return true
-        // }
-        // return true
       },
       deleteProperty() {
         throw new Error("Нет доступа")

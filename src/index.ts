@@ -1,19 +1,10 @@
 require("babel-core/register")
 
-import { registerComponent } from "./core"
+import { CoreRouter, PathRouter, registerComponent } from "./core"
 import "./app.scss"
-import { Router } from "./service/router/Router"
+import { initRouter, Router } from "service/router/Router"
 import { ROUTES } from "./constants/routes"
 import Handlebars from "handlebars"
-
-//PAGES
-import LoginPage from "./pages/login"
-import SignUpPage from "./pages/signUp"
-import ProfilePage from "./pages/profile"
-import MainPage from "./pages/main"
-import NotFoundPage from "./pages/notFound"
-import ProfileSettingsPage from "./pages/profileChangeValues"
-import ProfileChangePasswordPage from "./pages/profileChangePassword"
 
 //COMPONENTS
 import Title from "./components/title/"
@@ -35,7 +26,7 @@ import ChatMessages from "./components/chat/chatMessages"
 import { Store } from "./core/Store"
 import { defaultState } from "./store"
 import { initApp } from "service/initApp"
-import ChatItem from "./components/chat/chatContacts/chatItem"
+import ChatItem from "components/chat/chatContacts/chatItem"
 import { ChatHeaderOptions } from "components/chat/chatHeader/chatOptions"
 import * as modals from "components/modals"
 import Loader from "components/loader"
@@ -68,30 +59,24 @@ Handlebars.registerHelper("ifNotMyMessage", function (arg1, options) {
   return arg1 !== window.store.getState()?.user?.id ? "friend__message" : ""
 })
 
-export const router = new Router(".app")
+export const router = new PathRouter()
+console.log("я тут")
 
 declare global {
   interface Window {
     store: Store<AppState>
-    router: Router
+    router: CoreRouter
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const router = new Router(".app")
+  const router = new PathRouter()
   const store = new Store<AppState>(defaultState)
 
   window.router = router
   window.store = store
-  router
-    .use(ROUTES.Login, LoginPage)
-    .use(ROUTES.SignUp, SignUpPage)
-    .use(ROUTES.Profile, ProfilePage)
-    .use(ROUTES.ProfileSettings, ProfileSettingsPage)
-    .use(ROUTES.ChangePassword, ProfileChangePasswordPage)
-    .use(ROUTES.Chat, MainPage)
-    .use(ROUTES.NotFound, NotFoundPage)
-    .start()
+
+  initRouter(router, store)
   //TODO: убрать store.on
   store.on("changed", (prevState, nextState) => {
     console.log("%cstore updated", "background: #222; color: #bada55", nextState)

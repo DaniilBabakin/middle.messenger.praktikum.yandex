@@ -4,13 +4,12 @@ import { validateForm } from "helpers/validateForm"
 import { router } from "../../index"
 import * as avatar from "../../assets/defaultAvatarBig.png"
 import { withRouter, withStore, withUser } from "helpers"
-import { Router } from "service/router/Router"
-import { Store } from "core"
+import { CoreRouter, Store } from "core"
 import { ROUTES } from "constants/routes"
 import { signUp } from "service/auth"
 
 type SignUpPageProps = {
-  router: Router
+  router: CoreRouter
   store: Store<AppState>
   user: User | null
   emailValue: string
@@ -50,7 +49,7 @@ class SignUpPage extends Block<SignUpPageProps> {
         })
       },
       onRedirectToLogin: () => {
-        router.go(ROUTES.Login)
+        window.router.go(ROUTES.Login)
       },
       onSubmit: () => {
         //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
@@ -99,7 +98,7 @@ class SignUpPage extends Block<SignUpPageProps> {
                   Object.assign(acc, { [item.name]: item.element.value }),
                 {},
               )
-            formData['avatar'] = avatar
+            formData["avatar"] = avatar
             console.log("Форма готова к отправке, данные: ", formData)
 
             this.props.store.dispatch(signUp, formData)
