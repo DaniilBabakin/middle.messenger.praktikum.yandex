@@ -1,6 +1,5 @@
 import { ROUTES } from "constants/routes"
 import { HTTPTransport } from "core/CustomFetch"
-import { UserDTO } from "./types"
 
 export const authAPI = {
 

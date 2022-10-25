@@ -2,18 +2,8 @@ require("babel-core/register")
 
 import { CoreRouter, PathRouter, registerComponent } from "./core"
 import "./app.scss"
-import { initRouter, Router } from "service/router/Router"
-import { ROUTES } from "./constants/routes"
+import { initRouter } from "service/router/Router"
 import Handlebars from "handlebars"
-
-//PAGES
-import LoginPage from "./pages/login"
-import SignUpPage from "./pages/signUp"
-import ProfilePage from "./pages/profile"
-import MainPage from "pages/main"
-import NotFoundPage from "pages/notFound"
-import ProfileSettingsPage from "pages/profileChangeValues"
-import ProfileChangePasswordPage from "pages/profileChangePassword"
 
 //COMPONENTS
 import Title from "./components/title/"

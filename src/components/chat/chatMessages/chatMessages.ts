@@ -1,7 +1,6 @@
 import Block from "core/Block"
 import { withUser } from "helpers"
 import { transformDate } from "helpers/transformDate"
-import { withCurrentChat } from "helpers/withCurrentChat"
 import WebSocketTransport from "service/webSocket"
 import { ChatMessageType } from "types/ChatMessage"
 import { CurrentChatType } from "types/CurrentChat"
