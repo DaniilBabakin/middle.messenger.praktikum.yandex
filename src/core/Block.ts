@@ -1,9 +1,6 @@
 import EventBus from "./EventBus"
 import { nanoid } from "nanoid"
 import Handlebars from "handlebars"
-import { isEqual } from "helpers"
-import cloneDeep from "helpers/cloneDeep"
-import { isCyclic } from "helpers/isCyclic"
 
 interface BlockMeta<P = any> {
   props: P

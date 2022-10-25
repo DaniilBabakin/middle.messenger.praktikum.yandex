@@ -199,7 +199,7 @@ class SignUpPage extends Block<SignUpPageProps> {
             ref="check_passwordInputRef"
             errorRef="check_passwordErrorRef"
           }}}
-            {{{Button text="Зарегистрироваться" className="custom-button" onClick=onSubmit}}}
+            {{{Button text="Зарегистрироваться" className="custom-button sign-up-button" onClick=onSubmit}}}
           </form>
           {{{Button text="Войти" className="redirect-button" onClick=onRedirectToLogin}}}
 

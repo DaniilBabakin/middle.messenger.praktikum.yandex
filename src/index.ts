@@ -2,8 +2,7 @@ require("babel-core/register")
 
 import { CoreRouter, PathRouter, registerComponent } from "./core"
 import "./app.scss"
-import { initRouter, Router } from "service/router/Router"
-import { ROUTES } from "./constants/routes"
+import { initRouter } from "service/router/Router"
 import Handlebars from "handlebars"
 
 //COMPONENTS
@@ -60,7 +59,6 @@ Handlebars.registerHelper("ifNotMyMessage", function (arg1, options) {
 })
 
 export const router = new PathRouter()
-console.log("я тут")
 
 declare global {
   interface Window {
