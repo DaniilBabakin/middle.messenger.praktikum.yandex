@@ -8,7 +8,6 @@ import { CurrentChatType } from "types/CurrentChat"
 
 import "./chatMessages.scss"
 
-//TODO:
 type ChatMessagesProps = {
   user: User | null
   currentChat: CurrentChatType
@@ -33,16 +32,18 @@ class ChatMessages extends Block<ChatMessagesProps> {
   }
 
   componentDidMount(): void {
-    this.props._socketTransport = new WebSocketTransport(
-      this.props.user,
-      this.props.currentChat.id,
-      this.props.currentChat.token,
-    )
-    this.props._socketTransport.eventBus.on(
-      WebSocketTransport.EVENTS.WS_MESSAGES_ARRIVED,
-      this.serveWSIncomingMessages.bind(this),
-    )
-    this.props._socketTransport.start()
+    if (this.props.currentChat) {
+      this.props._socketTransport = new WebSocketTransport(
+        this.props.user,
+        this.props.currentChat.id,
+        this.props.currentChat.token,
+      )
+      this.props._socketTransport.eventBus.on(
+        WebSocketTransport.EVENTS.WS_MESSAGES_ARRIVED,
+        this.serveWSIncomingMessages.bind(this),
+      )
+      this.props._socketTransport.start()
+    }
   }
 
   private serveWSIncomingMessages(messagesList: any) {

@@ -13,6 +13,7 @@ class ContactsList extends Block<ContactsListProps> {
 
   constructor(props: ContactsListProps) {
     super(props)
+    console.log("CHAT CONTACTS", this.props)
   }
   protected render(): string {
     // language=hbs
@@ -27,4 +28,4 @@ class ContactsList extends Block<ContactsListProps> {
 }
 
 const ConnectedContactsList = withChats(ContactsList)
-export {ConnectedContactsList as ContactsList}
+export { ConnectedContactsList as ContactsList }

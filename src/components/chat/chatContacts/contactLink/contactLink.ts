@@ -1,6 +1,5 @@
 import { Block } from "core"
 import "./contactLink.scss"
-import { router } from "../../../../index"
 import { ROUTES } from "constants/routes"
 
 interface ContactLinkProps {
@@ -14,7 +13,7 @@ export class ContactLink extends Block {
       ...props,
       events: {
         click: () => {
-          router.go(ROUTES.Profile)
+          window.router.go(ROUTES.Profile)
         },
       },
     })

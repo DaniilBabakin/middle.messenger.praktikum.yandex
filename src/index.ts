@@ -1,8 +1,8 @@
 require("babel-core/register")
 
-import { registerComponent } from "./core"
+import { CoreRouter, PathRouter, registerComponent } from "./core"
 import "./app.scss"
-import { Router } from "service/router/Router"
+import { initRouter, Router } from "service/router/Router"
 import { ROUTES } from "./constants/routes"
 import Handlebars from "handlebars"
 
@@ -68,30 +68,23 @@ Handlebars.registerHelper("ifNotMyMessage", function (arg1, options) {
   return arg1 !== window.store.getState()?.user?.id ? "friend__message" : ""
 })
 
-export const router = new Router(".app")
+export const router = new PathRouter()
 
 declare global {
   interface Window {
     store: Store<AppState>
-    router: Router
+    router: CoreRouter
   }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const router = new Router(".app")
+  const router = new PathRouter()
   const store = new Store<AppState>(defaultState)
 
   window.router = router
   window.store = store
-  router
-    .use(ROUTES.Login, LoginPage)
-    .use(ROUTES.SignUp, SignUpPage)
-    .use(ROUTES.Profile, ProfilePage)
-    .use(ROUTES.ProfileSettings, ProfileSettingsPage)
-    .use(ROUTES.ChangePassword, ProfileChangePasswordPage)
-    .use(ROUTES.Chat, MainPage)
-    .use(ROUTES.NotFound, NotFoundPage)
-    .start()
+
+  initRouter(router, store)
   //TODO: убрать store.on
   store.on("changed", (prevState, nextState) => {
     console.log("%cstore updated", "background: #222; color: #bada55", nextState)

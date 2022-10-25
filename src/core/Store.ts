@@ -31,7 +31,6 @@ export class Store<State extends Record<string, any>> extends EventBus {
       console.log("PAYLOAD", payload)
       nextStateOrAction(this.dispatch.bind(this), this.state, payload)
     } else {
-      console.log("Z TUT")
       this.set({ ...this.state, ...nextStateOrAction })
     }
   }

@@ -1,13 +1,12 @@
-import { Block, Store } from "core"
+import { Block, CoreRouter, Store } from "core"
 import "../profile/profile.scss"
 import { validateForm } from "helpers/validateForm"
 import { router } from "../../index"
 import { withRouter, withStore, withUser } from "helpers"
-import { Router } from "service/router/Router"
 import { changeValues } from "service/user"
 
 type ProfileChangeValuesPageProps = {
-  router: Router
+  router: CoreRouter
   store: Store<AppState>
   user: User | null
   values: {
