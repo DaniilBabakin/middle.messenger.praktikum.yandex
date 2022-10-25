@@ -167,7 +167,7 @@ class ProfileChangePasswordPage extends Block<ProfileChangePasswordPageProps> {
                 {{{ErrorFromServer text=formError}}}
             {{!------- LINK BACK TO PROFILE -------}}
                 {{{Button className="back-to-chats" onClick=redirectBack}}}
-                {{{Button text="Сохранить" className="custom-button blue mt220" onClick=onSubmit}}}
+                {{{Button type="submit" text="Сохранить" className="custom-button blue mt220" onClick=onSubmit}}}
             </form>
 
             </div>

@@ -13,7 +13,7 @@ export class Modal extends Block {
       },
     })
   }
-  componentDidMount(props: any): void {
+  componentDidMount(): void {
     document.getElementById("base")?.addEventListener("click", () => {
       console.log("12234532")
     })

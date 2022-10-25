@@ -1,11 +1,9 @@
 import Block from "core/Block"
 import "./login.scss"
 import { validateForm, ValidateType } from "helpers/validateForm"
-import { router } from "../../index"
 import { ROUTES } from "constants/routes"
 import { login } from "service/auth"
 import { withRouter, withStore, withUser } from "helpers"
-import { Router } from "service/router/Router"
 import { CoreRouter, Store } from "core"
 
 type LoginPageProps = {
@@ -111,7 +109,7 @@ class LoginPage extends Block<LoginPageProps> {
             errorRef="passwordErrorRef"
           }}}
           {{{ErrorFromServer text=formError className="white"}}}
-          {{{Button text="Войти" className="custom-button" onClick=onSubmit }}}
+          {{{Button type="submit" text="Войти" className="custom-button" onClick=onSubmit }}}
           </form>
           {{{Button text="Нет аккаунта?" className="redirect-button" onClick=onRedirectToSignUp}}}
       </div>

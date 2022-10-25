@@ -54,10 +54,10 @@ export class ChatFooter extends Block<ChatFooterProps> {
         }
       },
     })
-    this.element?.querySelector("input[name='message']")?.addEventListener("keypress", (event: any) => {
-      // If the user presses the "Enter" key on the keyboard
-      if (event.key === "Enter") {
-        // Cancel the default action, if needed
+    this.element?.querySelector("input[name='message']")?.addEventListener("keypress", (event) => {
+      let keyboardEvent = event as KeyboardEvent
+
+      if (keyboardEvent.key === "Enter") {
         event.preventDefault()
         this.props.onSubmit()
       }

@@ -29,7 +29,6 @@ class ProfilePage extends Block<ProfilePageProps> {
       },
       redirectQuitProfile: () => {
         authAPI.logout()
-        this.props.router.go(ROUTES.Login)
       },
       redirectBack: () => {
         this.props.router.back()

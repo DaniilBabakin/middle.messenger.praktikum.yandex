@@ -1,4 +1,5 @@
 import EventBus from "core/EventBus"
+import { ChatMessageType } from "types/ChatMessage"
 
 export default class WebSocketTransport {
   static EVENTS = {
@@ -92,7 +93,7 @@ export default class WebSocketTransport {
       }
 
       console.log("Receved data", event, jsonData)
-      let messages: any[]
+      let messages: ChatMessageType[]
 
       messages = jsonData
       this.eventBus.emit(WebSocketTransport.EVENTS.WS_MESSAGES_ARRIVED, messages)

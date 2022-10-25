@@ -51,9 +51,10 @@ export function initRouter(router: CoreRouter, store: Store<AppState>) {
     router.use(route.path, () => {
       const isAuthorized = Boolean(store.getState().user)
       const currentScreen = Boolean(store.getState().screen)
-
+      console.log("isAuthorized", isAuthorized)
       if (isAuthorized && route.shouldGuest) {
         window.history.pushState({}, "", "/messenger")
+        console.log("ROUTE", route)
         console.log("Redirect to MAIN")
         store.dispatch({ screen: Screens.Main })
         return

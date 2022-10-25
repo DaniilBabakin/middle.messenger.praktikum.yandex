@@ -2,7 +2,6 @@ import { ROUTES } from "constants/routes"
 import { HTTPTransport } from "core/CustomFetch"
 
 export const authAPI = {
-
   signIn: async (data: any): Promise<boolean> => {
     const res: any = await HTTPTransport.getInstance().post("/auth/signin", {
       includeCredentials: true,
@@ -37,8 +36,10 @@ export const authAPI = {
       },
     })
     if (res.status !== 200) {
-      throw Error(JSON.parse(res.responseText).reason)
+        throw Error(JSON.parse(res.responseText).reason)
     }
+    window.store.dispatch({ user: null })
+    window.router.go(ROUTES.Login)
   },
 
   getUser: async () => {

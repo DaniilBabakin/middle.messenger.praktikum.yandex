@@ -1,7 +1,6 @@
 import Block from "core/Block"
 import "./signUp.scss"
 import { validateForm } from "helpers/validateForm"
-import { router } from "../../index"
 import * as avatar from "../../assets/defaultAvatarBig.png"
 import { withRouter, withStore, withUser } from "helpers"
 import { CoreRouter, Store } from "core"
@@ -22,13 +21,13 @@ type SignUpPageProps = {
   formError: () => void
   onInput?: (e: FocusEvent) => void
   onRedirectToLogin?: () => void
-  onSubmit?: () => void
+  onSubmit?: (e: Event) => void
 }
 
 class SignUpPage extends Block<SignUpPageProps> {
   constructor(props: SignUpPageProps) {
     super(props)
-
+    console.log("Я В САЙН АП ПАГЕ")
     this.setProps({
       ...props,
       emailValue: "",
@@ -51,7 +50,8 @@ class SignUpPage extends Block<SignUpPageProps> {
       onRedirectToLogin: () => {
         window.router.go(ROUTES.Login)
       },
-      onSubmit: () => {
+      onSubmit: (e: Event) => {
+        e.preventDefault()
         //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
         const arrayOfInputsName = ["email", "login", "first_name", "second_name", "phone", "password", "check_password"]
 
@@ -199,7 +199,7 @@ class SignUpPage extends Block<SignUpPageProps> {
             ref="check_passwordInputRef"
             errorRef="check_passwordErrorRef"
           }}}
-            {{{Button text="Зарегистрироваться" className="custom-button sign-up-button" onClick=onSubmit}}}
+            {{{Button type="submit" text="Зарегистрироваться" className="custom-button sign-up-button" onClick=onSubmit}}}
           </form>
           {{{Button text="Войти" className="redirect-button" onClick=onRedirectToLogin}}}
 

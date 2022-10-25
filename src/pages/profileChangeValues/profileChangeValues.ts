@@ -212,7 +212,7 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
                 </div>
             {{!------- LINK BACK TO PROFILE -------}}
                 {{{Button className="back-to-chats" onClick=redirectBack}}}
-                {{{Button text="Сохранить" className="custom-button blue mt75" onClick=onSubmit}}}
+                {{{Button type="submit" text="Сохранить" className="custom-button blue mt75" onClick=onSubmit}}}
             </form>
 
             </div>
