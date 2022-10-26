@@ -138,3 +138,40 @@ button {
     filter: contrast(151%);
   }
 }
+
+// -----------DELETE_CHAT-----------
+.cancel-delete {
+  width: 10vw;
+  height: 5vh;
+  margin-right: 20px;
+
+  font-size: 15px;
+  color: white;
+
+  background: rgb(54 145 187);
+  border-radius: 5px;
+}
+
+.submit-delete {
+  width: 10vw;
+  height: 5vh;
+
+  font-size: 15px;
+  color: white;
+
+  background: rgb(196 41 41);
+  border-radius: 5px;
+}
+
+@media screen and (max-width: 425px) {
+  .custom-button {
+    width: 50vw;
+
+    &.sign-up-button {
+      width: 75vw;
+      padding: 15px 35px;
+
+      font-size: 20px;
+    }
+  }
+}

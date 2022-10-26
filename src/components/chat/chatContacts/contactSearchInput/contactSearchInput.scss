@@ -1,16 +1,41 @@
-.search-input {
-  padding: 10px 20px;
+.contact-search-input {
+  position: relative;
 
-  font-family: Arial, FontAwesome, sans-serif;
+  height: 35px;
+}
 
-  background-color: #efefef;
-  border: none;
-  border-radius: 10px;
-  outline: none;
+.search-results {
+  position: absolute;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
 
-  &::placeholder {
-    margin-right: 7px;
+  display: none;
 
-    text-align: center;
+  width: 15vw;
+
+  background-color: white;
+  border: 1px solid black;
+
+  &.active {
+    display: block;
+  }
+
+  &__item {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+
+    margin-bottom: 10px;
+    padding: 0 10px;
+
+    &__image {
+      width: 40px;
+      height: 40px;
+
+      object-fit: cover;
+      border-radius: 50%;
+    }
   }
 }

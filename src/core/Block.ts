@@ -12,6 +12,11 @@ interface HTMLElementWithRefs extends HTMLElement {
   setProps: ({}) => void
 }
 
+export interface BlockClass<P> extends Function {
+  new (props: P): Block<P>
+  componentName?: string
+}
+
 export default class Block<P = any> {
   static EVENTS = {
     INIT: "init",
@@ -41,7 +46,7 @@ export default class Block<P = any> {
       props,
     }
 
-    this.getStateFromProps(props)
+    this.getStateFromProps(props!)
 
     this.props = this._makePropsProxy(props || ({} as P))
     this.state = this._makePropsProxy(this.state)
@@ -64,7 +69,7 @@ export default class Block<P = any> {
     this._element = this._createDocumentElement("div")
   }
 
-  protected getStateFromProps(props: any): void {
+  protected getStateFromProps(props: P): void {
     this.state = {}
   }
 
@@ -140,18 +145,25 @@ export default class Block<P = any> {
     return this.element!
   }
 
-  private _makePropsProxy = (props: any): any => {
-    return new Proxy(props as unknown as object, {
+  private _makePropsProxy = (props: P): any => {
+    let waitProxy = false
+    return new Proxy(props as any, {
       get(target: Record<string, unknown>, prop: string) {
         const value = target[prop]
         return typeof value === "function" ? value.bind(target) : value
       },
-      set: (target: Record<string, unknown>, prop: string, value: unknown) => {
+      set: (target: Record<string, any>, prop: string, value: any) => {
+        if (typeof target[prop] !== "undefined" && value === target[prop]) {
+          return true
+        }
         target[prop] = value
-
-        // Запускаем обновление компоненты
-        // Плохой cloneDeep, в след итерации нужно заставлять добавлять cloneDeep им самим
-        this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
+        if (!waitProxy) {
+          waitProxy = true
+          setTimeout(() => {
+            this.eventBus().emit(Block.EVENTS.FLOW_CDU, { ...target }, target)
+            waitProxy = false
+          }, 10)
+        }
         return true
       },
       deleteProperty() {

@@ -7,6 +7,14 @@
   width: 65vw;
   height: 8vh;
 
+  &__form {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+  }
+
   &__import-files {
     cursor: pointer;
 

@@ -1,14 +1,102 @@
 import Block from "core/Block"
 import "./signUp.scss"
-import LoginPage from "pages/login"
 import { validateForm } from "helpers/validateForm"
-import MainPage from "pages/main"
+import * as avatar from "../../assets/defaultAvatarBig.png"
+import { withRouter, withStore, withUser } from "helpers"
+import { CoreRouter, Store } from "core"
+import { ROUTES } from "constants/routes"
+import { signUp } from "service/auth"
 
-export class SignUpPage extends Block {
-  constructor() {
-    super()
+type SignUpPageProps = {
+  router: CoreRouter
+  store: Store<AppState>
+  user: Nullable<User>
+  emailValue: string
+  loginValue: string
+  passwordValue: string
+  firstNameValue: string
+  secondNameValue: string
+  phoneValue: string
+  checkPasswordValue: string
+  events: Record<string, any>
+  formError: () => void
+  onInput?: (e: FocusEvent) => void
+  onRedirectToLogin?: () => void
+  onSubmit?: (e: Event) => void
+}
 
+class SignUpPage extends Block<SignUpPageProps> {
+  constructor(props: SignUpPageProps) {
+    super({
+      ...props,
+      events: {
+        submit: (e: Event) => {
+          e.preventDefault()
+          //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
+          const arrayOfInputsName = [
+            "email",
+            "login",
+            "first_name",
+            "second_name",
+            "phone",
+            "password",
+            "check_password",
+          ]
+
+          //Сам маппинг
+          const arrayOfHtmlElements: { name: string; element: HTMLInputElement }[] = arrayOfInputsName.map(
+            (name: string) => {
+              return { name: name, element: this.element?.querySelector(`input[name="${name}"]`) as HTMLInputElement }
+            },
+          )
+
+          //Проверяем наличие ошибок(Маппинг помогает упростить запрос)
+          const errorMessage = validateForm(
+            arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
+              return { type: item.element.name, value: item.element.value }
+            }),
+          )
+
+          //Если ошибка есть - находим нужный элемент в refs, далее реф его ошибки, далее меняем текст на текст ошибки
+          if (errorMessage.text) {
+            this.refs[errorMessage.inputName].refs[errorMessage.inputName.replace("Input", "Error")].setProps({
+              text: errorMessage.text,
+            })
+          } else {
+            //Если поля с паролями не совпадают, выдаем ошибку , если все ок - отправляем форму
+            if (arrayOfHtmlElements[5].element.value !== arrayOfHtmlElements[6].element.value) {
+              this.refs["check_passwordInputRef"].refs["check_passwordErrorRef"].setProps({
+                text: "Пароли не совпадают",
+              })
+            } else {
+              this.setProps({
+                ...props,
+                emailValue: arrayOfHtmlElements[0].element.value,
+                loginValue: arrayOfHtmlElements[1].element.value,
+                firstNameValue: arrayOfHtmlElements[2].element.value,
+                secondNameValue: arrayOfHtmlElements[3].element.value,
+                phoneValue: arrayOfHtmlElements[4].element.value,
+                passwordValue: arrayOfHtmlElements[5].element.value,
+                checkPasswordValue: arrayOfHtmlElements[6].element.value,
+              })
+              const formData = arrayOfHtmlElements
+                .filter(({ name }) => name !== "check_password")
+                .reduce<any>(
+                  (acc, item: { name: string; element: HTMLInputElement }) =>
+                    Object.assign(acc, { [item.name]: item.element.value }),
+                  {},
+                )
+              formData["avatar"] = avatar
+              console.log("Форма готова к отправке, данные: ", formData)
+
+              this.props.store.dispatch(signUp, formData)
+            }
+          }
+        },
+      },
+    })
     this.setProps({
+      ...props,
       emailValue: "",
       loginValue: "",
       passwordValue: "",
@@ -27,59 +115,11 @@ export class SignUpPage extends Block {
         })
       },
       onRedirectToLogin: () => {
-        window.currentPage.page = LoginPage
-      },
-      onSubmit: () => {
-        //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
-        const arrayOfInputsName = ["email", "login", "first_name", "second_name", "phone", "password", "check_password"]
-
-        //Сам маппинг
-        const arrayOfHtmlElements: { name: string; element: HTMLInputElement }[] = arrayOfInputsName.map(
-          (name: string) => {
-            return { name: name, element: this.element?.querySelector(`input[name="${name}"]`) as HTMLInputElement }
-          },
-        )
-
-        //Проверяем наличие ошибок(Маппинг помогает упростить запрос)
-        const errorMessage = validateForm(
-          arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
-            return { type: item.element.name, value: item.element.value }
-          }),
-        )
-
-        //Если ошибка есть - находим нужный элемент в refs, далее реф его ошибки, далее меняем текст на текст ошибки
-        if (errorMessage.text) {
-          this.refs[errorMessage.inputName].refs[errorMessage.inputName.replace("Input", "Error")].setProps({
-            text: errorMessage.text,
-          })
-        } else {
-          //Если поля с паролями не совпадают, выдаем ошибку , если все ок - отправляем форму
-          if (arrayOfHtmlElements[5].element.value !== arrayOfHtmlElements[6].element.value) {
-            this.refs["check_passwordInputRef"].refs["check_passwordErrorRef"].setProps({
-              text: "Пароли не совпадают",
-            })
-          } else {
-            this.setProps({
-              emailValue: arrayOfHtmlElements[0].element.value,
-              loginValue: arrayOfHtmlElements[1].element.value,
-              firstNameValue: arrayOfHtmlElements[2].element.value,
-              secondNameValue: arrayOfHtmlElements[3].element.value,
-              phoneValue: arrayOfHtmlElements[4].element.value,
-              passwordValue: arrayOfHtmlElements[5].element.value,
-              checkPasswordValue: arrayOfHtmlElements[6].element.value,
-            })
-            console.log(
-              "Форма готова к отправке, данные: ",
-              arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
-                return { [item.name]: item.element.value }
-              }),
-            )
-            window.currentPage.page = MainPage
-          }
-        }
+        window.router.go(ROUTES.Login)
       },
     })
   }
+
   render() {
     // language=hbs
     return `
@@ -171,7 +211,7 @@ export class SignUpPage extends Block {
             ref="check_passwordInputRef"
             errorRef="check_passwordErrorRef"
           }}}
-            {{{Button text="Зарегистрироваться" className="custom-button" onClick=onSubmit}}}
+            {{{Button type="submit" text="Зарегистрироваться" className="custom-button sign-up-button"}}}
           </form>
           {{{Button text="Войти" className="redirect-button" onClick=onRedirectToLogin}}}
 
@@ -180,3 +220,6 @@ export class SignUpPage extends Block {
     `
   }
 }
+
+const ConnectedSignUpPage = withRouter(withStore(withUser(SignUpPage)))
+export { ConnectedSignUpPage as SignUpPage }

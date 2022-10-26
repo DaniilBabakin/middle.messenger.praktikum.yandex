@@ -127,8 +127,8 @@ export function validateForm(rules: ValidateRule[]) {
       } else if (value.match(/[A-Za-zА-Яа-я]+/g)) {
         errorMessage.text = "Номер телефона не может содержать буквы"
         break
-      } else if (!value.match(/^[+]/g)) {
-        errorMessage.text = "Номер телефона должен начинаться с плюса"
+      } else if (!value.match(/^[+]7/)) {
+        errorMessage.text = "Номер телефона должен начинаться с +7"
         break
       } else if (value.length < 10) {
         errorMessage.text = "Номер телефона должен содержать от 10 символов"

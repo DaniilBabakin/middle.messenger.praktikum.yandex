@@ -24,6 +24,7 @@
     "strictNullChecks": true,
     "noEmit": true,
     "jsx": "react-jsx",
+    "types": ["mocha"],
     "paths": {
       "*": ["typings/add.d.ts", "*"]
     }

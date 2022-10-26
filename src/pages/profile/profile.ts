@@ -1,28 +1,39 @@
-import { Block } from "core"
-import * as avatar from "../../assets/defaultAvatarBig.png"
+import { Block, CoreRouter, Store } from "core"
 import "./profile.scss"
-import MainPage from "pages/main"
-import LoginPage from "pages/login"
-import ProfileChangePasswordPage from "pages/profileChangePassword"
-import ProfileChangeValuesPage from "pages/profileChangeValues"
+import { ROUTES } from "constants/routes"
+import { authAPI } from "api/authAPI"
+import { withRouter, withStore, withUser } from "helpers"
 
-export class ProfilePage extends Block {
-  constructor() {
-    super()
+type ProfilePageProps = {
+  router: CoreRouter
+  store: Store<AppState>
+  user: Nullable<User>
+  redirectToProfileChangeValues?: () => void
+  redirectToProfileChangePassword?: () => void
+  redirectQuitProfile?: () => void
+  redirectBack?: () => void
+}
+
+class ProfilePage extends Block<ProfilePageProps> {
+  constructor(props: ProfilePageProps) {
+    super(props)
+
     this.setProps({
+      ...props,
       redirectToProfileChangeValues: () => {
-        window.currentPage.page = ProfileChangeValuesPage
+        this.props.router.go(ROUTES.ProfileSettings)
       },
       redirectToProfileChangePassword: () => {
-        window.currentPage.page = ProfileChangePasswordPage
+        this.props.router.go(ROUTES.ChangePassword)
       },
-      redirectToLogin: () => {
-        window.currentPage.page = LoginPage
+      redirectQuitProfile: () => {
+        authAPI.logout()
       },
-      redirectToMain: () => {
-        window.currentPage.page = MainPage
+      redirectBack: () => {
+        this.props.router.back()
       },
     })
+    console.log("THIS", this)
   }
 
   protected render(): string {
@@ -30,45 +41,45 @@ export class ProfilePage extends Block {
       <main class="profile">
         <div class="profile__container">
             <div>
-            <img src="${avatar}" class="profile__container_image" alt="Моя фотография"/>
-            <h1 class="profile__container_title">Даня</h1>
+            {{{ChangeAvatar src="${this.props.user?.avatar}" type="USER"}}}
+            <h1 class="profile__container_title">{{user.displayName}}</h1>
             </div>
             <form class="profile__form">
-            {{!------- ПОЧТА -------}}
-            <div class="profile__form__field">
-                <label class="profile__form__field__label">Почта</label>
-                <p class="profile__form__field__value">rrdreaming@yandex.ru</p>
-            </div>
+                {{!------- ПОЧТА -------}}
+                <div class="profile__form__field">
+                    <label class="profile__form__field__label">Почта</label>
+                    <p class="profile__form__field__value">{{user.firstName}}</p>
+                </div>
 
-            {{!------- ЛОГИН -------}}
-            <div class="profile__form__field">
-                <label class="profile__form__field__label">Логин</label>
-                <p class="profile__form__field__value">daniilbabakin</p>
-            </div>
+                {{!------- ЛОГИН -------}}
+                <div class="profile__form__field">
+                    <label class="profile__form__field__label">Логин</label>
+                    <p class="profile__form__field__value">{{user.login}}</p>
+                </div>
 
-            {{!------- ИМЯ -------}}
-            <div class="profile__form__field">
-                <label class="profile__form__field__label">Имя</label>
-                <p class="profile__form__field__value">Даниил</p>
-            </div>
+                {{!------- ИМЯ -------}}
+                <div class="profile__form__field">
+                    <label class="profile__form__field__label">Имя</label>
+                    <p class="profile__form__field__value">{{user.firstName}}</p>
+                </div>
 
-            {{!------- ФАМИЛИЯ -------}}
-            <div class="profile__form__field">
-                <label class="profile__form__field__label">Фамилия</label>
-                <p class="profile__form__field__value">Бабакин</p>
-            </div>
-            
-            {{!------- ИМЯ В ЧАТЕ -------}}
-            <div class="profile__form__field">
-                <label class="profile__form__field__label">Имя в чате</label>
-                <p class="profile__form__field__value">Даня</p>
-            </div>
+                {{!------- ФАМИЛИЯ -------}}
+                <div class="profile__form__field">
+                    <label class="profile__form__field__label">Фамилия</label>
+                    <p class="profile__form__field__value">{{user.secondName}}</p>
+                </div>
+                
+                {{!------- ИМЯ В ЧАТЕ -------}}
+                <div class="profile__form__field">
+                    <label class="profile__form__field__label">Имя в чате</label>
+                    <p class="profile__form__field__value">{{user.displayName}}</p>
+                </div>
 
-            {{!------- ТЕЛЕФОН -------}}
-            <div class="profile__form__field no-border">
-                <label class="profile__form__field__label">Телефон</label>
-                <p class="profile__form__field__value default-font">+7 (916) 563 19 58</p>
-            </div>
+                {{!------- ТЕЛЕФОН -------}}
+                <div class="profile__form__field no-border">
+                    <label class="profile__form__field__label">Телефон</label>
+                    <p class="profile__form__field__value default-font">{{user.phone}}</p>
+                </div>
             </form>
 
             <div>
@@ -84,15 +95,15 @@ export class ProfilePage extends Block {
 
             {{!------- ВЫЙТИ -------}}
             <div class="profile__form__field no-border">
-                {{{Button text="Выйти" className="profile-change-values red" onClick=redirectToLogin}}}
+                {{{Button text="Выйти" className="profile-change-values red" onClick=redirectQuitProfile}}}
             </div> 
             {{!------- LINK BACK TO CHATS -------}}
-                {{{Button className="back-to-chats" onClick=redirectToMain}}}
+                {{{Button className="back-to-chats" onClick=redirectBack}}}
             </div>
         </div>
      </main>
     `
   }
 }
-//href="../profileChangeValues/profileChangeValues.hbs"
-//<a class="back-to-chats" href="../../../index.hbs"></a>
+const ConnectedProfilePage = withRouter(withStore(withUser(ProfilePage)))
+export { ConnectedProfilePage as ProfilePage }
