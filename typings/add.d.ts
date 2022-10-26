@@ -14,14 +14,14 @@ declare global {
 
   export type AppState = {
     appIsInited: boolean
-    screen: Screens | null
+    screen: Nullable<Screens>
     isLoading: boolean
-    formError: string | null
-    contacts: User[] | null
-    chats: ChatType[] | null
+    formError: Nullable<string>
+    contacts: Nullable<User[]>
+    chats: Nullable<ChatType[]>
     currentChat: CurrentChatType
     chatMessages: ChatMessageType[]
-    user: User | null
+    user: Nullable<User>
   }
 
   export type User = {
@@ -33,8 +33,9 @@ declare global {
     avatar: string
     phone: string
     email: string
-    fromSearch?:boolean
+    fromSearch?: boolean
   }
+  type DispatchStateHandler<TAction> = (dispatch: Dispatch<AppState>, state: AppState, action: TAction) => Promise<void>
 
   module "*.png"
   module "*.svg"

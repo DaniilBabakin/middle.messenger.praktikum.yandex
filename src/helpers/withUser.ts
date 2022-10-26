@@ -1,6 +1,6 @@
 import { BlockClass } from "core"
 
-type WithUserProps = { user: User | null }
+type WithUserProps = { user: Nullable<User> }
 
 export function withUser<P extends WithUserProps>(WrappedBlock: BlockClass<P>) {
   // @ts-expect-error No base constructor has the specified
@@ -13,7 +13,7 @@ export function withUser<P extends WithUserProps>(WrappedBlock: BlockClass<P>) {
 
     __onChangeUserCallback = (prevState: AppState, nextState: AppState) => {
       if (JSON.stringify(prevState.user) !== JSON.stringify(nextState.user)) {
-        console.log('USER CHANGED')
+        console.log("USER CHANGED")
         // @ts-expect-error this is not typed
         this.setProps({ ...this.props, user: nextState.user })
       }

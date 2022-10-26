@@ -1,6 +1,5 @@
 import Block from "core/Block"
 import { deleteChat } from "service/chat"
-import WebSocketTransport from "service/webSocket"
 import { CurrentChatType } from "types/CurrentChat"
 
 import "../modal.scss"
@@ -26,7 +25,7 @@ export class DeleteChatModal extends Block<DeleteChatModalProps> {
       },
     })
   }
-  componentDidMount(props: any): void {
+  componentDidMount(): void {
     document.getElementById("delete-chat")?.addEventListener("click", (e: Event) => {
       const modalDiv = e.target as HTMLElement
       modalDiv.classList.remove("active")

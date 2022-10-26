@@ -50,7 +50,7 @@ export class HTTPTransport {
   request(path: string, options: Options = { method: Method.GET }, timeout = 0) {
     const { headers = {}, includeCredentials = true, method, data } = options
     const url = this.baseUrl + path
-    return new Promise((resolve, reject) => {
+    return new Promise<XMLHttpRequest>((resolve, reject) => {
       const xhr = new XMLHttpRequest()
       xhr.open(method, url)
       xhr.withCredentials = includeCredentials

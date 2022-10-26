@@ -5,7 +5,7 @@ import NotFoundPage from "pages/notFound"
 import ProfilePage from "pages/profile"
 import ServerErrorPage from "pages/serverError"
 import ProfileChangePasswordPage from "pages/profileChangePassword"
-import ProfileChangeValuesPage from "pages/profileChangePassword"
+import ProfileChangeValuesPage from "pages/profileChangeValues"
 import { BlockClass } from "core"
 
 export enum Screens {
@@ -16,7 +16,7 @@ export enum Screens {
   NotFound = "notFound",
   ServerError = "serverError",
   ProfileChangePassword = "profileChangePassword",
-  ProfileChangeValues = "profileChangePassword",
+  ProfileChangeValues = "profileChangeValues",
 }
 
 const map: Record<Screens, BlockClass<any>> = {

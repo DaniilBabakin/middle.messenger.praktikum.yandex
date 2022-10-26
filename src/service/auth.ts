@@ -9,7 +9,17 @@ type LoginPayload = {
   password: string
 }
 
-export const login = async (dispatch: Dispatch<AppState>, state: AppState, action: LoginPayload) => {
+type SignUpPayload = {
+  emailValue: string
+  loginValue: string
+  firstNameValue: string
+  secondNameValue: string
+  phoneValue: string
+  passwordValue: string
+  avatar: string
+}
+
+export const login:DispatchStateHandler<LoginPayload> = async (dispatch, state, action) => {
   dispatch({ isLoading: true })
   const response = await authAPI.signIn(action)
 
@@ -32,7 +42,7 @@ export const login = async (dispatch: Dispatch<AppState>, state: AppState, actio
   window.router.go(ROUTES.Chat)
 }
 
-export const signUp = async (dispatch: Dispatch<AppState>, state: AppState, action: LoginPayload) => {
+export const signUp:DispatchStateHandler<SignUpPayload> = async (dispatch, state, action) => {
   dispatch({ isLoading: true })
   const response = await authAPI.signUp(action)
 

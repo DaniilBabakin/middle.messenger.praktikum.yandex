@@ -22,7 +22,7 @@ p {
   &__time {
     margin-bottom: 50px;
 
-    color: #999;
+    color: var(--support-gray-color);
   }
 }
 
@@ -52,7 +52,7 @@ p {
     margin-top: 5px;
 
     font-size: 14px;
-    color: #999;
+    color: var(--support-gray-color);
   }
 
   &.friend__message {

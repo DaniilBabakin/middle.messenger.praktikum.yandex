@@ -12,19 +12,16 @@ interface ChatItemType extends ChatType {
 interface ChatItemProps {
   chat: ChatItemType
   fromSearch?: boolean
+  events: Record<string, any>
 }
 
-export class ChatItem extends Block {
+export class ChatItem extends Block<ChatItemProps> {
   static componentName = "ChatItem"
   constructor(props: ChatItemProps) {
     super({
       ...props,
       events: {
-        click: (e: FocusEvent) => {
-          const inputEl = e.target as HTMLInputElement
-          console.log("CHAT ID")
-          console.log("CHAT123", props.chat)
-
+        click: () => {
           if (props.fromSearch) {
             window.store.dispatch(getChatByTitle, {
               id: props.chat.id,

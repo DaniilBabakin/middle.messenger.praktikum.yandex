@@ -5,19 +5,20 @@ import "./button.scss"
 interface ButtonProps {
   text: string
   className: string
-  onClick: () => void
+  type?: string
+  onClick?: () => void
 }
 
 export class Button extends Block {
   static componentName = "Button"
-  constructor({ text, className, onClick }: ButtonProps) {
-    super({ text, className, events: { click: onClick } })
+  constructor({ text, className, type = "button", onClick }: ButtonProps) {
+    super({ text, className, type, events: { click: onClick } })
   }
 
   protected render(): string {
     // language=hbs
     return `
-        <button class="{{className}}" type="button">{{text}}</button>
+        <button class="{{className}}" type="{{type}}">{{text}}</button>
     `
   }
 }
