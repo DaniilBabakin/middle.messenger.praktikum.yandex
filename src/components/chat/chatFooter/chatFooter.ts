@@ -80,14 +80,6 @@ export class ChatFooter extends Block<ChatFooterProps> {
         }
       },
     })
-    this.element?.querySelector("input[name='message']")?.addEventListener("keypress", (event) => {
-      let keyboardEvent = event as KeyboardEvent
-
-      if (keyboardEvent.key === "Enter") {
-        event.preventDefault()
-        this.props.onSubmit()
-      }
-    })
   }
   componentDidMount() {
     const messageEl = this.element?.querySelector("input[name='message']") as HTMLInputElement
