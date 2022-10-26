@@ -1,8 +1,6 @@
 import { chatsAPI } from "api/chatAPI"
 import type { Dispatch } from "core"
 import { ChatType } from "types/Chat"
-import { CurrentChatType } from "types/CurrentChat"
-import WebSocketTransport from "./webSocket"
 
 export const getChats = async (dispatch: Dispatch<AppState>) => {
   const res = await chatsAPI.getChats()
@@ -31,7 +29,7 @@ export const getChatByTitle = async (
   }
 }
 
-export const deleteChat = async (dispatch: Dispatch<AppState>, state: AppState, chatId: number) => {
+export const deleteChat: DispatchStateHandler<number> = async (dispatch, state, chatId) => {
   const res = await chatsAPI.deleteChat(chatId)
   if (res) {
     window.store.dispatch({
@@ -41,7 +39,7 @@ export const deleteChat = async (dispatch: Dispatch<AppState>, state: AppState, 
   }
 }
 
-export const changeChatAvatar = async (dispatch: Dispatch<AppState>, state: AppState, action: {}) => {
+export const changeChatAvatar: DispatchStateHandler<{ photo: File }> = async (dispatch, state, action) => {
   console.log("DATA", action)
   const res = await chatsAPI.changeAvatar(action)
   console.log("res", res)
@@ -58,8 +56,4 @@ export const changeChatAvatar = async (dispatch: Dispatch<AppState>, state: AppS
       }),
     })
   }
-}
-export const createWebSocketsConnection = async (user: User | null, chatId: number) => {
-  const token = await chatsAPI.getToken(chatId)
-  return new WebSocketTransport(user, chatId, token)
 }

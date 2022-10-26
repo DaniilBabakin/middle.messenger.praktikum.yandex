@@ -64,7 +64,7 @@
       &__value {
         margin: 0;
 
-        color: #999;
+        color: var(--support-gray-color);
 
         &.default-font {
           font-family: Arial, sans-serif;

@@ -8,12 +8,13 @@ import { changeValues } from "service/user"
 type ProfileChangeValuesPageProps = {
   router: CoreRouter
   store: Store<AppState>
-  user: User | null
+  user: Nullable<User>
   values: {
     oldPasswordValue: string
     newPasswordValue: string
     check_passwordValue: string
   }
+  events: Record<string, any>
   formError: () => void
   redirectBack?: () => void
   onInput?: (e: FocusEvent) => void
@@ -22,7 +23,59 @@ type ProfileChangeValuesPageProps = {
 
 class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
   constructor(props: ProfileChangeValuesPageProps) {
-    super(props)
+    super({
+      ...props,
+      events: {
+        submit: (e: Event) => {
+          e.preventDefault()
+          //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
+          const arrayOfInputsName = ["email", "login", "first_name", "second_name", "phone", "display_name"]
+
+          //Сам маппинг
+          const arrayOfHtmlElements: { name: string; element: HTMLInputElement }[] = arrayOfInputsName.map(
+            (name: string) => {
+              return { name: name, element: this.element?.querySelector(`input[name="${name}"]`) as HTMLInputElement }
+            },
+          )
+
+          //Проверяем наличие ошибок(Маппинг помогает упростить запрос)
+          const errorMessage = validateForm(
+            arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
+              return { type: item.element.name, value: item.element.value }
+            }),
+          )
+
+          //Если ошибка есть - находим нужный элемент в refs, далее реф его ошибки, далее меняем текст на текст ошибки
+          if (errorMessage.text) {
+            this.refs[errorMessage.inputName].refs[errorMessage.inputName.replace("Input", "Error")].setProps({
+              text: errorMessage.text,
+            })
+          } else {
+            this.setProps({
+              ...props,
+              user: {
+                id: this.props.user!.id,
+                avatar: this.props.user!.avatar,
+                email: arrayOfHtmlElements[0].element.value,
+                login: arrayOfHtmlElements[1].element.value,
+                firstName: arrayOfHtmlElements[2].element.value,
+                secondName: arrayOfHtmlElements[3].element.value,
+                phone: arrayOfHtmlElements[4].element.value,
+                displayName: arrayOfHtmlElements[5].element.value,
+              },
+            })
+            const formData = arrayOfHtmlElements.reduce<any>(
+              (acc, item: { name: string; element: HTMLInputElement }) =>
+                Object.assign(acc, { [item.name]: item.element.value }),
+              {},
+            )
+            console.log("Форма готова к отправке, данные: ", formData)
+
+            this.props.store.dispatch(changeValues, formData)
+          }
+        },
+      },
+    })
 
     this.setProps({
       ...props,
@@ -39,62 +92,6 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
         this.refs[inputRef].refs[errorRef].setProps({
           text: errorMessage.text,
         })
-      },
-      onSubmit: () => {
-        //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
-        const arrayOfInputsName = ["email", "login", "first_name", "second_name", "phone", "display_name"]
-
-        //Сам маппинг
-        const arrayOfHtmlElements: { name: string; element: HTMLInputElement }[] = arrayOfInputsName.map(
-          (name: string) => {
-            return { name: name, element: this.element?.querySelector(`input[name="${name}"]`) as HTMLInputElement }
-          },
-        )
-
-        //Проверяем наличие ошибок(Маппинг помогает упростить запрос)
-        const errorMessage = validateForm(
-          arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
-            return { type: item.element.name, value: item.element.value }
-          }),
-        )
-
-        //Если ошибка есть - находим нужный элемент в refs, далее реф его ошибки, далее меняем текст на текст ошибки
-        if (errorMessage.text) {
-          this.refs[errorMessage.inputName].refs[errorMessage.inputName.replace("Input", "Error")].setProps({
-            text: errorMessage.text,
-          })
-        } else {
-          console.log("ARRAY", arrayOfHtmlElements)
-          // this.setProps({
-          //   emailValue: arrayOfHtmlElements[0].element.value,
-          //   loginValue: arrayOfHtmlElements[1].element.value,
-          //   firstNameValue: arrayOfHtmlElements[2].element.value,
-          //   secondNameValue: arrayOfHtmlElements[3].element.value,
-          //   phoneValue: arrayOfHtmlElements[4].element.value,
-          //   displayNameValue: arrayOfHtmlElements[5].element.value,
-          // })
-          this.setProps({
-            ...props,
-            user: {
-              id: this.props.user!.id,
-              avatar: this.props.user!.avatar,
-              email: arrayOfHtmlElements[0].element.value,
-              login: arrayOfHtmlElements[1].element.value,
-              firstName: arrayOfHtmlElements[2].element.value,
-              secondName: arrayOfHtmlElements[3].element.value,
-              phone: arrayOfHtmlElements[4].element.value,
-              displayName: arrayOfHtmlElements[5].element.value,
-            },
-          })
-          const formData = arrayOfHtmlElements.reduce<any>(
-            (acc, item: { name: string; element: HTMLInputElement }) =>
-              Object.assign(acc, { [item.name]: item.element.value }),
-            {},
-          )
-          console.log("Форма готова к отправке, данные: ", formData)
-
-          this.props.store.dispatch(changeValues, formData)
-        }
       },
     })
     console.log(this.props)
@@ -212,7 +209,7 @@ class ProfileChangeValuesPage extends Block<ProfileChangeValuesPageProps> {
                 </div>
             {{!------- LINK BACK TO PROFILE -------}}
                 {{{Button className="back-to-chats" onClick=redirectBack}}}
-                {{{Button type="submit" text="Сохранить" className="custom-button blue mt75" onClick=onSubmit}}}
+                {{{Button type="submit" text="Сохранить" className="custom-button blue mt75"}}}
             </form>
 
             </div>

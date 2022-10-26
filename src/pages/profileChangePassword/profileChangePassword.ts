@@ -8,12 +8,13 @@ import { changePassword } from "service/user"
 type ProfileChangePasswordPageProps = {
   router: CoreRouter
   store: Store<AppState>
-  user: User | null
+  user: Nullable<User>
   values: {
     oldPasswordValue: string
     newPasswordValue: string
     check_passwordValue: string
   }
+  events: Record<string, any>
   formError: () => void
   redirectBack: () => void
   onInput?: (e: FocusEvent) => void
@@ -22,7 +23,69 @@ type ProfileChangePasswordPageProps = {
 
 class ProfileChangePasswordPage extends Block<ProfileChangePasswordPageProps> {
   constructor(props: ProfileChangePasswordPageProps) {
-    super(props)
+    super({
+      ...props,
+      events: {
+        submit: (e: Event) => {
+          e.preventDefault()
+          //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
+          const arrayOfInputsName = ["oldPassword", "newPassword", "check_password"]
+
+          //Сам маппинг
+          const arrayOfHtmlElements: { name: string; element: HTMLInputElement }[] = arrayOfInputsName.map(
+            (name: string) => {
+              return { name: name, element: this.element?.querySelector(`input[name="${name}"]`) as HTMLInputElement }
+            },
+          )
+          const NamesToArrayOfHTMLElements = (names: string[]) => {
+            return names.map((name: string) => {
+              return { name: name, element: this.element?.querySelector(`input[name="${name}"]`) as HTMLInputElement }
+            })
+          }
+          NamesToArrayOfHTMLElements.bind(this)
+          //Проверяем наличие ошибок(Маппинг помогает упростить запрос)
+          const errorMessage = validateForm(
+            arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
+              return { type: item.element.name, value: item.element.value }
+            }),
+          )
+
+          //Если ошибка есть - находим нужный элемент в refs, далее реф его ошибки, далее меняем текст на текст ошибки
+          if (errorMessage.text) {
+            this.refs[errorMessage.inputName].refs[errorMessage.inputName.replace("Input", "Error")].setProps({
+              text: errorMessage.text,
+            })
+          } else {
+            if (arrayOfHtmlElements[1].element.value !== arrayOfHtmlElements[2].element.value) {
+              this.refs["check_passwordInputRef"].refs["check_passwordErrorRef"].setProps({
+                text: "Пароли не совпадают",
+              })
+            } else {
+              this.setProps({
+                ...this.props,
+                values: {
+                  oldPasswordValue: arrayOfHtmlElements[0].element.value,
+                  newPasswordValue: arrayOfHtmlElements[1].element.value,
+                  check_passwordValue: arrayOfHtmlElements[2].element.value,
+                },
+              })
+
+              const formData = arrayOfHtmlElements
+                .filter(({ name }) => name !== "check_password")
+                .reduce<any>(
+                  (acc, item: { name: string; element: HTMLInputElement }) =>
+                    Object.assign(acc, { [item.name]: item.element.value }),
+                  {},
+                )
+              console.log("Форма готова к отправке, данные: ", formData)
+
+              this.props.store.dispatch(changePassword, formData)
+            }
+          }
+          return false
+        },
+      },
+    })
 
     this.setProps({
       ...props,
@@ -46,62 +109,6 @@ class ProfileChangePasswordPage extends Block<ProfileChangePasswordPageProps> {
           text: errorMessage.text,
         })
       },
-      onSubmit: () => {
-        //Названия элементов для последующего маппинга в { name:имя(отсюда как раз), element: элемент }
-        const arrayOfInputsName = ["oldPassword", "newPassword", "check_password"]
-
-        //Сам маппинг
-        const arrayOfHtmlElements: { name: string; element: HTMLInputElement }[] = arrayOfInputsName.map(
-          (name: string) => {
-            return { name: name, element: this.element?.querySelector(`input[name="${name}"]`) as HTMLInputElement }
-          },
-        )
-        const NamesToArrayOfHTMLElements = (names: string[]) => {
-          return names.map((name: string) => {
-            return { name: name, element: this.element?.querySelector(`input[name="${name}"]`) as HTMLInputElement }
-          })
-        }
-        NamesToArrayOfHTMLElements.bind(this)
-        //Проверяем наличие ошибок(Маппинг помогает упростить запрос)
-        const errorMessage = validateForm(
-          arrayOfHtmlElements.map((item: { name: string; element: HTMLInputElement }) => {
-            return { type: item.element.name, value: item.element.value }
-          }),
-        )
-
-        //Если ошибка есть - находим нужный элемент в refs, далее реф его ошибки, далее меняем текст на текст ошибки
-        if (errorMessage.text) {
-          this.refs[errorMessage.inputName].refs[errorMessage.inputName.replace("Input", "Error")].setProps({
-            text: errorMessage.text,
-          })
-        } else {
-          if (arrayOfHtmlElements[1].element.value !== arrayOfHtmlElements[2].element.value) {
-            this.refs["check_passwordInputRef"].refs["check_passwordErrorRef"].setProps({
-              text: "Пароли не совпадают",
-            })
-          } else {
-            this.setProps({
-              ...this.props,
-              values: {
-                oldPasswordValue: arrayOfHtmlElements[0].element.value,
-                newPasswordValue: arrayOfHtmlElements[1].element.value,
-                check_passwordValue: arrayOfHtmlElements[2].element.value,
-              },
-            })
-
-            const formData = arrayOfHtmlElements
-              .filter(({ name }) => name !== "check_password")
-              .reduce<any>(
-                (acc, item: { name: string; element: HTMLInputElement }) =>
-                  Object.assign(acc, { [item.name]: item.element.value }),
-                {},
-              )
-            console.log("Форма готова к отправке, данные: ", formData)
-
-            this.props.store.dispatch(changePassword, formData)
-          }
-        }
-      },
     })
   }
 
@@ -110,7 +117,7 @@ class ProfileChangePasswordPage extends Block<ProfileChangePasswordPageProps> {
         <main class="profile">
             <div class="profile__container">
             <div>
-                {{{ChangeAvatar src="${this.props.user?.avatar}"}}}
+                {{{ChangeAvatar src="${this.props.user?.avatar}" type="USER"}}}
                 <h1 class="profile__container_title">{{user.displayName}}</h1>
             </div>
             <form class="profile__form">
@@ -167,7 +174,7 @@ class ProfileChangePasswordPage extends Block<ProfileChangePasswordPageProps> {
                 {{{ErrorFromServer text=formError}}}
             {{!------- LINK BACK TO PROFILE -------}}
                 {{{Button className="back-to-chats" onClick=redirectBack}}}
-                {{{Button type="submit" text="Сохранить" className="custom-button blue mt220" onClick=onSubmit}}}
+                {{{Button type="submit" text="Сохранить" className="custom-button blue mt220"}}}
             </form>
 
             </div>

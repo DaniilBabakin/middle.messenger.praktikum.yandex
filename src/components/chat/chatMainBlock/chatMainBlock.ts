@@ -1,6 +1,4 @@
 import Block from "core/Block"
-import { withChatMessages } from "helpers/withChatMessages"
-import { withCurrentChat } from "helpers/withCurrentChat"
 import { ChatMessageType } from "types/ChatMessage"
 
 import "./chatMainBlock.scss"
@@ -16,7 +14,6 @@ export class ChatMainBlock extends Block<ChatMainBlockProps> {
   constructor(props: ChatMainBlockProps) {
     super(props)
     console.log("IS LOADING?", this.props.isLoading)
-    
   }
 
   protected render(): string {

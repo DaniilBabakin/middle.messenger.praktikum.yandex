@@ -16,7 +16,7 @@ export enum Screens {
   NotFound = "notFound",
   ServerError = "serverError",
   ProfileChangePassword = "profileChangePassword",
-  ProfileChangeValues = "profileChangePassword",
+  ProfileChangeValues = "profileChangeValues",
 }
 
 const map: Record<Screens, BlockClass<any>> = {

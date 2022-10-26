@@ -1,9 +1,14 @@
 import { HTTPTransport } from "core/CustomFetch"
-import { ChatType } from "types/Chat"
+
+type ChangeAvatarPayload = {
+  photo: File
+}
+
+const chatsApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2")
 
 export const chatsAPI = {
   getChats: async () => {
-    const res: any = await HTTPTransport.getInstance().get("/chats", {
+    const res: XMLHttpRequest = await chatsApiInstance.get("/chats", {
       includeCredentials: true,
       headers: {
         accept: "application/json",
@@ -16,7 +21,7 @@ export const chatsAPI = {
   },
 
   getChatByTitle: async (title: string) => {
-    const res: any = await HTTPTransport.getInstance().get(`/chats?title=${title}`, {
+    const res: XMLHttpRequest = await chatsApiInstance.get(`/chats?title=${title}`, {
       includeCredentials: true,
       headers: {
         accept: "application/json",
@@ -29,7 +34,7 @@ export const chatsAPI = {
   },
 
   getChatUsers: async (chatId: number) => {
-    const res: any = await HTTPTransport.getInstance().get(`/chats/${chatId}/users`, {
+    const res: XMLHttpRequest = await chatsApiInstance.get(`/chats/${chatId}/users`, {
       includeCredentials: true,
       headers: {
         accept: "application/json",
@@ -42,7 +47,7 @@ export const chatsAPI = {
   },
 
   createChat: async (data: { title: string }) => {
-    const res: any = await HTTPTransport.getInstance().post("/chats", {
+    const res: XMLHttpRequest = await chatsApiInstance.post("/chats", {
       includeCredentials: true,
       headers: {
         accept: "application/json",
@@ -58,7 +63,7 @@ export const chatsAPI = {
   },
 
   deleteChat: async (chatId: number) => {
-    const res: any = await HTTPTransport.getInstance().delete("/chats", {
+    const res: XMLHttpRequest = await chatsApiInstance.delete("/chats", {
       includeCredentials: true,
       headers: {
         accept: "application/json",
@@ -74,7 +79,7 @@ export const chatsAPI = {
   },
 
   addUserToChat: async (userId: number, chatId: number) => {
-    const res: any = await HTTPTransport.getInstance().put("/chats/users", {
+    const res: XMLHttpRequest = await chatsApiInstance.put("/chats/users", {
       includeCredentials: true,
       headers: {
         accept: "application/json",
@@ -90,7 +95,7 @@ export const chatsAPI = {
   },
 
   getToken: async (chatId: number): Promise<string> => {
-    const res: any = await HTTPTransport.getInstance().post(`/chats/token/${chatId}`, {
+    const res: XMLHttpRequest = await chatsApiInstance.post(`/chats/token/${chatId}`, {
       includeCredentials: true,
       headers: {
         accept: "application/json",
@@ -102,8 +107,8 @@ export const chatsAPI = {
     return JSON.parse(res.responseText).token
   },
 
-  changeAvatar: async (data: any) => {
-    const res: any = await HTTPTransport.getInstance().put("/chats/avatar", {
+  changeAvatar: async (data: ChangeAvatarPayload) => {
+    const res: XMLHttpRequest = await chatsApiInstance.put("/chats/avatar", {
       includeCredentials: true,
       data: data,
     })

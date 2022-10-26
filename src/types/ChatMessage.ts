@@ -1,7 +1,7 @@
 export type ChatMessageType = {
   chat_id: number
   content: string
-  file: File | null
+  file: Nullable<File>
   id: number
   is_read: boolean
   time: string

@@ -46,7 +46,7 @@ export default class Block<P = any> {
       props,
     }
 
-    this.getStateFromProps(props)
+    this.getStateFromProps(props!)
 
     this.props = this._makePropsProxy(props || ({} as P))
     this.state = this._makePropsProxy(this.state)
@@ -69,7 +69,7 @@ export default class Block<P = any> {
     this._element = this._createDocumentElement("div")
   }
 
-  protected getStateFromProps(props: any): void {
+  protected getStateFromProps(props: P): void {
     this.state = {}
   }
 
@@ -92,7 +92,7 @@ export default class Block<P = any> {
     this._render()
   }
 
-  componentDidUpdate(oldProps: any, newProps: any) {
+  componentDidUpdate(oldProps: P, newProps: P) {
     return true
   }
 
@@ -145,7 +145,7 @@ export default class Block<P = any> {
     return this.element!
   }
 
-  private _makePropsProxy = (props: any): any => {
+  private _makePropsProxy = (props: P): any => {
     let waitProxy = false
     return new Proxy(props as any, {
       get(target: Record<string, unknown>, prop: string) {

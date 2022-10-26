@@ -8,7 +8,7 @@ import { CurrentChatType } from "types/CurrentChat"
 import "./chatMessages.scss"
 
 type ChatMessagesProps = {
-  user: User | null
+  user: Nullable<User>
   currentChat: CurrentChatType
   chatMessages: ChatMessageType[]
   _socketTransport: WebSocketTransport | undefined
@@ -19,7 +19,7 @@ class ChatMessages extends Block<ChatMessagesProps> {
   static componentName = "ChatMessages"
 
   isWebSocketConnected: boolean = false
-
+  webSocketUrl: string = "wss://ya-praktikum.tech/ws"
   constructor(props: ChatMessagesProps) {
     super(props)
     this.setProps({
@@ -33,6 +33,7 @@ class ChatMessages extends Block<ChatMessagesProps> {
   componentDidMount(): void {
     if (this.props.currentChat) {
       this.props._socketTransport = new WebSocketTransport(
+        this.webSocketUrl,
         this.props.user,
         this.props.currentChat.id,
         this.props.currentChat.token,

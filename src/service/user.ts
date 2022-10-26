@@ -2,34 +2,7 @@ import { authAPI } from "api/authAPI"
 import { UserDTO } from "api/types"
 import { userAPI } from "api/userAPI"
 import { ROUTES } from "constants/routes"
-import { Dispatch } from "core"
-import { HTTPTransport } from "core/CustomFetch"
 import { apiHasError, transformUser } from "helpers"
-import { logout } from "./auth"
-
-export const userAPIjhljk = {
-  changePassword: async (data: any): Promise<boolean> => {
-    const res: any = await HTTPTransport.getInstance().put("/user/password", {
-      includeCredentials: true,
-      data: JSON.stringify(data),
-      headers: { "content-type": "application/json" },
-    })
-    console.log(res)
-    if (res.status !== 200) {
-      return false
-    }
-    return true
-  },
-
-  changeAvatar: async (data: any): Promise<boolean> => {
-    const res: any = await HTTPTransport.getInstance().put("/user/profile/avatar", {
-      includeCredentials: true,
-      data: data,
-    })
-    console.log(data, res)
-    return true
-  },
-}
 
 type ChangeValuesPayload = {
   email: string
@@ -47,7 +20,7 @@ type ChangeAvatarPayload = {
   photo: File
 }
 
-export const changeValues = async (dispatch: Dispatch<AppState>, state: AppState, action: ChangeValuesPayload) => {
+export const changeValues: DispatchStateHandler<ChangeValuesPayload> = async (dispatch, state, action) => {
   dispatch({ isLoading: true })
 
   const response = await userAPI.changeValues(action)
@@ -65,7 +38,7 @@ export const changeValues = async (dispatch: Dispatch<AppState>, state: AppState
   window.router.go(ROUTES.Profile)
 }
 
-export const changePassword = async (dispatch: Dispatch<AppState>, state: AppState, action: ChangePasswordPayload) => {
+export const changePassword: DispatchStateHandler<ChangePasswordPayload> = async (dispatch, state, action) => {
   dispatch({ isLoading: true })
 
   const response = await userAPI.changePassword(action)
@@ -80,7 +53,7 @@ export const changePassword = async (dispatch: Dispatch<AppState>, state: AppSta
   window.router.go(ROUTES.Profile)
 }
 
-export const changeAvatar = async (dispatch: Dispatch<AppState>, state: AppState, action: ChangeAvatarPayload) => {
+export const changeAvatar: DispatchStateHandler<ChangeAvatarPayload> = async (dispatch, state, action) => {
   dispatch({ isLoading: true })
 
   const response = await userAPI.changeAvatar(action)
@@ -93,7 +66,7 @@ export const changeAvatar = async (dispatch: Dispatch<AppState>, state: AppState
   dispatch({ isLoading: false, formError: null })
 }
 
-export const searchUsers = async (dispatch: Dispatch<AppState>, state: AppState, action: ChangeAvatarPayload) => {
+export const searchUsers: DispatchStateHandler<{ login: string }> = async (dispatch, state, action) => {
   const response = await userAPI.usersSearch(action)
   console.log("RES", response)
   dispatch({ chats: response.map((item: UserDTO) => transformUser({ ...item, fromSearch: true })) })

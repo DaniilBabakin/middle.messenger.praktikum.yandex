@@ -5,17 +5,11 @@ import "./modal.scss"
 export class Modal extends Block {
   static componentName = "Modal"
   constructor() {
-    super({
-      events: {
-        click: () => {
-          console.log("12345")
-        },
-      },
-    })
+    super()
   }
   componentDidMount(): void {
     document.getElementById("base")?.addEventListener("click", () => {
-      console.log("12234532")
+      console.log("Modal is closed")
     })
     document.querySelector(".modal__body")?.addEventListener("click", (e: Event) => {
       e.stopPropagation()

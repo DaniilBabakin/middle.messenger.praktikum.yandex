@@ -24,11 +24,11 @@ export default class WebSocketTransport {
 
   private _socket: WebSocket
   private keepWSConnection: boolean = false
-  user: User | null
-  constructor(user: User | null, chatId: number, token: string) {
+  user: Nullable<User>
+  constructor(url: string, user: Nullable<User>, chatId: number, token: string) {
     this.user = user
     this.eventBus = new EventBus()
-    this._socket = new WebSocket(`wss://ya-praktikum.tech/ws/chats/${user?.id}/${chatId}/${token}`)
+    this._socket = new WebSocket(`${url}/chats/${user?.id}/${chatId}/${token}`)
     this._onOpen()
     this._onMessage()
     this._onError()
@@ -53,7 +53,7 @@ export default class WebSocketTransport {
       }),
     )
   }
-  
+
   private startPingingSocket(timeout: number = 1000) {
     setTimeout(() => {
       this._socket.send(
@@ -66,7 +66,7 @@ export default class WebSocketTransport {
       }
     }, timeout)
   }
-  
+
   public getOldMessages(page: string = "0") {
     console.log("Get messages request")
     this.isGettingOldMessages = true

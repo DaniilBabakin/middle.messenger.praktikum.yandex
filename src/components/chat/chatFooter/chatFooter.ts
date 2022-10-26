@@ -5,7 +5,7 @@ import WebSocketTransport from "service/webSocket"
 import "./chatFooter.scss"
 
 type ChatFooterProps = {
-  user: User | null
+  user: Nullable<User>
   error: string
   messageValue: string
   onInput?: (e: FocusEvent) => void
