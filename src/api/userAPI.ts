@@ -1,3 +1,4 @@
+import { baseHeaders } from "core"
 import { HTTPTransport } from "core/CustomFetch"
 
 type ChangeValuesPayload = {
@@ -12,10 +13,6 @@ type ChangePasswordPayload = {
   oldPassword: string
   newPassword: string
 }
-type ChangeAvatarPayload = {
-  photo: File
-}
-const JSONHeaders = { "content-type": "application/json" }
 const userApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/user")
 
 export const userAPI = {
@@ -23,7 +20,7 @@ export const userAPI = {
     const res: XMLHttpRequest = await userApiInstance.put("/profile", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: JSONHeaders,
+      headers: baseHeaders,
     })
 
     if (res.status !== 200) {
@@ -36,7 +33,7 @@ export const userAPI = {
     const res: XMLHttpRequest = await userApiInstance.put("/password", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: JSONHeaders,
+      headers: baseHeaders,
     })
     console.log("RESPONSE", res)
     if (res.status !== 200) {
@@ -45,7 +42,7 @@ export const userAPI = {
     return true
   },
 
-  changeAvatar: async (data: ChangeAvatarPayload): Promise<boolean> => {
+  changeAvatar: async (data: FormData): Promise<boolean> => {
     const res: XMLHttpRequest = await userApiInstance.put("/profile/avatar", {
       includeCredentials: true,
       data: data,
@@ -58,7 +55,7 @@ export const userAPI = {
     const res: XMLHttpRequest = await userApiInstance.post("/search", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: JSONHeaders,
+      headers: baseHeaders,
     })
     console.log("RESPONSE", res)
     return JSON.parse(res.responseText)

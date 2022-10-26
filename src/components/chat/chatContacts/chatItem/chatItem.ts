@@ -29,8 +29,8 @@ export class ChatItem extends Block<ChatItemProps> {
               title: `${props.chat.login}`,
             })
           } else {
-            chatsAPI.getToken(props.chat.id).then((token) => {
-              window.store.dispatch({ currentChat: { ...props.chat, token: token } })
+            chatsAPI.getToken(props.chat.id).then((res) => {
+              window.store.dispatch({ currentChat: { ...props.chat, token: res.token } })
             })
           }
 

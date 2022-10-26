@@ -3,24 +3,25 @@ import { ChatType } from "types/Chat"
 
 type WithChatsProps = { chats: ChatType[] }
 
-export function withChats(WrappedBlock: BlockClass<WithChatsProps>) {
+export function withChats<P extends WithChatsProps>(WrappedBlock: BlockClass<WithChatsProps>) {
   // @ts-expect-error No base constructor has the specified
   return class extends WrappedBlock<P> {
     public static componentName = WrappedBlock.componentName || WrappedBlock.name
 
-    constructor(props: WithChatsProps) {
+    constructor(props: P) {
       super({ ...props, chats: window.store.getState().chats })
     }
 
     __onChangeChatsCallback = (prevState: AppState, nextState: AppState) => {
       console.log("WITHCHATS", prevState.chats, nextState.chats)
-      if (JSON.stringify(prevState.chats) !== JSON.stringify(nextState.chats)) {
+      //if (JSON.stringify(prevState.chats) !== JSON.stringify(nextState.chats)) {
         // @ts-expect-error this is not typed
         this.setProps({ ...this.props, chats: nextState.chats })
-      }
+        console.log("THIS", this)
+      //}
     }
 
-    componentDidMount(props: WithChatsProps) {
+    componentDidMount(props: P) {
       super.componentDidMount(props)
       window.store.on("changed", this.__onChangeChatsCallback)
     }
@@ -29,5 +30,5 @@ export function withChats(WrappedBlock: BlockClass<WithChatsProps>) {
       super.componentWillUnmount()
       window.store.off("changed", this.__onChangeChatsCallback)
     }
-  }
+  } as BlockClass<Omit<P, "chats">>
 }
