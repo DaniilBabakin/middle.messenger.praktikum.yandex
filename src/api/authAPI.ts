@@ -1,5 +1,7 @@
 import { ROUTES } from "constants/routes"
+import { baseHeaders } from "core"
 import { HTTPTransport } from "core/CustomFetch"
+import { checkResponse } from "helpers"
 
 type LoginData = {
   login: string
@@ -15,7 +17,7 @@ type SignUpData = {
   passwordValue: string
   avatar: string
 }
-const JSONHeaders = { "content-type": "application/json" }
+
 const authApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/auth")
 
 export const authAPI = {
@@ -23,19 +25,17 @@ export const authAPI = {
     const res: XMLHttpRequest = await authApiInstance.post("/signin", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: JSONHeaders,
+      headers: baseHeaders,
     })
-    if (res.status !== 200) {
-      return JSON.parse(res.responseText)
-    }
-    return res
+
+    return checkResponse(res)
   },
 
   signUp: async (data: SignUpData): Promise<boolean> => {
     const res: XMLHttpRequest = await authApiInstance.post("/signup", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: JSONHeaders,
+      headers: baseHeaders,
     })
 
     if (res.status !== 200) {
@@ -48,24 +48,18 @@ export const authAPI = {
     console.log("Logout successfully developed")
     const res: XMLHttpRequest = await authApiInstance.post("/logout", {
       includeCredentials: true,
-      headers: {
-        accept: "application/json",
-      },
+      headers: baseHeaders,
     })
     console.log(res)
-    if (res.status !== 200) {
-      throw Error(JSON.parse(res.responseText).reason)
-    }
-    window.store.dispatch({ user: null, chats: null, })
+    window.store.dispatch({ user: null, chats: null })
     window.router.go(ROUTES.Login)
+    return checkResponse(res)
   },
 
   getUser: async () => {
     const res: XMLHttpRequest = await authApiInstance.get("/user", {
       includeCredentials: true,
-      headers: {
-        accept: "application/json",
-      },
+      headers: baseHeaders,
     })
     //TODO: тест вариант
     if (res.status !== 200) {

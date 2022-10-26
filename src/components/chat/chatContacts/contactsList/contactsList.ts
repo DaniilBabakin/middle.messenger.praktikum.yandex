@@ -2,17 +2,17 @@ import Block from "core/Block"
 
 import "./contactsList.scss"
 import { ChatType } from "types/Chat"
-import { withChats } from "helpers/withChats"
 
 type ContactsListProps = {
-  chats: ChatType[]
+  chats: () => void
 }
 
-class ContactsList extends Block<ContactsListProps> {
+export class ContactsList extends Block<ContactsListProps> {
   static componentName = "ContactsList"
 
   constructor(props: ContactsListProps) {
     super(props)
+    this.setProps({ ...props, chats: () => window.store.getState().chats })
     console.log("CHAT CONTACTS", this.props)
   }
   protected render(): string {
@@ -26,6 +26,3 @@ class ContactsList extends Block<ContactsListProps> {
     `
   }
 }
-
-const ConnectedContactsList = withChats(ContactsList)
-export { ConnectedContactsList as ContactsList }

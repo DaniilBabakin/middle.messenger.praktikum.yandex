@@ -17,8 +17,8 @@ export const getChatByTitle = async (
 ) => {
   const res = await chatsAPI.getChatByTitle(action.title)
   if (res.length > 0) {
-    chatsAPI.getToken(res[0].id).then((token: string) => {
-      dispatch({ currentChat: { ...res[0], avatar: action.avatar, token: token } })
+    chatsAPI.getToken(res[0].id).then((res) => {
+      dispatch({ currentChat: { ...res[0], avatar: action.avatar, token: res.token } })
     })
   } else {
     chatsAPI.createChat({ title: action.title }).then((res) => {
