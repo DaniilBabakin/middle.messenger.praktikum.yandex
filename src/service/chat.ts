@@ -15,17 +15,23 @@ export const getChatByTitle = async (
   state: AppState,
   action: { id: number; avatar: string; title: string },
 ) => {
-  const res = await chatsAPI.getChatByTitle(action.title)
-  if (res.length > 0) {
-    chatsAPI.getToken(res[0].id).then((res) => {
-      dispatch({ currentChat: { ...res[0], avatar: action.avatar, token: res.token } })
+  const resultOfGetChat = await chatsAPI.getChatByTitle(action.title)
+  if (resultOfGetChat.length > 0) {
+    chatsAPI.getToken(resultOfGetChat[0].id).then((res) => {
+      console.log("CURRENT CHAT", { currentChat: { ...resultOfGetChat[0], avatar: action.avatar, token: res.token } })
+      dispatch({ currentChat: { ...resultOfGetChat[0], avatar: action.avatar, token: res.token } })
+      //   window.store.dispatch(getChats)
     })
   } else {
-    chatsAPI.createChat({ title: action.title }).then((res) => {
-      chatsAPI.addUserToChat(action.id, res.id)
-      window.store.dispatch(getChatByTitle, action)
-    })
-    return true
+    async function createChat() {
+      const resOfCreation = await chatsAPI.createChat({ title: action.title })
+      if (resOfCreation) {
+        await chatsAPI.addUserToChat(action.id, resOfCreation.id)
+        window.store.dispatch(getChatByTitle, action)
+      }
+      return true
+    }
+    createChat()
   }
 }
 

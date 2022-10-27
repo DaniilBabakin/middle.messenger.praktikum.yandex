@@ -9,7 +9,6 @@ import { getChats } from "service/chat"
 
 type ChatContactsProps = {
   store: Store<AppState>
-  chats: ChatType[]
   events: Record<string, any>
   searchValue: string
   onInput: (e: FocusEvent) => void

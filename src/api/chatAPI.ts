@@ -1,4 +1,5 @@
 import { baseAcceptHeaders } from "core"
+import { baseContentTypeHeaders } from "core/BaseAPI"
 import { HTTPTransport } from "core/CustomFetch"
 import { checkResponse } from "helpers"
 
@@ -63,14 +64,16 @@ export const chatsAPI = {
   },
 
   addUserToChat: async (userId: number, chatId: number) => {
+    console.log()
     const res: XMLHttpRequest = await chatsApiInstance.put("/chats/users", {
       includeCredentials: true,
-      headers: baseAcceptHeaders,
+      headers: { ...baseAcceptHeaders, ...baseContentTypeHeaders },
       data: JSON.stringify({
         users: [userId],
         chatId: chatId,
       }),
     })
+    console.log("RES OF ADD USER TO CHAT", res)
     return checkResponse(res)
   },
 
