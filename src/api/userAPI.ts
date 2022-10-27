@@ -1,4 +1,5 @@
-import { baseHeaders } from "core"
+import { baseAcceptHeaders } from "core"
+import { baseContentTypeHeaders } from "core/BaseAPI"
 import { HTTPTransport } from "core/CustomFetch"
 
 type ChangeValuesPayload = {
@@ -20,7 +21,7 @@ export const userAPI = {
     const res: XMLHttpRequest = await userApiInstance.put("/profile", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: baseHeaders,
+      headers: baseContentTypeHeaders,
     })
 
     if (res.status !== 200) {
@@ -33,7 +34,7 @@ export const userAPI = {
     const res: XMLHttpRequest = await userApiInstance.put("/password", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: baseHeaders,
+      headers: baseContentTypeHeaders,
     })
     console.log("RESPONSE", res)
     if (res.status !== 200) {
@@ -55,7 +56,7 @@ export const userAPI = {
     const res: XMLHttpRequest = await userApiInstance.post("/search", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: baseHeaders,
+      headers: baseContentTypeHeaders,
     })
     console.log("RESPONSE", res)
     return JSON.parse(res.responseText)

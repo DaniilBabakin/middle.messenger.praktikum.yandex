@@ -1,4 +1,4 @@
-import { baseHeaders } from "core"
+import { baseAcceptHeaders } from "core"
 import { HTTPTransport } from "core/CustomFetch"
 import { checkResponse } from "helpers"
 
@@ -12,7 +12,7 @@ export const chatsAPI = {
   getChats: async () => {
     const res: XMLHttpRequest = await chatsApiInstance.get("/chats", {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
     return checkResponse(res)
   },
@@ -20,7 +20,7 @@ export const chatsAPI = {
   getChatByTitle: async (title: string) => {
     const res: XMLHttpRequest = await chatsApiInstance.get(`/chats?title=${title}`, {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
     return checkResponse(res)
   },
@@ -28,7 +28,7 @@ export const chatsAPI = {
   getChatUsers: async (chatId: number) => {
     const res: XMLHttpRequest = await chatsApiInstance.get(`/chats/${chatId}/users`, {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
     return checkResponse(res)
   },
@@ -37,7 +37,7 @@ export const chatsAPI = {
     const res: XMLHttpRequest = await chatsApiInstance.post("/chats", {
       includeCredentials: true,
       headers: {
-        ...baseHeaders,
+        ...baseAcceptHeaders,
         "content-type": "application/json",
       },
       data: JSON.stringify(data),
@@ -50,7 +50,7 @@ export const chatsAPI = {
     const res: XMLHttpRequest = await chatsApiInstance.delete("/chats", {
       includeCredentials: true,
       headers: {
-        ...baseHeaders,
+        ...baseAcceptHeaders,
         "content-type": "application/json",
       },
       data: JSON.stringify({ chatId: chatId }),
@@ -65,7 +65,7 @@ export const chatsAPI = {
   addUserToChat: async (userId: number, chatId: number) => {
     const res: XMLHttpRequest = await chatsApiInstance.put("/chats/users", {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
       data: JSON.stringify({
         users: [userId],
         chatId: chatId,
@@ -77,7 +77,7 @@ export const chatsAPI = {
   getToken: async (chatId: number) => {
     const res: XMLHttpRequest = await chatsApiInstance.post(`/chats/token/${chatId}`, {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
     return checkResponse(res)
   },

@@ -1,5 +1,5 @@
 import { ROUTES } from "constants/routes"
-import { baseHeaders } from "core"
+import { baseAcceptHeaders } from "core"
 import { HTTPTransport } from "core/CustomFetch"
 import { checkResponse } from "helpers"
 
@@ -22,12 +22,13 @@ const authApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/auth
 
 export const authAPI = {
   signIn: async (data: LoginData) => {
+    console.log("DATA", data)
     const res: XMLHttpRequest = await authApiInstance.post("/signin", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: baseHeaders,
+      headers: { "content-type": "application/json" },
     })
-
+    console.log(res)
     return checkResponse(res)
   },
 
@@ -35,7 +36,7 @@ export const authAPI = {
     const res: XMLHttpRequest = await authApiInstance.post("/signup", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: baseHeaders,
+      headers: { "content-type": "application/json" },
     })
 
     if (res.status !== 200) {
@@ -48,7 +49,7 @@ export const authAPI = {
     console.log("Logout successfully developed")
     const res: XMLHttpRequest = await authApiInstance.post("/logout", {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
     console.log(res)
     window.store.dispatch({ user: null, chats: null })
@@ -59,7 +60,7 @@ export const authAPI = {
   getUser: async () => {
     const res: XMLHttpRequest = await authApiInstance.get("/user", {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
     //TODO: тест вариант
     if (res.status !== 200) {
