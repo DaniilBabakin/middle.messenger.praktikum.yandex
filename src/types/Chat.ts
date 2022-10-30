@@ -1,7 +1,7 @@
 import { LastMessageType } from "./LastMessage"
 
 export type ChatType = {
-    avatar: string | null
+    avatar: Nullable<string>
     created_by: number
     id: number
     lastMessage: LastMessageType

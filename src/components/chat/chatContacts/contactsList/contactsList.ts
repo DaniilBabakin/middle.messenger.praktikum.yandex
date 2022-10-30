@@ -3,6 +3,8 @@ import Block from "core/Block"
 import "./contactsList.scss"
 import { ChatType } from "types/Chat"
 import { withChats } from "helpers/withChats"
+import { getChats } from "service/chat"
+import { chatsAPI } from "api/chatAPI"
 
 type ContactsListProps = {
   chats: ChatType[]
@@ -13,8 +15,13 @@ class ContactsList extends Block<ContactsListProps> {
 
   constructor(props: ContactsListProps) {
     super(props)
-    console.log("CHAT CONTACTS", this.props)
+    if (!props.chats) {
+      chatsAPI.getChats().then((res) => {
+        this.setProps({ ...props, chats: res })
+      })
+    }
   }
+
   protected render(): string {
     // language=hbs
     return `

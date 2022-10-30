@@ -1,9 +1,29 @@
 import { ROUTES } from "constants/routes"
+import { baseAcceptHeaders } from "core"
 import { HTTPTransport } from "core/CustomFetch"
+import { checkResponse } from "helpers"
+
+type LoginData = {
+  login: string
+  password: string
+}
+
+type SignUpData = {
+  emailValue: string
+  loginValue: string
+  firstNameValue: string
+  secondNameValue: string
+  phoneValue: string
+  passwordValue: string
+  avatar: string
+}
+
+const authApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/auth")
 
 export const authAPI = {
-  signIn: async (data: any): Promise<boolean> => {
-    const res: any = await HTTPTransport.getInstance().post("/auth/signin", {
+  signIn: async (data: LoginData) => {
+    console.log("DATA", data)
+    const res: XMLHttpRequest = await authApiInstance.post("/signin", {
       includeCredentials: true,
       data: JSON.stringify(data),
       headers: { "content-type": "application/json" },
@@ -14,8 +34,8 @@ export const authAPI = {
     return res
   },
 
-  signUp: async (data: any): Promise<boolean> => {
-    const res: any = await HTTPTransport.getInstance().post("/auth/signup", {
+  signUp: async (data: SignUpData): Promise<boolean> => {
+    const res: XMLHttpRequest = await authApiInstance.post("/signup", {
       includeCredentials: true,
       data: JSON.stringify(data),
       headers: { "content-type": "application/json" },
@@ -29,25 +49,20 @@ export const authAPI = {
 
   logout: async () => {
     console.log("Logout successfully developed")
-    const res: any = await HTTPTransport.getInstance().post("/auth/logout", {
+    const res: XMLHttpRequest = await authApiInstance.post("/logout", {
       includeCredentials: true,
-      headers: {
-        accept: "application/json",
-      },
+      headers: baseAcceptHeaders,
     })
-    if (res.status !== 200) {
-        throw Error(JSON.parse(res.responseText).reason)
-    }
-    window.store.dispatch({ user: null })
+    console.log(res)
+    window.store.dispatch({ user: null, chats: null })
     window.router.go(ROUTES.Login)
+    return checkResponse(res)
   },
 
   getUser: async () => {
-    const res: any = await HTTPTransport.getInstance().get("/auth/user", {
+    const res: XMLHttpRequest = await authApiInstance.get("/user", {
       includeCredentials: true,
-      headers: {
-        accept: "application/json",
-      },
+      headers: baseAcceptHeaders,
     })
     //TODO: тест вариант
     if (res.status !== 200) {

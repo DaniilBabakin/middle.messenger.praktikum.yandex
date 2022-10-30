@@ -1,7 +1,7 @@
 import { UserDTO } from "api/types"
 import { BlockClass } from "core"
 
-type WithContactsProps = { contacts: UserDTO[] | null }
+type WithContactsProps = { contacts: Nullable<UserDTO[]> }
 
 export function withContacts<P extends WithContactsProps>(WrappedBlock: BlockClass<P>) {
   // @ts-expect-error No base constructor has the specified

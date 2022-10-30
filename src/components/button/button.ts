@@ -6,7 +6,7 @@ interface ButtonProps {
   text: string
   className: string
   type?: string
-  onClick: () => void
+  onClick?: () => void
 }
 
 export class Button extends Block {

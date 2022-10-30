@@ -18,7 +18,7 @@
     "pages": "./src/pages",
     "service": "./src/service",
     "constants": "./src/constants",
-    "api":"./src/api"
+    "api": "./src/api"
   },
   "keywords": [],
   "author": "",
@@ -38,6 +38,7 @@
     "@typescript-eslint/eslint-plugin": "5.38.0",
     "@typescript-eslint/parser": "5.38.0",
     "chai": "4.3.6",
+    "dotenv": "^16.0.3",
     "eslint": "8.23.1",
     "eslint-config-airbnb": "19.0.4",
     "express": "4.18.1",
@@ -55,7 +56,6 @@
   "dependencies": {
     "@babel/core": "7.19.1",
     "babel-core": "6.26.3",
-    "dotenv": "^16.0.3",
     "handlebars": "4.7.7",
     "nanoid": "4.0.0",
     "parcel-plugin-handlebars": "0.4.4",
