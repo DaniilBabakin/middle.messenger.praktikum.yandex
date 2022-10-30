@@ -34,7 +34,7 @@ export class ChatMessages extends Block<ChatMessagesProps> {
     if (this.props.currentChat) {
       this.props._socketTransport = new WebSocketTransport(
         this.webSocketUrl,
-        window.store.getState().user,
+        this.props.user,
         this.props.currentChat.id,
         this.props.currentChat.token,
       )

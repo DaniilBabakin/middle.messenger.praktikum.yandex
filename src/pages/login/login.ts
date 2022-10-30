@@ -36,9 +36,8 @@ class LoginPage extends Block<LoginPageProps> {
 
           if (errorMessage.text) {
             this.refs[errorMessage.inputName].refs[errorMessage.inputName.replace("Input", "Error")].setProps({
-              text: '415823858235',
+              text: errorMessage.text,
             })
-            console.log(this.refs)
           } else {
             this.setProps({
               ...this.props,
