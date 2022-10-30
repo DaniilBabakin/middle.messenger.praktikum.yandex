@@ -1,8 +1,5 @@
-import { userAPI } from "api/userAPI"
 import { Store } from "core"
 import Block from "core/Block"
-import { withStore } from "helpers"
-import { searchUsers } from "service/user"
 
 import "./contactSearchInput.scss"
 

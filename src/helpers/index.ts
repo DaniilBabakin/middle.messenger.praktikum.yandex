@@ -7,5 +7,5 @@ export { withRouter } from "./withRouter"
 // export { withIsLoading } from './withIsLoading';
 export { transformUser } from "./apiTransformers"
 export { hasError as apiHasError } from "./apiHasError"
-export { isEqual } from "./isEqual"
 export { Screens, getScreenComponent } from "./screenList"
+export { checkResponse } from "./checkResponse"

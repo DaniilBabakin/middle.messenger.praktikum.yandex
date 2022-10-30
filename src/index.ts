@@ -2,8 +2,7 @@ require("babel-core/register")
 
 import { CoreRouter, PathRouter, registerComponent } from "./core"
 import "./app.scss"
-import { initRouter, Router } from "service/router/Router"
-import { ROUTES } from "./constants/routes"
+import { initRouter } from "service/router/Router"
 import Handlebars from "handlebars"
 
 //COMPONENTS
@@ -17,7 +16,7 @@ import ErrorFromServer from "./components/errorFromServer"
 
 //------ИМПОРТЫ ДЛЯ ЧАТА
 import ChatContacts from "./components/chat/chatContacts"
-import ContactSearchInput, { ContactSearchResults } from "./components/chat/chatContacts/contactSearchInput"
+import ContactSearchInput from "./components/chat/chatContacts/contactSearchInput"
 import ContactLink from "./components/chat/chatContacts/contactLink"
 import ChatFooter from "./components/chat/chatFooter"
 import ChatHeader from "./components/chat/chatHeader"
@@ -44,7 +43,6 @@ modals.default.forEach((component) => registerComponent(component))
 //------РЕГИСТРЫ ДЛЯ ЧАТА
 registerComponent(ChatContacts)
 registerComponent(ContactSearchInput)
-registerComponent(ContactSearchResults)
 registerComponent(ChangeAvatar)
 registerComponent(ContactLink)
 registerComponent(ChatItem)
@@ -60,7 +58,6 @@ Handlebars.registerHelper("ifNotMyMessage", function (arg1, options) {
 })
 
 export const router = new PathRouter()
-console.log("я тут")
 
 declare global {
   interface Window {

@@ -1,24 +1,19 @@
-import Block from "core/Block"
+import { Store } from "core"
 
 import "./chatContacts.scss"
-import contacts from "../../../data/contacts.json"
-import * as avatar from "../../../assets/defaultAvatar.png"
-import { withContacts, withStore } from "helpers"
-import { Store } from "core"
-import { UserDTO } from "api/types"
+
+import Block from "core/Block"
 import { searchUsers } from "service/user"
 import { ChatType } from "types/Chat"
 import { getChats } from "service/chat"
 
 type ChatContactsProps = {
   store: Store<AppState>
-  chats: ChatType[]
   events: Record<string, any>
   searchValue: string
   onInput: (e: FocusEvent) => void
   onBlur: () => void
   onFocus: () => void
-  onClick: (e: FocusEvent) => void
 }
 
 export class ChatContacts extends Block<ChatContactsProps> {
@@ -42,15 +37,10 @@ export class ChatContacts extends Block<ChatContactsProps> {
         }
       },
       onBlur: () => {
-        console.log("123")
         window.store.dispatch({ contacts: null })
       },
       onFocus: () => {
         window.store.dispatch(searchUsers, { login: "" })
-        console.log("GFDFG")
-      },
-      onClick: (e: FocusEvent) => {
-        const inputEl = e.target as HTMLInputElement
       },
     })
   }

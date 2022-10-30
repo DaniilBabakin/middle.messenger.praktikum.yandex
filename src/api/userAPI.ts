@@ -1,12 +1,27 @@
+import { baseAcceptHeaders } from "core"
+import { baseContentTypeHeaders } from "core/BaseAPI"
 import { HTTPTransport } from "core/CustomFetch"
 
-export const userAPI = {
+type ChangeValuesPayload = {
+  email: string
+  login: string
+  first_name: string
+  second_name: string
+  phone: string
+  display_name: string
+}
+type ChangePasswordPayload = {
+  oldPassword: string
+  newPassword: string
+}
+const userApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/user")
 
-  changeValues: async (data: any): Promise<boolean> => {
-    const res: any = await HTTPTransport.getInstance().put("/user/profile", {
+export const userAPI = {
+  changeValues: async (data: ChangeValuesPayload): Promise<boolean> => {
+    const res: XMLHttpRequest = await userApiInstance.put("/profile", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: { "content-type": "application/json" },
+      headers: baseContentTypeHeaders,
     })
 
     if (res.status !== 200) {
@@ -15,11 +30,11 @@ export const userAPI = {
     return true
   },
 
-  changePassword: async (data: any): Promise<boolean> => {
-    const res: any = await HTTPTransport.getInstance().put("/user/password", {
+  changePassword: async (data: ChangePasswordPayload): Promise<boolean> => {
+    const res: XMLHttpRequest = await userApiInstance.put("/password", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: { "content-type": "application/json" },
+      headers: baseContentTypeHeaders,
     })
     console.log("RESPONSE", res)
     if (res.status !== 200) {
@@ -28,8 +43,8 @@ export const userAPI = {
     return true
   },
 
-  changeAvatar: async (data: any): Promise<boolean> => {
-    const res: any = await HTTPTransport.getInstance().put("/user/profile/avatar", {
+  changeAvatar: async (data: FormData): Promise<boolean> => {
+    const res: XMLHttpRequest = await userApiInstance.put("/profile/avatar", {
       includeCredentials: true,
       data: data,
     })
@@ -37,11 +52,11 @@ export const userAPI = {
     return true
   },
 
-  usersSearch: async (data: any) => {
-    const res: any = await HTTPTransport.getInstance().post("/user/search", {
+  usersSearch: async (data: { login: string }) => {
+    const res: XMLHttpRequest = await userApiInstance.post("/search", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: { "content-type": "application/json" },
+      headers: baseContentTypeHeaders,
     })
     console.log("RESPONSE", res)
     return JSON.parse(res.responseText)

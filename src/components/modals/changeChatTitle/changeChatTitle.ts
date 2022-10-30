@@ -14,7 +14,7 @@ export class ChangeChatTitleModal extends Block<ChangeChatTitleModalProps> {
   constructor(props: ChangeChatTitleModalProps) {
     super(props)
   }
-  componentDidMount(props: any): void {
+  componentDidMount(): void {
     document.getElementById("change-chat-avatar")?.addEventListener("click", (e: Event) => {
       const modalDiv = e.target as HTMLElement
       modalDiv.classList.remove("active")

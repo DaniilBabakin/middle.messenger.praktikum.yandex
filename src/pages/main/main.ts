@@ -13,9 +13,6 @@ type MainPageProps = {
 class MainPage extends Block<MainPageProps> {
   constructor(props: MainPageProps) {
     super(props)
-    if(!window.store.getState().chats){
-        window.store.dispatch(getChats)
-    }
   }
   render() {
     // language=hbs

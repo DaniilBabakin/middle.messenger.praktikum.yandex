@@ -1,8 +1,6 @@
 import { chatsAPI } from "api/chatAPI"
 import type { Dispatch } from "core"
 import { ChatType } from "types/Chat"
-import { CurrentChatType } from "types/CurrentChat"
-import WebSocketTransport from "./webSocket"
 
 export const getChats = async (dispatch: Dispatch<AppState>) => {
   const res = await chatsAPI.getChats()
@@ -17,21 +15,27 @@ export const getChatByTitle = async (
   state: AppState,
   action: { id: number; avatar: string; title: string },
 ) => {
-  const res = await chatsAPI.getChatByTitle(action.title)
-  if (res.length > 0) {
-    chatsAPI.getToken(res[0].id).then((token: string) => {
-      dispatch({ currentChat: { ...res[0], avatar: action.avatar, token: token } })
+  const resultOfGetChat = await chatsAPI.getChatByTitle(action.title)
+  if (resultOfGetChat.length > 0) {
+    chatsAPI.getToken(resultOfGetChat[0].id).then((res) => {
+      console.log("CURRENT CHAT", { currentChat: { ...resultOfGetChat[0], avatar: action.avatar, token: res.token } })
+      dispatch({ currentChat: { ...resultOfGetChat[0], avatar: action.avatar, token: res.token } })
+      //   window.store.dispatch(getChats)
     })
   } else {
-    chatsAPI.createChat({ title: action.title }).then((res) => {
-      chatsAPI.addUserToChat(action.id, res.id)
-      window.store.dispatch(getChatByTitle, action)
-    })
-    return true
+    async function createChat() {
+      const resOfCreation = await chatsAPI.createChat({ title: action.title })
+      if (resOfCreation) {
+        await chatsAPI.addUserToChat(action.id, resOfCreation.id)
+        window.store.dispatch(getChatByTitle, action)
+      }
+      return true
+    }
+    createChat()
   }
 }
 
-export const deleteChat = async (dispatch: Dispatch<AppState>, state: AppState, chatId: number) => {
+export const deleteChat: DispatchStateHandler<number> = async (dispatch, state, chatId) => {
   const res = await chatsAPI.deleteChat(chatId)
   if (res) {
     window.store.dispatch({
@@ -41,7 +45,7 @@ export const deleteChat = async (dispatch: Dispatch<AppState>, state: AppState, 
   }
 }
 
-export const changeChatAvatar = async (dispatch: Dispatch<AppState>, state: AppState, action: {}) => {
+export const changeChatAvatar: DispatchStateHandler<{ photo: File }> = async (dispatch, state, action) => {
   console.log("DATA", action)
   const res = await chatsAPI.changeAvatar(action)
   console.log("res", res)
@@ -58,8 +62,4 @@ export const changeChatAvatar = async (dispatch: Dispatch<AppState>, state: AppS
       }),
     })
   }
-}
-export const createWebSocketsConnection = async (user: User | null, chatId: number) => {
-  const token = await chatsAPI.getToken(chatId)
-  return new WebSocketTransport(user, chatId, token)
 }
