@@ -5,20 +5,26 @@ import WebSocketTransport from "./webSocket"
 
 const webSocketUrl: string = "wss://ya-praktikum.tech/ws"
 function serveWSIncomingMessages(messagesList: any, chatId: number) {
-  console.log(messagesList, this)
-  console.log(
-    "NEW CHATS",
-    window.store.getState()?.chats?.map((item) => {
-      return this.id === messagesList.id ? { ...item, unread_count: 1, last_message: messagesList } : item
-    }),
-  )
-  //   window.store.dispatch({
-  //     chats: window.store.getState()?.chats?.map((item) => {
-  //       return item.id === messagesList[0].id
-  //         ? { ...item, unread_count: 1, lastMessage: messagesList[messagesList.length - 1] }
-  //         : item
-  //     }),
-  //   })
+  console.log(messagesList, typeof messagesList)
+  console.log("NEW CHATS", window.store.getState()?.chats)
+  //TODO:ПЕРЕДЕЛАТЬ ЛАСТ МЕССАДЖ
+  if (!Array.isArray(messagesList)) {
+    //TODO:
+    window.store.dispatch({
+      chats: window.store.getState()?.chats?.map((item: ChatType) => {
+        return item.id === this.id
+          ? {
+              ...item,
+              unread_count: item.unread_count + 1,
+              last_message: {
+                ...messagesList,
+                user: item.users?.find(user=>user.id === messagesList.user_id)
+              },
+            }
+          : item
+      }),
+    })
+  }
   //   if (Array.isArray(messagesList)) {
   //     messagesList = messagesList
   //       .map((message: ChatMessageType, index) => {
@@ -34,7 +40,14 @@ function serveWSIncomingMessages(messagesList: any, chatId: number) {
 export const getChats = async (dispatch: Dispatch<AppState>) => {
   const res = await chatsAPI.getChats()
   if (res) {
-    dispatch({ chats: res })
+    const resWithUsers = await Promise.all(
+      res.map(async (item: ChatType) => {
+        const users = await chatsAPI.getChatUsers(item.id)  
+        return { ...item, users: users }
+      }),
+    )
+    console.log("CHAT USERS", resWithUsers)
+    dispatch({ chats: resWithUsers })
     res.forEach((item: ChatType) => {
       chatsAPI.getToken(item.id).then((res) => {
         item.socket = new WebSocketTransport(webSocketUrl, window.store.getState().user, item.id, res.token)

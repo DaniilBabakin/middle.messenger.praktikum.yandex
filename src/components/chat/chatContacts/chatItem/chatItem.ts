@@ -1,6 +1,9 @@
 import { Block } from "core"
 
+import "./chatItem.scss"
+
 import * as avatar from "../../../../assets/defaultAvatar.png"
+
 import { chatsAPI } from "api/chatAPI"
 import { ChatType } from "types/Chat"
 import { getChatByTitle } from "service/chat"
@@ -31,8 +34,12 @@ export class ChatItem extends Block<ChatItemProps> {
             })
           } else {
             chatsAPI.getToken(props.chat.id).then((res) => {
-              console.log("RESULT OF GET TOKEN IS HERE-------", res)
-              window.store.dispatch({ currentChat: { ...props.chat, token: res.token } })
+              window.store.dispatch({
+                chats: window.store.getState().chats?.map((item) => {
+                  return item.id === props.chat.id ? { ...item, unread_count: 0 } : { ...item }
+                }),
+                currentChat: { ...props.chat, token: res.token },
+              })
             })
           }
 

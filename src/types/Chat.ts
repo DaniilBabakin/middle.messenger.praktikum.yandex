@@ -1,3 +1,4 @@
+import { UserDTO } from "api/types"
 import WebSocketTransport from "service/webSocket"
 import { LastMessageType } from "./LastMessage"
 
@@ -9,4 +10,5 @@ export type ChatType = {
     title: string
     unread_count: number
     socket?:WebSocketTransport
+    users?:UserDTO[]
 }
