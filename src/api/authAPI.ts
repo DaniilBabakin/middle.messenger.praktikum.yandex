@@ -28,8 +28,10 @@ export const authAPI = {
       data: JSON.stringify(data),
       headers: { "content-type": "application/json" },
     })
-    console.log(res)
-    return checkResponse(res)
+    if (res.status !== 200) {
+      return JSON.parse(res.responseText)
+    }
+    return res
   },
 
   signUp: async (data: SignUpData): Promise<boolean> => {

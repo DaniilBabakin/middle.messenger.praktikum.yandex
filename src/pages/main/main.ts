@@ -5,9 +5,11 @@ import { validateForm, ValidateType } from "helpers/validateForm"
 import { withCurrentChat } from "helpers/withCurrentChat"
 import { CurrentChatType } from "types/CurrentChat"
 import { getChats } from "service/chat"
+import { withUser } from "helpers"
 
 type MainPageProps = {
   currentChat: CurrentChatType
+  user: User
 }
 
 class MainPage extends Block<MainPageProps> {
@@ -19,10 +21,10 @@ class MainPage extends Block<MainPageProps> {
     return `
         <main class="main">
             {{{ChatContacts}}}
-            {{{ChatMessages currentChat=currentChat}}}
+            {{{ChatMessages currentChat=currentChat user=user}}}
         </main>
     `
   }
 }
-const ConnectedMainPage = withCurrentChat(MainPage)
+const ConnectedMainPage = withCurrentChat(withUser(MainPage))
 export { ConnectedMainPage as MainPage }

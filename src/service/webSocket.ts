@@ -37,6 +37,7 @@ export default class WebSocketTransport {
 
   start() {
     this.keepWSConnection = true
+    console.log("THIS WEBSOCKET", this._socket)
     this.startPingingSocket()
   }
 
@@ -54,7 +55,7 @@ export default class WebSocketTransport {
     )
   }
 
-  private startPingingSocket(timeout: number = 1000) {
+  private startPingingSocket(timeout: number = 30000) {
     setTimeout(() => {
       this._socket.send(
         JSON.stringify({

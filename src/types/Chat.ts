@@ -1,3 +1,4 @@
+import WebSocketTransport from "service/webSocket"
 import { LastMessageType } from "./LastMessage"
 
 export type ChatType = {
@@ -7,4 +8,5 @@ export type ChatType = {
     lastMessage: LastMessageType
     title: string
     unread_count: number
+    socket?:WebSocketTransport
 }

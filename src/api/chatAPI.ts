@@ -82,7 +82,10 @@ export const chatsAPI = {
       includeCredentials: true,
       headers: baseAcceptHeaders,
     })
-    return checkResponse(res)
+    if (res.status !== 200) {
+      throw Error(JSON.parse(res.responseText).reason)
+    }
+    return JSON.parse(res.responseText)
   },
 
   changeAvatar: async (data: ChangeAvatarPayload) => {

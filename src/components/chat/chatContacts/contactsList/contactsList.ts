@@ -21,7 +21,7 @@ class ContactsList extends Block<ContactsListProps> {
       })
     }
   }
-  
+
   protected render(): string {
     // language=hbs
     return `

@@ -17,6 +17,7 @@ interface ChatItemProps {
 
 export class ChatItem extends Block<ChatItemProps> {
   static componentName = "ChatItem"
+  _socket: any = undefined
   constructor(props: ChatItemProps) {
     super({
       ...props,
@@ -30,6 +31,7 @@ export class ChatItem extends Block<ChatItemProps> {
             })
           } else {
             chatsAPI.getToken(props.chat.id).then((res) => {
+              console.log("RESULT OF GET TOKEN IS HERE-------", res)
               window.store.dispatch({ currentChat: { ...props.chat, token: res.token } })
             })
           }
@@ -49,14 +51,16 @@ export class ChatItem extends Block<ChatItemProps> {
                 {{else}}
                     <span class="item__text__name">{{chat.title}}</span>
                 {{/if}}
+                {{#if chat.last_message}}
+                   <span class="item__text__last-message">{{#ifMyMessageByLogin chat.last_message.user.login}}{{/ifMyMessageByLogin}}{{chat.last_message.content}}</span>
+                {{/if}}
             </div>
             <div class="item__info">
                 <time class="item__info__time">{{this.customTime}}</time>
-                {{#if this.missedMessages}}
-                <span class="item__info__missed-messages">{{this.missedMessages}}</span>
-                {{else}}
-                <span class="item__info__missed-messages_empty">1</span>
+                {{#if chat.unread_count}}
+                    <span class="item__info__missed-messages">{{chat.unread_count}}</span>
                 {{/if}}
+                <span class="item__info__missed-messages_empty">1</span>
             </div>
         </div>
       `

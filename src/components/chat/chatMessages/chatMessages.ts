@@ -1,5 +1,4 @@
 import Block from "core/Block"
-import { withUser } from "helpers"
 import { transformDate } from "helpers/transformDate"
 import WebSocketTransport from "service/webSocket"
 import { ChatMessageType } from "types/ChatMessage"
@@ -32,6 +31,7 @@ export class ChatMessages extends Block<ChatMessagesProps> {
 
   componentDidMount(): void {
     if (this.props.currentChat) {
+      console.log("TOKEN FROM CURRENT CHAT", this.props.user)
       this.props._socketTransport = new WebSocketTransport(
         this.webSocketUrl,
         this.props.user,
@@ -58,8 +58,6 @@ export class ChatMessages extends Block<ChatMessagesProps> {
       messagesList = transformDate(messagesList, this.props.chatMessages, this.props.chatMessages.length - 2)
     }
     this.setProps({ ...this.props, chatMessages: this.props.chatMessages.concat(messagesList), isLoading: false })
-    let objDiv = document.querySelector(".messages__main-block") as HTMLElement
-    objDiv.scrollTop = objDiv.scrollHeight
   }
 
   protected componentWillUnmount(): void {
@@ -79,4 +77,3 @@ export class ChatMessages extends Block<ChatMessagesProps> {
     `
   }
 }
-

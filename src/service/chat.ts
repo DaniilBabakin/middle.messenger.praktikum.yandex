@@ -1,11 +1,47 @@
 import { chatsAPI } from "api/chatAPI"
 import type { Dispatch } from "core"
 import { ChatType } from "types/Chat"
+import WebSocketTransport from "./webSocket"
+
+const webSocketUrl: string = "wss://ya-praktikum.tech/ws"
+function serveWSIncomingMessages(messagesList: any, chatId: number) {
+  console.log(messagesList, this)
+  console.log(
+    "NEW CHATS",
+    window.store.getState()?.chats?.map((item) => {
+      return this.id === messagesList.id ? { ...item, unread_count: 1, last_message: messagesList } : item
+    }),
+  )
+  //   window.store.dispatch({
+  //     chats: window.store.getState()?.chats?.map((item) => {
+  //       return item.id === messagesList[0].id
+  //         ? { ...item, unread_count: 1, lastMessage: messagesList[messagesList.length - 1] }
+  //         : item
+  //     }),
+  //   })
+  //   if (Array.isArray(messagesList)) {
+  //     messagesList = messagesList
+  //       .map((message: ChatMessageType, index) => {
+  //         return transformDate(message, messagesList, index)
+  //       })
+  //       .reverse()
+  //   } else {
+  //     messagesList = transformDate(messagesList, this.props.chatMessages, this.props.chatMessages.length - 2)
+  //   }
+  //   this.setProps({ ...this.props, chatMessages: this.props.chatMessages.concat(messagesList), isLoading: false })
+}
 
 export const getChats = async (dispatch: Dispatch<AppState>) => {
   const res = await chatsAPI.getChats()
   if (res) {
     dispatch({ chats: res })
+    res.forEach((item: ChatType) => {
+      chatsAPI.getToken(item.id).then((res) => {
+        item.socket = new WebSocketTransport(webSocketUrl, window.store.getState().user, item.id, res.token)
+        item.socket.eventBus.on(WebSocketTransport.EVENTS.WS_MESSAGES_ARRIVED, serveWSIncomingMessages.bind(item))
+        item.socket.start()
+      })
+    })
   }
   console.log("CHATS", res)
 }
