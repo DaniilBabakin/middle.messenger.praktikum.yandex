@@ -3,7 +3,6 @@ import Block from "core/Block"
 import "./contactsList.scss"
 import { ChatType } from "types/Chat"
 import { withChats } from "helpers/withChats"
-import { getChats } from "service/chat"
 import { chatsAPI } from "api/chatAPI"
 
 type ContactsListProps = {

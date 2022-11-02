@@ -2,7 +2,6 @@ import Block from "core/Block"
 import { userAPI } from "api/userAPI"
 import * as avatar from "../../assets/defaultAvatarBig.png"
 import "./changeAvatar.scss"
-import { chatsAPI } from "api/chatAPI"
 import { changeChatAvatar } from "service/chat"
 interface ChangeAvatarProps {
   src: string

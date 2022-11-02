@@ -1,4 +1,3 @@
-import { baseAcceptHeaders } from "core"
 import { baseContentTypeHeaders } from "core/BaseAPI"
 import { HTTPTransport } from "core/CustomFetch"
 

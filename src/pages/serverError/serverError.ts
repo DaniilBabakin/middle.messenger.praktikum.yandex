@@ -1,6 +1,5 @@
 import { ROUTES } from "constants/routes"
 import { Block } from "core"
-import { router } from "../../index"
 import "./serverError.scss"
 export class ServerErrorPage extends Block {
   constructor() {

@@ -4,7 +4,6 @@ import "./chatContacts.scss"
 
 import Block from "core/Block"
 import { searchUsers } from "service/user"
-import { ChatType } from "types/Chat"
 import { getChats } from "service/chat"
 
 type ChatContactsProps = {

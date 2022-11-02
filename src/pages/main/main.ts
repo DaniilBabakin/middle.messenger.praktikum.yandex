@@ -1,10 +1,7 @@
 import Block from "core/Block"
 import "./main.scss"
-import { LoginPage } from "../login/login"
-import { validateForm, ValidateType } from "helpers/validateForm"
 import { withCurrentChat } from "helpers/withCurrentChat"
 import { CurrentChatType } from "types/CurrentChat"
-import { getChats } from "service/chat"
 import { withUser } from "helpers"
 
 type MainPageProps = {

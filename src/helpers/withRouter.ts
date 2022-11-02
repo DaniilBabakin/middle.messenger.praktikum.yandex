@@ -1,5 +1,4 @@
 import { BlockClass } from "core"
-import { HTTPTransport } from "core/CustomFetch"
 import { CoreRouter } from "core"
 
 type WithRouterProps = { router: CoreRouter }
