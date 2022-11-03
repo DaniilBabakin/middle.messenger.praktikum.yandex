@@ -19,7 +19,7 @@ type SignUpPayload = {
   avatar: string
 }
 
-export const login: DispatchStateHandler<LoginPayload> = async (dispatch, state, action) => {
+export const login: DispatchStateHandler<LoginPayload> = async (dispatch, _, action) => {
   dispatch({ isLoading: true })
   const response = await authAPI.signIn(action)
   console.log("RES", response)
@@ -42,7 +42,7 @@ export const login: DispatchStateHandler<LoginPayload> = async (dispatch, state,
   window.router.go(ROUTES.Chat)
 }
 
-export const signUp: DispatchStateHandler<SignUpPayload> = async (dispatch, state, action) => {
+export const signUp: DispatchStateHandler<SignUpPayload> = async (dispatch, _, action) => {
   dispatch({ isLoading: true })
   const response = await authAPI.signUp(action)
 

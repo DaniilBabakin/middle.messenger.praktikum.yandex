@@ -3,38 +3,34 @@ import type { Dispatch } from "core"
 import { ChatType } from "types/Chat"
 import WebSocketTransport from "./webSocket"
 
+type MessageFromSocket = {
+  content: string
+  id: string
+  time: string
+  type: string
+  user_id: number
+}
+
 const webSocketUrl: string = "wss://ya-praktikum.tech/ws"
-function serveWSIncomingMessages(messagesList: any, chatId: number) {
-  console.log(messagesList, typeof messagesList)
-  console.log("NEW CHATS", window.store.getState()?.chats)
-  //TODO:ПЕРЕДЕЛАТЬ ЛАСТ МЕССАДЖ
-  if (!Array.isArray(messagesList)) {
-    //TODO:
+function serveWSIncomingMessages(chat: ChatType, message: MessageFromSocket) {
+  console.log("THIS", chat, message)
+
+  if (!Array.isArray(message)) {
     window.store.dispatch({
       chats: window.store.getState()?.chats?.map((item: ChatType) => {
-        return item.id === this.id
+        return item.id === chat.id
           ? {
               ...item,
               unread_count: item.unread_count + 1,
               last_message: {
-                ...messagesList,
-                user: item.users?.find(user=>user.id === messagesList.user_id)
+                ...message,
+                user: item.users?.find((user) => user.id === message.user_id),
               },
             }
           : item
       }),
     })
   }
-  //   if (Array.isArray(messagesList)) {
-  //     messagesList = messagesList
-  //       .map((message: ChatMessageType, index) => {
-  //         return transformDate(message, messagesList, index)
-  //       })
-  //       .reverse()
-  //   } else {
-  //     messagesList = transformDate(messagesList, this.props.chatMessages, this.props.chatMessages.length - 2)
-  //   }
-  //   this.setProps({ ...this.props, chatMessages: this.props.chatMessages.concat(messagesList), isLoading: false })
 }
 
 export const getChats = async (dispatch: Dispatch<AppState>) => {
@@ -42,7 +38,7 @@ export const getChats = async (dispatch: Dispatch<AppState>) => {
   if (res) {
     const resWithUsers = await Promise.all(
       res.map(async (item: ChatType) => {
-        const users = await chatsAPI.getChatUsers(item.id)  
+        const users = await chatsAPI.getChatUsers(item.id)
         return { ...item, users: users }
       }),
     )
@@ -51,7 +47,7 @@ export const getChats = async (dispatch: Dispatch<AppState>) => {
     res.forEach((item: ChatType) => {
       chatsAPI.getToken(item.id).then((res) => {
         item.socket = new WebSocketTransport(webSocketUrl, window.store.getState().user, item.id, res.token)
-        item.socket.eventBus.on(WebSocketTransport.EVENTS.WS_MESSAGES_ARRIVED, serveWSIncomingMessages.bind(item))
+        item.socket.eventBus.on(WebSocketTransport.EVENTS.WS_MESSAGES_ARRIVED, serveWSIncomingMessages.bind(item, item))
         item.socket.start()
       })
     })
@@ -61,7 +57,7 @@ export const getChats = async (dispatch: Dispatch<AppState>) => {
 
 export const getChatByTitle = async (
   dispatch: Dispatch<AppState>,
-  state: AppState,
+  _:AppState,
   action: { id: number; avatar: string; title: string },
 ) => {
   const resultOfGetChat = await chatsAPI.getChatByTitle(action.title)
@@ -84,7 +80,7 @@ export const getChatByTitle = async (
   }
 }
 
-export const deleteChat: DispatchStateHandler<number> = async (dispatch, state, chatId) => {
+export const deleteChat: DispatchStateHandler<number> = async (__, _, chatId) => {
   const res = await chatsAPI.deleteChat(chatId)
   if (res) {
     window.store.dispatch({
@@ -94,7 +90,7 @@ export const deleteChat: DispatchStateHandler<number> = async (dispatch, state, 
   }
 }
 
-export const changeChatAvatar: DispatchStateHandler<{ photo: File }> = async (dispatch, state, action) => {
+export const changeChatAvatar: DispatchStateHandler<FormData> = async (dispatch, _, action) => {
   console.log("DATA", action)
   const res = await chatsAPI.changeAvatar(action)
   console.log("res", res)

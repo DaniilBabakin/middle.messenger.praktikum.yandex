@@ -3,7 +3,6 @@ const CleanWebpackPlugin = require("clean-webpack-plugin").CleanWebpackPlugin
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin")
-const HandlebarsPlugin = require("handlebars-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -13,26 +12,32 @@ module.exports = {
     filename: "project-name.bundle.js",
   },
   devServer: {
-    static: "./",
+    historyApiFallback: true,
+    static: {
+      directory: path.join(__dirname, "dist"),
+    },
     compress: true,
-    port: 3000,
+    port: 2000,
   },
   resolve: {
     extensions: [".ts", ".js", ".json"],
+    alias: {
+      core: path.resolve(__dirname, "./src/core"),
+      components: path.resolve(__dirname, "./src/components"),
+      helpers: path.resolve(__dirname, "./src/helpers"),
+      pages: path.resolve(__dirname, "./src/pages"),
+      service: path.resolve(__dirname, "./src/service"),
+      constants: path.resolve(__dirname, "./src/constants"),
+      api: path.resolve(__dirname, "./src/api"),
+      handlebars: "handlebars/dist/handlebars.min.js",
+    },
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: [
-          {
-            loader: "ts-loader",
-            options: {
-              configFile: path.resolve(__dirname, "tsconfig.json"),
-            },
-          },
-        ],
         exclude: /(node_modules)/,
+        loader: "babel-loader",
       },
       // Изображения
       {

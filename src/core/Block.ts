@@ -2,10 +2,6 @@ import EventBus from "./EventBus"
 import { nanoid } from "nanoid"
 import Handlebars from "handlebars"
 
-interface BlockMeta<P = any> {
-  props: P
-}
-
 type Events = Values<typeof Block.EVENTS>
 interface HTMLElementWithRefs extends HTMLElement {
   refs: { [key: string]: HTMLElementWithRefs }
@@ -28,7 +24,6 @@ export default class Block<P = any> {
   static componentName: string
 
   public id = nanoid(6)
-  private readonly _meta: BlockMeta
 
   protected _element: Nullable<HTMLElement> = null
   protected readonly props: P
@@ -42,11 +37,7 @@ export default class Block<P = any> {
   public constructor(props?: P) {
     const eventBus = new EventBus<Events>()
 
-    this._meta = {
-      props,
-    }
-
-    this.getStateFromProps(props!)
+    this.getStateFromProps()
 
     this.props = this._makePropsProxy(props || ({} as P))
     this.state = this._makePropsProxy(this.state)
@@ -69,7 +60,7 @@ export default class Block<P = any> {
     this._element = this._createDocumentElement("div")
   }
 
-  protected getStateFromProps(props: P): void {
+  protected getStateFromProps(): void {
     this.state = {}
   }
 
@@ -78,21 +69,21 @@ export default class Block<P = any> {
     this.eventBus().emit(Block.EVENTS.FLOW_RENDER, this.props)
   }
 
-  private _componentDidMount(props: P) {
-    this.componentDidMount(props)
+  private _componentDidMount() {
+    this.componentDidMount()
   }
 
-  componentDidMount(props: P) {}
+  componentDidMount() {}
 
-  private _componentDidUpdate(oldProps: P, newProps: P) {
-    const response = this.componentDidUpdate(oldProps, newProps)
+  private _componentDidUpdate() {
+    const response = this.componentDidUpdate()
     if (!response) {
       return
     }
     this._render()
   }
 
-  componentDidUpdate(oldProps: P, newProps: P) {
+  componentDidUpdate() {
     return true
   }
 

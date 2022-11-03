@@ -2,7 +2,7 @@ import { Block } from "core"
 
 import "./chatItem.scss"
 
-import * as avatar from "../../../../assets/defaultAvatar.png"
+import avatar from "../../../../assets/defaultAvatar.png"
 
 import { chatsAPI } from "api/chatAPI"
 import { ChatType } from "types/Chat"
@@ -10,6 +10,7 @@ import { getChatByTitle } from "service/chat"
 
 interface ChatItemType extends ChatType {
   fromSearch?: boolean
+  login?: string
 }
 
 interface ChatItemProps {

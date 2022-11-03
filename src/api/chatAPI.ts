@@ -3,10 +3,6 @@ import { baseContentTypeHeaders } from "core/BaseAPI"
 import { HTTPTransport } from "core/CustomFetch"
 import { checkResponse } from "helpers"
 
-type ChangeAvatarPayload = {
-  photo: File
-}
-
 const chatsApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2")
 
 export const chatsAPI = {
@@ -88,7 +84,7 @@ export const chatsAPI = {
     return JSON.parse(res.responseText)
   },
 
-  changeAvatar: async (data: ChangeAvatarPayload) => {
+  changeAvatar: async (data: FormData) => {
     const res: XMLHttpRequest = await chatsApiInstance.put("/chats/avatar", {
       includeCredentials: true,
       data: data,

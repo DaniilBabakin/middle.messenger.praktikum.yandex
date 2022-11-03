@@ -1,6 +1,6 @@
 import Block from "core/Block"
 import { userAPI } from "api/userAPI"
-import * as avatar from "../../assets/defaultAvatarBig.png"
+import avatar from "../../assets/defaultAvatarBig.png"
 import "./changeAvatar.scss"
 import { changeChatAvatar } from "service/chat"
 interface ChangeAvatarProps {
@@ -26,7 +26,8 @@ export class ChangeAvatar extends Block {
         change: (e: FocusEvent) => {
           const inputEl = e.target as HTMLInputElement
           if (inputEl.files) {
-            document.querySelector('[data-label="avatar"]').src = window.URL.createObjectURL(inputEl!.files[0])
+            let image = document.querySelector('[data-label="avatar"]') as HTMLImageElement
+            image.src = window.URL.createObjectURL(inputEl!.files[0])
             let photo = inputEl.files[0]
             let formData = new FormData()
 

@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initRouter(router, store)
   //TODO: убрать store.on
-  store.on("changed", (prevState, nextState) => {
+  store.on("changed", (nextState) => {
     console.log("%cstore updated", "background: #222; color: #bada55", nextState)
   })
   store.dispatch(initApp)

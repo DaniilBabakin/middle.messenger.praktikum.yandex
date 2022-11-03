@@ -29,5 +29,5 @@ export function withChats<P extends WithChatsProps>(WrappedBlock: BlockClass<P>)
       super.componentWillUnmount()
       window.store.off("changed", this.__onChangeChatsCallback)
     }
-  } as BlockClass<Omit<P, "chats">>
+  } as BlockConstructable<Omit<P, "chats">>
 }
