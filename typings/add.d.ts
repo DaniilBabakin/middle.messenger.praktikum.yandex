@@ -1,4 +1,3 @@
-import { UserDTO } from "api/types"
 import { Block } from "core"
 import { ChatType } from "types/Chat"
 import { ChatMessageType } from "types/ChatMessage"
@@ -41,7 +40,7 @@ declare global {
     new (props: Props): Block
     componentName: string
   }
-  
+
   module "*.png"
   module "*.svg"
   module "*.jpeg"

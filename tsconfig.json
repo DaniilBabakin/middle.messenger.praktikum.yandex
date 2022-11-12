@@ -23,7 +23,7 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "jsx": "react-jsx",
-    "types": ["mocha","node"],
+    "types": ["jest","node"],
     "paths": {
       "*": ["typings/add.d.ts", "*"]
     }
