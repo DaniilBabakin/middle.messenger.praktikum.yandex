@@ -1,9 +1,10 @@
+import { BASE_URL } from "constants/defaults"
 import { baseAcceptHeaders } from "core"
 import { baseContentTypeHeaders } from "core/BaseAPI"
 import { HTTPTransport } from "core/CustomFetch"
 import { checkResponse } from "helpers"
 
-const chatsApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2")
+const chatsApiInstance = new HTTPTransport(BASE_URL)
 
 export const chatsAPI = {
   getChats: async () => {
@@ -81,7 +82,11 @@ export const chatsAPI = {
     if (res.status !== 200) {
       throw Error(JSON.parse(res.responseText).reason)
     }
-    return JSON.parse(res.responseText)
+    try {
+      return JSON.parse(res.responseText)
+    } catch (e) {
+      throw e
+    }
   },
 
   changeAvatar: async (data: FormData) => {
@@ -90,6 +95,10 @@ export const chatsAPI = {
       data: data,
     })
     console.log(data, res)
-    return JSON.parse(res.responseText)
+    try {
+      return JSON.parse(res.responseText)
+    } catch (e) {
+      throw e
+    }
   },
 }

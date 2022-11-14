@@ -45,11 +45,17 @@ export const getChats = async (dispatch: Dispatch<AppState>) => {
     console.log("CHAT USERS", resWithUsers)
     dispatch({ chats: resWithUsers })
     res.forEach((item: ChatType) => {
-      chatsAPI.getToken(item.id).then((res) => {
-        item.socket = new WebSocketTransport(webSocketUrl, window.store.getState().user, item.id, res.token)
-        item.socket.eventBus.on(WebSocketTransport.EVENTS.WS_MESSAGES_ARRIVED, serveWSIncomingMessages.bind(item, item))
-        item.socket.start()
-      })
+      chatsAPI
+        .getToken(item.id)
+        .then((res) => {
+          item.socket = new WebSocketTransport(webSocketUrl, window.store.getState().user, item.id, res.token)
+          item.socket.eventBus.on(
+            WebSocketTransport.EVENTS.WS_MESSAGES_ARRIVED,
+            serveWSIncomingMessages.bind(item, item),
+          )
+          item.socket.start()
+        })
+        .catch((e) => console.log(e))
     })
   }
   console.log("CHATS", res)
@@ -57,16 +63,19 @@ export const getChats = async (dispatch: Dispatch<AppState>) => {
 
 export const getChatByTitle = async (
   dispatch: Dispatch<AppState>,
-  _:AppState,
+  _: AppState,
   action: { id: number; avatar: string; title: string },
 ) => {
   const resultOfGetChat = await chatsAPI.getChatByTitle(action.title)
   if (resultOfGetChat.length > 0) {
-    chatsAPI.getToken(resultOfGetChat[0].id).then((res) => {
-      console.log("CURRENT CHAT", { currentChat: { ...resultOfGetChat[0], avatar: action.avatar, token: res.token } })
-      dispatch({ currentChat: { ...resultOfGetChat[0], avatar: action.avatar, token: res.token } })
-      //   window.store.dispatch(getChats)
-    })
+    chatsAPI
+      .getToken(resultOfGetChat[0].id)
+      .then((res) => {
+        console.log("CURRENT CHAT", { currentChat: { ...resultOfGetChat[0], avatar: action.avatar, token: res.token } })
+        dispatch({ currentChat: { ...resultOfGetChat[0], avatar: action.avatar, token: res.token } })
+        //   window.store.dispatch(getChats)
+      })
+      .catch((e) => console.log(e))
   } else {
     async function createChat() {
       const resOfCreation = await chatsAPI.createChat({ title: action.title })

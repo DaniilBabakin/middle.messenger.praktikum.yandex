@@ -7,6 +7,7 @@ import avatar from "../../../../assets/defaultAvatar.png"
 import { chatsAPI } from "api/chatAPI"
 import { ChatType } from "types/Chat"
 import { getChatByTitle } from "service/chat"
+import { BASE_URL } from "constants/defaults"
 
 interface ChatItemType extends ChatType {
   fromSearch?: boolean
@@ -34,14 +35,17 @@ export class ChatItem extends Block<ChatItemProps> {
               title: `${props.chat.login}`,
             })
           } else {
-            chatsAPI.getToken(props.chat.id).then((res) => {
-              window.store.dispatch({
-                chats: window.store.getState().chats?.map((item) => {
-                  return item.id === props.chat.id ? { ...item, unread_count: 0 } : { ...item }
-                }),
-                currentChat: { ...props.chat, token: res.token },
+            chatsAPI
+              .getToken(props.chat.id)
+              .then((res) => {
+                window.store.dispatch({
+                  chats: window.store.getState().chats?.map((item) => {
+                    return item.id === props.chat.id ? { ...item, unread_count: 0 } : { ...item }
+                  }),
+                  currentChat: { ...props.chat, token: res.token },
+                })
               })
-            })
+              .catch((e) => console.log(e))
           }
 
           console.log(props.chat)
@@ -52,7 +56,7 @@ export class ChatItem extends Block<ChatItemProps> {
   protected render(): string {
     return `
         <div class="contacts__list__item" id="{{id}}">
-            <img src=https://ya-praktikum.tech/api/v2/resources{{chat.avatar}} onerror="this.onerror=null;this.src='${avatar}';" alt="Фотография пользователя" class="item__image"/>
+            <img src="${BASE_URL}/resources{{chat.avatar}}" onerror="this.onerror=null;this.src='${avatar}';" alt="Фотография пользователя" class="item__image"/>
             <div class="item__text">
                 {{#if chat.login}}
                     <span class="item__text__name">{{chat.login}}</span>

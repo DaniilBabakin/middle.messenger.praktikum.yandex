@@ -6,5 +6,9 @@ export function checkResponse(res: XMLHttpRequest) {
   if (res.responseText === "OK") {
     return true
   }
-  return JSON.parse(res.responseText)
+  try {
+    return JSON.parse(res.responseText)
+  } catch (e) {
+    throw e
+  }
 }

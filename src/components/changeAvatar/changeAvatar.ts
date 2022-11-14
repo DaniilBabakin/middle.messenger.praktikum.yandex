@@ -3,6 +3,7 @@ import { userAPI } from "api/userAPI"
 import avatar from "../../assets/defaultAvatarBig.png"
 import "./changeAvatar.scss"
 import { changeChatAvatar } from "service/chat"
+import { BASE_URL } from "constants/defaults"
 interface ChangeAvatarProps {
   src: string
   type: "USER" | "CHAT"
@@ -47,7 +48,7 @@ export class ChangeAvatar extends Block {
     // language=hbs
     return `
         <div class="change-avatar">
-            <img src=https://ya-praktikum.tech/api/v2/resources{{src}} onerror="this.onerror=null;this.src='${avatar}';" class="change-avatar__image" data-label="avatar" alt="Моя фотография"/>
+            <img src="${BASE_URL}/resources{{src}}" onerror="this.onerror=null;this.src='${avatar}';" class="change-avatar__image" data-label="avatar" alt="Моя фотография"/>
             <input type="file" class="change-avatar__input"/>
         </div>
     `

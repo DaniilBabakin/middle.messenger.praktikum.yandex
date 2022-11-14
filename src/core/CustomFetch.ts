@@ -1,4 +1,5 @@
 import { queryStringify } from "helpers/queryStringify"
+import { BASE_URL } from "../constants/defaults"
 
 enum Method {
   GET = "GET",
@@ -24,7 +25,7 @@ export class HTTPTransport {
 
   static getInstance() {
     if (!this._instance) {
-      this._instance = new HTTPTransport("https://ya-praktikum.tech/api/v2")
+      this._instance = new HTTPTransport(BASE_URL)
     }
     return this._instance
   }

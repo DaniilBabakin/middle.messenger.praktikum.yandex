@@ -1,3 +1,4 @@
+import { BASE_URL } from "constants/defaults"
 import { ROUTES } from "constants/routes"
 import { baseAcceptHeaders } from "core"
 import { HTTPTransport } from "core/CustomFetch"
@@ -18,7 +19,7 @@ type SignUpData = {
   avatar: string
 }
 
-const authApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/auth")
+const authApiInstance = new HTTPTransport(`${BASE_URL}/auth`)
 
 export const authAPI = {
   signIn: async (data: LoginData) => {
@@ -29,7 +30,11 @@ export const authAPI = {
       headers: { "content-type": "application/json" },
     })
     if (res.status !== 200) {
-      return JSON.parse(res.responseText)
+      try {
+        return JSON.parse(res.responseText)
+      } catch (e) {
+        throw e
+      }
     }
     return res
   },
@@ -68,6 +73,10 @@ export const authAPI = {
       }
       throw Error(JSON.parse(res.responseText).reason)
     }
-    return JSON.parse(res.response)
+    try {
+      return JSON.parse(res.response)
+    } catch (e) {
+      throw e
+    }
   },
 }

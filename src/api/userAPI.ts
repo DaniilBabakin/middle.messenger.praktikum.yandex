@@ -1,5 +1,6 @@
 import { baseContentTypeHeaders } from "core/BaseAPI"
 import { HTTPTransport } from "core/CustomFetch"
+import { BASE_URL } from "constants/defaults"
 
 type ChangeValuesPayload = {
   email: string
@@ -13,7 +14,7 @@ type ChangePasswordPayload = {
   oldPassword: string
   newPassword: string
 }
-const userApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/user")
+const userApiInstance = new HTTPTransport(`${BASE_URL}/user`)
 
 export const userAPI = {
   changeValues: async (data: ChangeValuesPayload): Promise<boolean> => {
@@ -24,7 +25,11 @@ export const userAPI = {
     })
 
     if (res.status !== 200) {
-      return JSON.parse(res.responseText)
+      try {
+        return JSON.parse(res.responseText)
+      } catch (e) {
+        throw e
+      }
     }
     return true
   },
@@ -37,7 +42,11 @@ export const userAPI = {
     })
     console.log("RESPONSE", res)
     if (res.status !== 200) {
-      return JSON.parse(res.responseText)
+      try {
+        return JSON.parse(res.responseText)
+      } catch (e) {
+        throw e
+      }
     }
     return true
   },
@@ -58,6 +67,10 @@ export const userAPI = {
       headers: baseContentTypeHeaders,
     })
     console.log("RESPONSE", res)
-    return JSON.parse(res.responseText)
+    try {
+      return JSON.parse(res.responseText)
+    } catch (e) {
+      throw e
+    }
   },
 }

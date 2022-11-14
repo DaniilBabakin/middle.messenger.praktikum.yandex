@@ -12,6 +12,7 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js", ".json"],
     alias: {
+      index: path.resolve(__dirname, "./src/index.ts"),
       core: path.resolve(__dirname, "./src/core"),
       components: path.resolve(__dirname, "./src/components"),
       helpers: path.resolve(__dirname, "./src/helpers"),

@@ -53,10 +53,10 @@ registerComponent(ChatMainBlock)
 registerComponent(ContactsList)
 registerComponent(ChatMessages)
 
-Handlebars.registerHelper("ifNotMyMessage", function (arg1) {
+Handlebars.registerHelper("ifNotMyMessage", function (arg1:number) {
   return arg1 !== window.store.getState()?.user?.id ? "friend__message" : ""
 })
-Handlebars.registerHelper("ifMyMessageByLogin", function (arg1) {
+Handlebars.registerHelper("ifMyMessageByLogin", function (arg1: string) {
   return arg1 === window.store.getState()?.user?.login ? "Вы: " : `${arg1}: `
 })
 
