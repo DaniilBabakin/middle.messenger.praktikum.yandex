@@ -16,7 +16,6 @@ export class ChatMainBlock extends Block<ChatMainBlockProps> {
     console.log("IS LOADING?", this.props.isLoading)
     setTimeout(() => {
       let objDiv = document.querySelector(".messages__main-block") as HTMLElement
-      console.log("Я ОБНОВИИИИИИИИИИИИИИИЛСЯ", objDiv.scrollHeight)
       if (objDiv && objDiv.scrollHeight > 0) {
         objDiv.scrollTop = objDiv.scrollHeight
       }

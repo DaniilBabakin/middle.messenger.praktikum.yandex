@@ -70,7 +70,7 @@ export const logout = async (dispatch: Dispatch<AppState>) => {
 
   await authAPI.logout()
 
-  dispatch({ isLoading: false, user: null })
+  dispatch({ isLoading: false, chats: null, user: null })
 
   window.router.go(ROUTES.Login)
 }

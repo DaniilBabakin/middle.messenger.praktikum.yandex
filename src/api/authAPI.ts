@@ -53,9 +53,6 @@ export const authAPI = {
       includeCredentials: true,
       headers: baseAcceptHeaders,
     })
-    console.log(res)
-    window.store.dispatch({ user: null, chats: null })
-    window.router.go(ROUTES.Login)
     return checkResponse(res)
   },
 

@@ -12,7 +12,6 @@ export async function initApp(dispatch: Dispatch<AppState>) {
     const response = await authAPI.getUser()
 
     dispatch(getChats)
-    console.log("ЗАПУСТИЛ ЧАТЫ ЕЖЖИ", window.store.getState())
     if (apiHasError(response)) {
       return
     }

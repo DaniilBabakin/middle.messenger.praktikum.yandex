@@ -4,19 +4,10 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 
 module.exports = {
-  mode: "development",
   entry: "./src/index.ts",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "project-name.bundle.js",
-  },
-  devServer: {
-    historyApiFallback: true,
-    static: {
-      directory: path.join(__dirname, "dist"),
-    },
-    compress: true,
-    port: 2000,
   },
   resolve: {
     extensions: [".ts", ".js", ".json"],
@@ -67,6 +58,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "src/index.html",
       filename: "index.html",
+      favicon: './public/favicon.ico',
       minify: {
         collapseWhitespace: true,
         removeComments: true,

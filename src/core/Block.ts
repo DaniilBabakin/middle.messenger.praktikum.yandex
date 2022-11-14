@@ -1,5 +1,5 @@
 import EventBus from "./EventBus"
-// import { nanoid } from "nanoid"
+import { nanoid } from "nanoid"
 import Handlebars from "handlebars"
 
 type Events = Values<typeof Block.EVENTS>
@@ -23,7 +23,7 @@ export default class Block<P = any> {
 
   static componentName: string
 
-  public id = "ir4634"
+  public id = nanoid(6)
 
   protected _element: Nullable<HTMLElement> = null
   protected readonly props: P

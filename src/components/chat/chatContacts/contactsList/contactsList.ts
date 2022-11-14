@@ -14,7 +14,8 @@ class ContactsList extends Block<ContactsListProps> {
 
   constructor(props: ContactsListProps) {
     super(props)
-    if (!props.chats) {
+    if (!props.chats && window.location.pathname !== '/') {
+        console.log(window.location)
       chatsAPI.getChats().then((res) => {
         this.setProps({ ...props, chats: res })
       })
