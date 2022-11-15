@@ -33,7 +33,7 @@ export const authAPI = {
       try {
         return JSON.parse(res.responseText)
       } catch (e) {
-        throw e
+        alert(e)
       }
     }
     return res
@@ -76,7 +76,7 @@ export const authAPI = {
     try {
       return JSON.parse(res.response)
     } catch (e) {
-      throw e
+      alert(e)
     }
   },
 }

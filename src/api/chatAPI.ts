@@ -85,7 +85,7 @@ export const chatsAPI = {
     try {
       return JSON.parse(res.responseText)
     } catch (e) {
-      throw e
+      alert(e)
     }
   },
 
@@ -98,7 +98,7 @@ export const chatsAPI = {
     try {
       return JSON.parse(res.responseText)
     } catch (e) {
-      throw e
+      alert(e)
     }
   },
 }

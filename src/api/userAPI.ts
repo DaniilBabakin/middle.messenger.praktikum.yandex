@@ -28,7 +28,7 @@ export const userAPI = {
       try {
         return JSON.parse(res.responseText)
       } catch (e) {
-        throw e
+        alert(e)
       }
     }
     return true
@@ -45,7 +45,7 @@ export const userAPI = {
       try {
         return JSON.parse(res.responseText)
       } catch (e) {
-        throw e
+        alert(e)
       }
     }
     return true
@@ -70,7 +70,7 @@ export const userAPI = {
     try {
       return JSON.parse(res.responseText)
     } catch (e) {
-      throw e
+      alert(e)
     }
   },
 }

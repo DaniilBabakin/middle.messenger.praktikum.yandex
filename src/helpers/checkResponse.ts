@@ -9,6 +9,6 @@ export function checkResponse(res: XMLHttpRequest) {
   try {
     return JSON.parse(res.responseText)
   } catch (e) {
-    throw e
+    alert(e)
   }
 }
