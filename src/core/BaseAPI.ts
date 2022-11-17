@@ -17,6 +17,7 @@ export class BaseAPI {
   }
 }
 
-export const baseHeaders = {
+export const baseAcceptHeaders = {
   accept: "application/json",
 }
+export const baseContentTypeHeaders = { "content-type": "application/json" }

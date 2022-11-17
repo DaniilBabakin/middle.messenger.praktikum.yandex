@@ -16,11 +16,8 @@ type ChangePasswordPayload = {
   oldPassword: string
   newPassword: string
 }
-type ChangeAvatarPayload = {
-  photo: File
-}
 
-export const changeValues: DispatchStateHandler<ChangeValuesPayload> = async (dispatch, state, action) => {
+export const changeValues: DispatchStateHandler<ChangeValuesPayload> = async (dispatch, _, action) => {
   dispatch({ isLoading: true })
 
   const response = await userAPI.changeValues(action)
@@ -38,7 +35,7 @@ export const changeValues: DispatchStateHandler<ChangeValuesPayload> = async (di
   window.router.go(ROUTES.Profile)
 }
 
-export const changePassword: DispatchStateHandler<ChangePasswordPayload> = async (dispatch, state, action) => {
+export const changePassword: DispatchStateHandler<ChangePasswordPayload> = async (dispatch, _, action) => {
   dispatch({ isLoading: true })
 
   const response = await userAPI.changePassword(action)
@@ -53,7 +50,7 @@ export const changePassword: DispatchStateHandler<ChangePasswordPayload> = async
   window.router.go(ROUTES.Profile)
 }
 
-export const changeAvatar: DispatchStateHandler<ChangeAvatarPayload> = async (dispatch, state, action) => {
+export const changeAvatar: DispatchStateHandler<FormData> = async (dispatch, _, action) => {
   dispatch({ isLoading: true })
 
   const response = await userAPI.changeAvatar(action)
@@ -66,7 +63,7 @@ export const changeAvatar: DispatchStateHandler<ChangeAvatarPayload> = async (di
   dispatch({ isLoading: false, formError: null })
 }
 
-export const searchUsers: DispatchStateHandler<{ login: string }> = async (dispatch, state, action) => {
+export const searchUsers: DispatchStateHandler<{ login: string }> = async (dispatch, _, action) => {
   const response = await userAPI.usersSearch(action)
   console.log("RES", response)
   dispatch({ chats: response.map((item: UserDTO) => transformUser({ ...item, fromSearch: true })) })

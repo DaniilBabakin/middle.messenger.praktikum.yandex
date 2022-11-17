@@ -1,31 +1,27 @@
 import Block from "core/Block"
 import "./main.scss"
-import { LoginPage } from "../login/login"
-import { validateForm, ValidateType } from "helpers/validateForm"
 import { withCurrentChat } from "helpers/withCurrentChat"
 import { CurrentChatType } from "types/CurrentChat"
-import { getChats } from "service/chat"
+import { withUser } from "helpers"
 
 type MainPageProps = {
   currentChat: CurrentChatType
+  user: User
 }
 
 class MainPage extends Block<MainPageProps> {
   constructor(props: MainPageProps) {
     super(props)
-    if(!window.store.getState().chats){
-        window.store.dispatch(getChats)
-    }
   }
   render() {
     // language=hbs
     return `
         <main class="main">
             {{{ChatContacts}}}
-            {{{ChatMessages currentChat=currentChat}}}
+            {{{ChatMessages currentChat=currentChat user=user}}}
         </main>
     `
   }
 }
-const ConnectedMainPage = withCurrentChat(MainPage)
+const ConnectedMainPage = withCurrentChat(withUser(MainPage))
 export { ConnectedMainPage as MainPage }

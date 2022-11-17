@@ -1,6 +1,14 @@
 export function checkResponse(res: XMLHttpRequest) {
   if (res.status !== 200) {
-    throw Error(JSON.parse(res.responseText).reason)
+    console.error(JSON.parse(res.responseText).reason)
+    return res
   }
-  return JSON.parse(res.responseText)
+  if (res.responseText === "OK") {
+    return true
+  }
+  try {
+    return JSON.parse(res.responseText)
+  } catch (e) {
+    alert(e)
+  }
 }

@@ -1,4 +1,3 @@
-import { UserDTO } from "api/types"
 import { BlockClass } from "core"
 import { ChatMessageType } from "types/ChatMessage"
 

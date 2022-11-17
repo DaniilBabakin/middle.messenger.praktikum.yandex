@@ -1,5 +1,4 @@
 import { Block } from "core"
-import { router } from "../../index"
 import "../serverError/serverError.scss"
 import { ROUTES } from "constants/routes"
 

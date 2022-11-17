@@ -1,8 +1,8 @@
 import { Block, CoreRouter, Store } from "core"
 import "./profile.scss"
 import { ROUTES } from "constants/routes"
-import { authAPI } from "api/authAPI"
 import { withRouter, withStore, withUser } from "helpers"
+import { logout } from "service/auth"
 
 type ProfilePageProps = {
   router: CoreRouter
@@ -27,7 +27,7 @@ class ProfilePage extends Block<ProfilePageProps> {
         this.props.router.go(ROUTES.ChangePassword)
       },
       redirectQuitProfile: () => {
-        authAPI.logout()
+        window.store.dispatch(logout)
       },
       redirectBack: () => {
         this.props.router.back()

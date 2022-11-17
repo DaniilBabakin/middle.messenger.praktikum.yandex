@@ -1,5 +1,6 @@
+import { BASE_URL } from "constants/defaults"
 import { ROUTES } from "constants/routes"
-import { baseHeaders } from "core"
+import { baseAcceptHeaders } from "core"
 import { HTTPTransport } from "core/CustomFetch"
 import { checkResponse } from "helpers"
 
@@ -18,24 +19,31 @@ type SignUpData = {
   avatar: string
 }
 
-const authApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/auth")
+const authApiInstance = new HTTPTransport(`${BASE_URL}/auth`)
 
 export const authAPI = {
   signIn: async (data: LoginData) => {
+    console.log("DATA", data)
     const res: XMLHttpRequest = await authApiInstance.post("/signin", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: baseHeaders,
+      headers: { "content-type": "application/json" },
     })
-
-    return checkResponse(res)
+    if (res.status !== 200) {
+      try {
+        return JSON.parse(res.responseText)
+      } catch (e) {
+        alert(e)
+      }
+    }
+    return res
   },
 
   signUp: async (data: SignUpData): Promise<boolean> => {
     const res: XMLHttpRequest = await authApiInstance.post("/signup", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: baseHeaders,
+      headers: { "content-type": "application/json" },
     })
 
     if (res.status !== 200) {
@@ -48,18 +56,15 @@ export const authAPI = {
     console.log("Logout successfully developed")
     const res: XMLHttpRequest = await authApiInstance.post("/logout", {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
-    console.log(res)
-    window.store.dispatch({ user: null, chats: null })
-    window.router.go(ROUTES.Login)
     return checkResponse(res)
   },
 
   getUser: async () => {
     const res: XMLHttpRequest = await authApiInstance.get("/user", {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
     //TODO: тест вариант
     if (res.status !== 200) {
@@ -68,6 +73,10 @@ export const authAPI = {
       }
       throw Error(JSON.parse(res.responseText).reason)
     }
-    return JSON.parse(res.response)
+    try {
+      return JSON.parse(res.response)
+    } catch (e) {
+      alert(e)
+    }
   },
 }

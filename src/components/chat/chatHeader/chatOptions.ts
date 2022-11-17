@@ -1,6 +1,4 @@
 import Block from "core/Block"
-import { deleteChat } from "service/chat"
-import WebSocketTransport from "service/webSocket"
 
 import "./chatHeader.scss"
 

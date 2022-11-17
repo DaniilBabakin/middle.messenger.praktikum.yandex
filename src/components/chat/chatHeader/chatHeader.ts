@@ -1,10 +1,8 @@
 import Block from "core/Block"
 
 import "./chatHeader.scss"
-import * as avatar from "../../../assets/defaultAvatar.png"
+import avatar from "../../../assets/defaultAvatar.png"
 import { CurrentChatType } from "types/CurrentChat"
-import WebSocketTransport from "service/webSocket"
-
 type ChatHeaderProps = {
   currentChat: CurrentChatType
 }

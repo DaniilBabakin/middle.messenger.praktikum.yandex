@@ -1,5 +1,6 @@
-import { baseHeaders } from "core"
+import { baseContentTypeHeaders } from "core/BaseAPI"
 import { HTTPTransport } from "core/CustomFetch"
+import { BASE_URL } from "constants/defaults"
 
 type ChangeValuesPayload = {
   email: string
@@ -13,18 +14,22 @@ type ChangePasswordPayload = {
   oldPassword: string
   newPassword: string
 }
-const userApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2/user")
+const userApiInstance = new HTTPTransport(`${BASE_URL}/user`)
 
 export const userAPI = {
   changeValues: async (data: ChangeValuesPayload): Promise<boolean> => {
     const res: XMLHttpRequest = await userApiInstance.put("/profile", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: baseHeaders,
+      headers: baseContentTypeHeaders,
     })
 
     if (res.status !== 200) {
-      return JSON.parse(res.responseText)
+      try {
+        return JSON.parse(res.responseText)
+      } catch (e) {
+        alert(e)
+      }
     }
     return true
   },
@@ -33,11 +38,15 @@ export const userAPI = {
     const res: XMLHttpRequest = await userApiInstance.put("/password", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: baseHeaders,
+      headers: baseContentTypeHeaders,
     })
     console.log("RESPONSE", res)
     if (res.status !== 200) {
-      return JSON.parse(res.responseText)
+      try {
+        return JSON.parse(res.responseText)
+      } catch (e) {
+        alert(e)
+      }
     }
     return true
   },
@@ -55,9 +64,13 @@ export const userAPI = {
     const res: XMLHttpRequest = await userApiInstance.post("/search", {
       includeCredentials: true,
       data: JSON.stringify(data),
-      headers: baseHeaders,
+      headers: baseContentTypeHeaders,
     })
     console.log("RESPONSE", res)
-    return JSON.parse(res.responseText)
+    try {
+      return JSON.parse(res.responseText)
+    } catch (e) {
+      alert(e)
+    }
   },
 }

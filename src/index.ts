@@ -53,8 +53,11 @@ registerComponent(ChatMainBlock)
 registerComponent(ContactsList)
 registerComponent(ChatMessages)
 
-Handlebars.registerHelper("ifNotMyMessage", function (arg1, options) {
+Handlebars.registerHelper("ifNotMyMessage", function (arg1:number) {
   return arg1 !== window.store.getState()?.user?.id ? "friend__message" : ""
+})
+Handlebars.registerHelper("ifMyMessageByLogin", function (arg1: string) {
+  return arg1 === window.store.getState()?.user?.login ? "Вы: " : `${arg1}: `
 })
 
 export const router = new PathRouter()
@@ -75,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   initRouter(router, store)
   //TODO: убрать store.on
-  store.on("changed", (prevState, nextState) => {
+  store.on("changed", (nextState) => {
     console.log("%cstore updated", "background: #222; color: #bada55", nextState)
   })
   store.dispatch(initApp)

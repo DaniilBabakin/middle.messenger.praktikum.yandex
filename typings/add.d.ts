@@ -1,4 +1,3 @@
-import { UserDTO } from "api/types"
 import { Block } from "core"
 import { ChatType } from "types/Chat"
 import { ChatMessageType } from "types/ChatMessage"
@@ -19,8 +18,8 @@ declare global {
     formError: Nullable<string>
     contacts: Nullable<User[]>
     chats: Nullable<ChatType[]>
-    currentChat: CurrentChatType
-    chatMessages: ChatMessageType[]
+    currentChat: Nullable<CurrentChatType>
+    chatMessages: Nullable<ChatMessageType[]>
     user: Nullable<User>
   }
 
@@ -36,6 +35,11 @@ declare global {
     fromSearch?: boolean
   }
   type DispatchStateHandler<TAction> = (dispatch: Dispatch<AppState>, state: AppState, action: TAction) => Promise<void>
+
+  interface BlockConstructable<Props = any> {
+    new (props: Props): Block
+    componentName: string
+  }
 
   module "*.png"
   module "*.svg"

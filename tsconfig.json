@@ -22,9 +22,8 @@
     "noUnusedParameters": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["mocha"],
+    "types": ["jest","node"],
     "paths": {
       "*": ["typings/add.d.ts", "*"]
     }

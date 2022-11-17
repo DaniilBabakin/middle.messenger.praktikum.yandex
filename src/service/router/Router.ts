@@ -51,7 +51,7 @@ export function initRouter(router: CoreRouter, store: Store<AppState>) {
     router.use(route.path, () => {
       const isAuthorized = Boolean(store.getState().user)
       const currentScreen = Boolean(store.getState().screen)
-      
+
       if (isAuthorized && route.shouldGuest) {
         window.history.pushState({}, "", "/messenger")
         console.log("Redirect to MAIN")
@@ -60,6 +60,7 @@ export function initRouter(router: CoreRouter, store: Store<AppState>) {
       }
 
       if (isAuthorized || !route.shouldAuthorized) {
+        console.log("go to block", route.block)
         store.dispatch({ screen: route.block })
         return
       }

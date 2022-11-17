@@ -1,9 +1,9 @@
 import Block from "core/Block"
 import { userAPI } from "api/userAPI"
-import * as avatar from "../../assets/defaultAvatarBig.png"
+import avatar from "../../assets/defaultAvatarBig.png"
 import "./changeAvatar.scss"
-import { chatsAPI } from "api/chatAPI"
 import { changeChatAvatar } from "service/chat"
+import { BASE_URL } from "constants/defaults"
 interface ChangeAvatarProps {
   src: string
   type: "USER" | "CHAT"
@@ -27,7 +27,8 @@ export class ChangeAvatar extends Block {
         change: (e: FocusEvent) => {
           const inputEl = e.target as HTMLInputElement
           if (inputEl.files) {
-            document.querySelector('[data-label="avatar"]').src = window.URL.createObjectURL(inputEl!.files[0])
+            let image = document.querySelector('[data-label="avatar"]') as HTMLImageElement
+            image.src = window.URL.createObjectURL(inputEl!.files[0])
             let photo = inputEl.files[0]
             let formData = new FormData()
 
@@ -47,7 +48,7 @@ export class ChangeAvatar extends Block {
     // language=hbs
     return `
         <div class="change-avatar">
-            <img src=https://ya-praktikum.tech/api/v2/resources{{src}} onerror="this.onerror=null;this.src='${avatar}';" class="change-avatar__image" data-label="avatar" alt="Моя фотография"/>
+            <img src="${BASE_URL}/resources{{src}}" onerror="this.onerror=null;this.src='${avatar}';" class="change-avatar__image" data-label="avatar" alt="Моя фотография"/>
             <input type="file" class="change-avatar__input"/>
         </div>
     `

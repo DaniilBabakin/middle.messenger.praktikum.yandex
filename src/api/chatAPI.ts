@@ -1,18 +1,16 @@
-import { baseHeaders } from "core"
+import { BASE_URL } from "constants/defaults"
+import { baseAcceptHeaders } from "core"
+import { baseContentTypeHeaders } from "core/BaseAPI"
 import { HTTPTransport } from "core/CustomFetch"
 import { checkResponse } from "helpers"
 
-type ChangeAvatarPayload = {
-  photo: File
-}
-
-const chatsApiInstance = new HTTPTransport("https://ya-praktikum.tech/api/v2")
+const chatsApiInstance = new HTTPTransport(BASE_URL)
 
 export const chatsAPI = {
   getChats: async () => {
     const res: XMLHttpRequest = await chatsApiInstance.get("/chats", {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
     return checkResponse(res)
   },
@@ -20,7 +18,7 @@ export const chatsAPI = {
   getChatByTitle: async (title: string) => {
     const res: XMLHttpRequest = await chatsApiInstance.get(`/chats?title=${title}`, {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
     return checkResponse(res)
   },
@@ -28,7 +26,7 @@ export const chatsAPI = {
   getChatUsers: async (chatId: number) => {
     const res: XMLHttpRequest = await chatsApiInstance.get(`/chats/${chatId}/users`, {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
     return checkResponse(res)
   },
@@ -37,7 +35,7 @@ export const chatsAPI = {
     const res: XMLHttpRequest = await chatsApiInstance.post("/chats", {
       includeCredentials: true,
       headers: {
-        ...baseHeaders,
+        ...baseAcceptHeaders,
         "content-type": "application/json",
       },
       data: JSON.stringify(data),
@@ -50,7 +48,7 @@ export const chatsAPI = {
     const res: XMLHttpRequest = await chatsApiInstance.delete("/chats", {
       includeCredentials: true,
       headers: {
-        ...baseHeaders,
+        ...baseAcceptHeaders,
         "content-type": "application/json",
       },
       data: JSON.stringify({ chatId: chatId }),
@@ -63,31 +61,44 @@ export const chatsAPI = {
   },
 
   addUserToChat: async (userId: number, chatId: number) => {
+    console.log()
     const res: XMLHttpRequest = await chatsApiInstance.put("/chats/users", {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: { ...baseAcceptHeaders, ...baseContentTypeHeaders },
       data: JSON.stringify({
         users: [userId],
         chatId: chatId,
       }),
     })
+    console.log("RES OF ADD USER TO CHAT", res)
     return checkResponse(res)
   },
 
   getToken: async (chatId: number) => {
     const res: XMLHttpRequest = await chatsApiInstance.post(`/chats/token/${chatId}`, {
       includeCredentials: true,
-      headers: baseHeaders,
+      headers: baseAcceptHeaders,
     })
-    return checkResponse(res)
+    if (res.status !== 200) {
+      throw Error(JSON.parse(res.responseText).reason)
+    }
+    try {
+      return JSON.parse(res.responseText)
+    } catch (e) {
+      alert(e)
+    }
   },
 
-  changeAvatar: async (data: ChangeAvatarPayload) => {
+  changeAvatar: async (data: FormData) => {
     const res: XMLHttpRequest = await chatsApiInstance.put("/chats/avatar", {
       includeCredentials: true,
       data: data,
     })
     console.log(data, res)
-    return JSON.parse(res.responseText)
+    try {
+      return JSON.parse(res.responseText)
+    } catch (e) {
+      alert(e)
+    }
   },
 }

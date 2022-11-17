@@ -1,4 +1,3 @@
-import { chatsAPI } from "api/chatAPI"
 import { BlockClass } from "core"
 import { CurrentChatType } from "types/CurrentChat"
 

@@ -2,19 +2,29 @@ import Block from "core/Block"
 
 import "./contactsList.scss"
 import { ChatType } from "types/Chat"
+import { withChats } from "helpers/withChats"
+import { chatsAPI } from "api/chatAPI"
 
 type ContactsListProps = {
-  chats: () => void
+  chats: ChatType[]
 }
 
-export class ContactsList extends Block<ContactsListProps> {
+class ContactsList extends Block<ContactsListProps> {
   static componentName = "ContactsList"
 
   constructor(props: ContactsListProps) {
     super(props)
-    this.setProps({ ...props, chats: () => window.store.getState().chats })
-    console.log("CHAT CONTACTS", this.props)
+    if (!props.chats && window.location.pathname !== "/") {
+      console.log(window.location)
+      chatsAPI
+        .getChats()
+        .then((res) => {
+          this.setProps({ ...props, chats: res })
+        })
+        .catch((e) => console.log(e))
+    }
   }
+
   protected render(): string {
     // language=hbs
     return `
@@ -26,3 +36,6 @@ export class ContactsList extends Block<ContactsListProps> {
     `
   }
 }
+
+const ConnectedContactsList = withChats(ContactsList)
+export { ConnectedContactsList as ContactsList }
